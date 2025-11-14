@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.fichas.model;
 
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,14 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "FichaAvaliacao")
 public class FichaAvaliacao {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // ID da Ficha de Avaliação (Chave Primária)
+
     private Long alunoId; // Relacionamento com o Aluno
     private Long instrutorId; // Relacionamento com o Instrutor (quem realizou a avaliação)
     private LocalDate dataAvaliacao = LocalDate.now();

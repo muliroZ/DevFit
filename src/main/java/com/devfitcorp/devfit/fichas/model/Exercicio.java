@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.fichas.model;
 
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor // gera um construtor com todos os campos.
 
 @NoArgsConstructor
-
+@Embeddable       // indica que esta classe pode ser embutida em uma entidade JPA.
 public class Exercicio {
 
     private String nome;
