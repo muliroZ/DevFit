@@ -18,49 +18,32 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listar(){
-        List<Produto> produtos = produtoservice.listar();
-        return ResponseEntity.ok(produtos);
+    public List<Produto> listar(){
+       return produtoservice.listar();
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id){
-        Produto produto = produtoservice.buscarPorId(id);
-        if (produto != null) {
-            return ResponseEntity.ok(produto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Produto buscarPorId(@PathVariable Long id){
+        return produtoservice.buscarPorId(id);
     }
+
     @PostMapping
     public ResponseEntity<Produto> criar(@RequestBody @Valid Produto produto){
         Produto salvo = produtoservice.salvar(produto);
         return ResponseEntity.status(201).body(salvo);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id,
-                                             @RequestBody @Valid Produto produto) {
+    public Produto atualizar(@PathVariable Long id, @RequestBody @Valid Produto produto) {
+        return produtoservice.atualizar(id, produto);
 
-        Produto atualizado = produtoservice.atualizar(id, produto);
-
-        if (atualizado == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(atualizado);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
 
-        Produto produto = produtoservice.buscarPorId(id);
-
-        if (produto == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         produtoservice.deletar(id);
-
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 
 

@@ -1,13 +1,12 @@
 package com.devfitcorp.devfit.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -18,8 +17,10 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 @NotBlank
 @Size(min = 1, max = 100)
+@Column(nullable = false, unique = true)
 private String nome;
 
 @Size(max = 500)
@@ -27,9 +28,11 @@ private String descricao;
 
 @NotNull
 @Positive
-private Double preco;
+@Column(nullable = false)
+private BigDecimal preco;
 
 @NotNull
 @PositiveOrZero
+@Column(nullable = false)
 private Integer estoque;
 }
