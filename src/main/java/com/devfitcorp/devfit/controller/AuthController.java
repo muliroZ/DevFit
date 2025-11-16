@@ -1,7 +1,9 @@
 package com.devfitcorp.devfit.controller;
 
-import com.devfitcorp.devfit.dto.AuthRequest;
 import com.devfitcorp.devfit.dto.AuthResponse;
+import com.devfitcorp.devfit.dto.CadastroGestorRequest;
+import com.devfitcorp.devfit.dto.CadastroRequest;
+import com.devfitcorp.devfit.dto.LoginRequest;
 import com.devfitcorp.devfit.model.Role;
 import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.repository.RoleRepository;
@@ -48,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -63,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<String> cadastroAluno(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> cadastroAluno(@RequestBody CadastroRequest request) {
         if (usuarioRepository.findByEmail(request.email()).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O usuário já existe.");
         }
@@ -83,7 +85,7 @@ public class AuthController {
 
     @PreAuthorize("hasRole('GESTOR')")
     @PostMapping("/cadastro/instrutor")
-    public ResponseEntity<String> cadastroInstrutor(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> cadastroInstrutor(@RequestBody CadastroRequest request) {
         if (usuarioRepository.findByEmail(request.email()).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Instrutor já registrado.");
         }
@@ -102,13 +104,13 @@ public class AuthController {
     }
 
     @PostMapping("/cadastro/gestor")
-    public ResponseEntity<String> cadastroGestor(@RequestBody AuthRequest request, String gestorCode) {
+    public ResponseEntity<String> cadastroGestor(@RequestBody CadastroGestorRequest request) {
         if (usuarioRepository.findByEmail(request.email()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Gestor já registrado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já registrado.");
         }
 
-        if (!gestorCode.equals(admSecret)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Código de identificação inválido");
+        if (!request.gestorCode().equals(admSecret)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Código de verificação inválido");
         }
 
         Role gestorRole = roleRepository.findByNome("ROLE_GESTOR")
