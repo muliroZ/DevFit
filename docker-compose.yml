@@ -13,6 +13,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8080:8080"
+    networks:
+      - devfit
 
   db:
     image: postgres:16
@@ -26,6 +28,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - devfit
 
   pgadmin:
     image: dpage/pgadmin4
@@ -40,12 +44,12 @@ services:
       - db
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - devfit
 
 volumes:
   postgres-data:
   pgadmin_data:
 
 networks:
-  default:
-    external: true
-    name: devfit
+  devfit:
