@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 errorMsg.textContent = 'Erro ao realizar cadastro.'
+                errorMsg.style.display = 'block'
                 return
             }
 

@@ -1,16 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const loginButton = document.getElementById('login-btn')
+    const loginForm = document.getElementById('login-form')
+    const errorMsg = document.getElementById('error-message');
 
-    loginButton.addEventListener('click', login)
+    loginForm.addEventListener('submit', login)
 
-    async function login() {
+    async function login(event) {
+        event.preventDefault();
+
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const senha = document.getElementById('password').value;
 
         const payload = {
             email: email,
-            senha: password
+            senha: senha
         }
 
         const response = await fetch('/auth/login', {
@@ -21,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!response.ok) {
             const text = await response.text();
-            alert('Erro no login: ' + response.status + ' - ' + text);
+            errorMsg.textContent = 'Erro no login: ' + response.status + ' - ' + text;
+            errorMsg.style.display = 'block';
             return;
         }
 

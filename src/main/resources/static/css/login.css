@@ -138,3 +138,17 @@ body {
 .btn-login:hover {
     transform: scale(1.05);
 }
+
+.error-message {
+  display: none;
+  background: #ff1111;
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  min-height: 18px;
+  border-radius: 7px;
+  padding: 5px;
+  font-weight: bold;
+  text-shadow: 0 0 0 px #fff;
+}
