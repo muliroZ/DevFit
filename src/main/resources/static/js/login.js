@@ -28,6 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
         localStorage.setItem('authToken', result.token);
 
-        window.location.href = '../index.html'
+        window.location.href = '/index.html'
     }
 })
