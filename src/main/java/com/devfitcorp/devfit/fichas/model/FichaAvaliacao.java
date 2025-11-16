@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.fichas.model;
 
 
+import com.devfitcorp.devfit.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,31 +21,36 @@ public class FichaAvaliacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // ID da Ficha de Avaliação (Chave Primária)
 
-    private Long alunoId; // Relacionamento com o Aluno
-    private Long instrutorId; // Relacionamento com o Instrutor (quem realizou a avaliação)
-    private LocalDate dataAvaliacao = LocalDate.now();
+    @ManyToOne
+    @JoinColumn(name = "aluno_id", nullable = false)
+    private Usuario aluno; // Relacionamento com o Aluno
+
+    @ManyToOne
+    @JoinColumn(name = "instrutor_id", nullable = false)
+    private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de avaliação
+
+    @Column(nullable = false)
+    private LocalDate dataAvaliacao; // Data da Avaliação
 
     // Dados Antropométricos
-    private double pesoKg;
-    private double alturaM; // Em metros
+    @Column(nullable = false) double pesoKg;
+    @Column(nullable = false)private double alturaM; // Em metros
     private double imc; // Índice de Massa Corporal (calculado)
 
     // Circunferências
-    private double circunferenciaCinturaCm;
-    private double circunferenciaAbdomenCm;
-    private double circunferenciaQuadrilCm;
+    @Column private double circunferenciaCinturaCm;
+    @Column private double circunferenciaAbdomenCm;
+    @Column private double circunferenciaQuadrilCm;
 
     // Histórico e Observações
-    private String historicoSaude; // Informações prévias relevantes
-    private String observacoesGerais;
+    @Column(length = 1000) private String historicoSaude; // Informações prévias relevantes
+    @Column(length = 500) private String observacoesGerais;
 
-
-    // metodo para calcular o IMC. Se a altura for inválida, lança uma exceção
-    public double calcularIMC() {
-        if (alturaM <= 0) {
-            throw new IllegalArgumentException("Altura deve ser um valor positivo para calcular o IMC.");
+    @PrePersist
+    public void prePersist() {
+        if (dataAvaliacao == null) {
+            dataAvaliacao = LocalDate.now();
         }
-        this.imc = this.pesoKg / (this.alturaM * this.alturaM);
-        return this.imc;
+
     }
 }

@@ -1,5 +1,6 @@
 package com.devfitcorp.devfit.fichas.model;
 
+import com.devfitcorp.devfit.model.Usuario; // Importa a classe Usuario para representar Aluno e Instrutor
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,24 +16,36 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity   // entidade JPA para persistência no banco de dados
-@Table(name = "Fichatreino") // nome da tabela no banco de dados
+@Table(name = "Fichas_treino") // nome da tabela no banco de dados
 public class FichaTreino {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Chave primária
 
-    private Long alunoId;
-    private Long InstrutorId;
-    private LocalDate dataCriacao = LocalDate.now();   // Data de criação da ficha de treino
+
+    @ManyToOne
+    @JoinColumn(name = "aluno_id", nullable = false)
+    private Usuario aluno; // Relacionamento com o Aluno
+
+    @ManyToOne
+    @JoinColumn(name = "instrutor_id", nullable = false)
+    private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de treino
+
+    private LocalDate dataCriacao;   // Data de criação da ficha de treino
     private LocalDate dataVencimento;   // Data de vencimento da ficha de treino
     private boolean isAtiva = true;    // Indica se a ficha de treino está ativa ou não
 
-    // Mapeamento da lista de exercícios como uma coleção embutida
-    @ElementCollection
-    // Define o nome da tabela e a coluna de junção para a coleção de exercícios
-    @CollectionTable(name = "FichaTreino_Exercicios", joinColumns = @JoinColumn(name = "ficha_treino_id"))
-    private List<Exercicio> listaDeExercicios = new ArrayList<>(); // Lista de exercícios na ficha de treino
+    @OneToMany(mappedBy = "fichaTreino", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemTreino> listaDeItens = new ArrayList<>(); // Lista de itens de treino associados à ficha
+
+    @PrePersist    // vai servir para preencher a data de criacao automaticamente
+    public void prePersist() {
+        if (this.dataCriacao == null) {
+            this.dataCriacao = LocalDate.now();
+        }
+    }
+
 
 
 
