@@ -1,7 +1,6 @@
-package com.devfitcorp.devfit.fichas.model;
+package com.devfitcorp.devfit.model;
 
 
-import com.devfitcorp.devfit.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

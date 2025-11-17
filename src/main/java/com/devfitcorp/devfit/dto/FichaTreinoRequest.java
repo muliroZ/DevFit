@@ -1,7 +1,7 @@
 package com.devfitcorp.devfit.dto;
 
 
-import com.devfitcorp.devfit.fichas.model.Exercicio;
+import com.devfitcorp.devfit.model.Exercicio;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.List;

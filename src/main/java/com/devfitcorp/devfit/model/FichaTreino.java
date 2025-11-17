@@ -1,6 +1,5 @@
-package com.devfitcorp.devfit.fichas.model;
+package com.devfitcorp.devfit.model;
 
-import com.devfitcorp.devfit.model.Usuario; // Importa a classe Usuario para representar Aluno e Instrutor
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

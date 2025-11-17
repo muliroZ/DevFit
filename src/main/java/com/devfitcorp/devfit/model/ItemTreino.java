@@ -1,4 +1,4 @@
-package com.devfitcorp.devfit.fichas.model;
+package com.devfitcorp.devfit.model;
 
 
 import jakarta.persistence.*;
