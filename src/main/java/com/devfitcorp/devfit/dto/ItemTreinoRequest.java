@@ -7,12 +7,12 @@ import jakarta.validation.constraints.Size;
 
 public record ItemTreinoRequest(
 
-        // RELACIONAMENTO: ID DO EXERCÍCIO BASE (Necessário para a lógica do Service)
+        // ID DO EXERCÍCIO BASE (Necessário para a lógica do Service)
         @NotNull(message = "O ID do exercício base é obrigatório.")
         @Min(value = 1, message = "O ID do exercício base deve ser positivo.")
         Long exercicioBaseId,
 
-        // DETALHES VARIÁVEIS (EXECUÇÃO)
+
         @NotNull(message = "O número de séries é obrigatório.")
         @Min(value = 1, message = "O número de séries deve ser no mínimo 1.")
         Integer series,

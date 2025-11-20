@@ -22,7 +22,6 @@ public class FichaTreino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Chave primária
 
-
     @ManyToOne
     @JoinColumn(name = "aluno_id", nullable = false)
     private Usuario aluno; // Relacionamento com o Aluno
@@ -31,7 +30,7 @@ public class FichaTreino {
     @JoinColumn(name = "instrutor_id", nullable = false)
     private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de treino
 
-    private LocalDate dataCriacao;   // Data de criação da ficha de treino
+    private LocalDate dataCriacao;
     private LocalDate dataVencimento;   // Data de vencimento da ficha de treino
     private boolean isAtiva = true;    // Indica se a ficha de treino está ativa ou não
 
