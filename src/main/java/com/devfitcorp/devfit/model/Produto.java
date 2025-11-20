@@ -27,7 +27,7 @@ private String nome;
 private String descricao;
 
 @NotNull
-@Positive
+@PositiveOrZero
 @Column(nullable = false)
 private BigDecimal preco;
 

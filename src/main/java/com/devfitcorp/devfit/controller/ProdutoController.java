@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.devfitcorp.devfit.model.Produto;
 import java.util.List;
+import com.devfitcorp.devfit.dto.ProdutoResponse;
+import com.devfitcorp.devfit.dto.ProdutoRequest;
 
 @RestController
 @RequestMapping("/produtos")
@@ -18,25 +20,74 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public List<Produto> listar(){
-       return produtoservice.listar();
-
+    public List<ProdutoResponse> listar() {
+        return produtoservice.listar()
+                .stream()
+                .map(p -> new ProdutoResponse(
+                        p.getId(),
+                        p.getNome(),
+                        p.getDescricao(),
+                        p.getPreco(),
+                        p.getEstoque()
+                ))
+                .toList();
     }
 
+
     @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Long id){
-        return produtoservice.buscarPorId(id);
+    public ProdutoResponse buscarPorId(@PathVariable Long id){
+        var produto = produtoservice.buscarPorId(id);
+
+        return new ProdutoResponse(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getPreco(),
+                produto.getEstoque()
+        );
     }
 
     @PostMapping
-    public ResponseEntity<Produto> criar(@RequestBody @Valid Produto produto){
-        Produto salvo = produtoservice.salvar(produto);
-        return ResponseEntity.status(201).body(salvo);
+    public ResponseEntity<ProdutoResponse> criar(@RequestBody @Valid ProdutoRequest request){
+        var produto = new Produto(
+                null,
+                request.nome(),
+                request.descricao(),
+                request.preco(),
+                request.estoque()
+        );
+
+        var salvo = produtoservice.salvar(produto);
+
+        var response = new ProdutoResponse(
+                salvo.getId(),
+                salvo.getNome(),
+                salvo.getDescricao(),
+                salvo.getPreco(),
+                salvo.getEstoque()
+        );
+
+        return ResponseEntity.status(201).body(response);
     }
 
     @PutMapping("/{id}")
-    public Produto atualizar(@PathVariable Long id, @RequestBody @Valid Produto produto) {
-        return produtoservice.atualizar(id, produto);
+    public ProdutoResponse atualizar(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
+        var dadosAtualizados = new Produto(
+                null,
+                request.nome(),
+                request.descricao(),
+                request.preco(),
+                request.estoque()
+        );
+        var atualizado = produtoservice.atualizar(id, dadosAtualizados);
+
+        return new ProdutoResponse(
+                atualizado.getId(),
+                atualizado.getNome(),
+                atualizado.getDescricao(),
+                atualizado.getPreco(),
+                atualizado.getEstoque()
+        );
 
     }
     @DeleteMapping("/{id}")
