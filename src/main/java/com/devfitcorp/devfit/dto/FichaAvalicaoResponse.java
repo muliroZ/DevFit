@@ -2,7 +2,7 @@ package com.devfitcorp.devfit.dto;
 
 import java.time.LocalDate;
 
-public record FichaAvalicaoResponde(
+public record FichaAvalicaoResponse(
         // DADOS GERADOS E RELACIONAMENTOS
         Long id,
         LocalDate dataAvaliacao,
@@ -13,7 +13,6 @@ public record FichaAvalicaoResponde(
 
         Double pesoKg,
         Double alturaM,
-
 
         Double imc,
 

@@ -11,11 +11,9 @@ import java.util.List;
 public record FichaTreinoRequest(
 
         //  Relacionamentos (Apenas IDs dos Usuários são enviados)
-        @NotNull(message = "O ID do aluno é obrigatório.")
-        Long alunoId,
+        UsuarioInfoDTO aluno,
 
-        @NotNull(message = "O ID do instrutor é obrigatório.")
-        Long instrutorId,
+        UsuarioInfoDTO instrutor,
 
         //  Validação de Data
         @NotNull(message = "A data de vencimento é obrigatória.")
