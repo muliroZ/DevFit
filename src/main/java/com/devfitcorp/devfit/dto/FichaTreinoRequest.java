@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.dto;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,9 +12,13 @@ import java.util.List;
 public record FichaTreinoRequest(
 
         //  Relacionamentos (Apenas IDs dos Usuários são enviados)
-        UsuarioInfoDTO aluno,
+        @NotNull(message = "O email do aluno é obrigatório.")
+        @Email(message = "O email do aluno deve ser válido.")
+        String emailAluno,
 
-        UsuarioInfoDTO instrutor,
+        @NotNull(message = "O email do instrutor é obrigatório.")
+        @Email(message = "O email do instrutor deve ser válido.")
+        String emailInstrutor,
 
         //  Validação de Data
         @NotNull(message = "A data de vencimento é obrigatória.")
