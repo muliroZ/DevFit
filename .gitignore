@@ -3,8 +3,6 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
-### .env ###
 .env
 
 ### STS ###
@@ -34,17 +32,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Sistema operacional ###
-Thumbs.db
-Desktop.ini
-
-# macOS
-.DS_Store
-
-### Logs ###
-*.log
-
-### Docker ###
-/postgres-data/
-/pgadmin_data/
