@@ -1,18 +1,17 @@
 package com.devfitcorp.devfit.controller;
 
-import com.devfitcorp.devfit.dto.UsuarioDetalhadoDashboardDTO; // DTO que criamos
-import com.devfitcorp.devfit.service.UsuarioService; // Service de lógica de negócio
+import com.devfitcorp.devfit.dto.UsuarioDetalhadoDashboardDTO;
+import com.devfitcorp.devfit.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize; // Spring Security para autorização
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/admin/dashboard")
+@RequestMapping("/admin/dashboard") // Coreção do /api
 public class AdminDashboardController {
 
 
@@ -30,8 +29,9 @@ public class AdminDashboardController {
 
 
         Map<String, List<UsuarioDetalhadoDashboardDTO>> usuariosAgrupados = usuarioService.findAndGroupByRole();
+        Map<String, List<UsuarioDetalhadoDashboardDTO>> resultado = Optional.ofNullable(usuariosAgrupados)
+                .orElse(Collections.emptyMap());
 
         return ResponseEntity.ok(usuariosAgrupados);
     }
-
 }
