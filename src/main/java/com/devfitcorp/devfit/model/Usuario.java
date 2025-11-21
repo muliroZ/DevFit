@@ -31,6 +31,13 @@ public class Usuario implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "matricula_id", referencedColumnName = "id")
+    private Matricula matricula;
+
+
+    private Integer diasFaltososNoMes;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_roles",
