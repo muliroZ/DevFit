@@ -33,7 +33,7 @@ public class FichaAvaliacao {
 
     // Dados Antropométricos
     @Column(nullable = false) double pesoKg;
-    @Column(nullable = false)private double alturaM; // Em metros
+    @Column(nullable = false) private double alturaM; // Em metros
     private double imc; // Índice de Massa Corporal (calculado)
 
     // Circunferências

@@ -1,4 +1,4 @@
-package com.devfitcorp.devfit.exceptions;
+package com.devfitcorp.devfit.exception;
 
 
 import org.springframework.http.HttpStatus;
