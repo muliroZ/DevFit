@@ -78,14 +78,13 @@ public class FichaTreinoMapper {
         );
     }
     // Converte a Entidade Usuario para o DTO UsuarioInfoDTO
-    private UsuarioInfoDTO toUsuarioInfoDTO(Usuario entity) {
+    public UsuarioInfoDTO toUsuarioInfoDTO(Usuario entity) {
         return new UsuarioInfoDTO(
                 entity.getId(),
                 entity.getNome(),
                 entity.getEmail()
         );
     }
-
 
 
 }

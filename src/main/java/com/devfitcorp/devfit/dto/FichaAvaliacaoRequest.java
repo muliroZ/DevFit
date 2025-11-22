@@ -31,6 +31,9 @@ public record FichaAvaliacaoRequest(
         @Positive(message = "O valor do abdômen deve ser positivo.")
         Double circunferenciaAbdomenCm,
 
+        @Positive(message = "O valor do quadril deve ser positivo.")
+        Double circunferenciaQuadrilCm,
+
         @Size(max = 1000, message = "O histórico de saúde não pode exceder 1000 caracteres.")
         String historicoSaude,
 

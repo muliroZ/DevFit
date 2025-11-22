@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FichaAvaliacaoMapper {
-    // 1. CAMPO NECESSÁRIO: Injeção do FichaTreinoMapper (para reuso do toUsuarioInfoDTO)
+    //  CAMPO NECESSÁRIO: Injeção do FichaTreinoMapper (para reuso do toUsuarioInfoDTO)
     private final FichaTreinoMapper fichaTreinoMapper;
 
-    // 2. CONSTRUTOR NECESSÁRIO: Spring injeta o FichaTreinoMapper
+    //  CONSTRUTOR NECESSÁRIO: Spring injeta o FichaTreinoMapper
     public FichaAvaliacaoMapper(FichaTreinoMapper fichaTreinoMapper) {
         this.fichaTreinoMapper = fichaTreinoMapper;
     }
@@ -42,12 +42,12 @@ public class FichaAvaliacaoMapper {
         return ficha;
     }
 
-    // --- CONVERSÃO ENTIDADE -> DTO (Resposta de Saída) ---
+
     public FichaAvaliacaoResponse toResponse(FichaAvaliacao entity) {
         return new FichaAvaliacaoResponse(
                 entity.getId(),
                 entity.getDataAvaliacao(),
-                // Reuso: Chama o método seguro toUsuarioInfoDTO (do FichaTreinoMapper)
+                // Reuso do método do FichaTreinoMapper para converter os usuários
                 fichaTreinoMapper.toUsuarioInfoDTO(entity.getAluno()),
                 fichaTreinoMapper.toUsuarioInfoDTO(entity.getInstrutor()),
                 entity.getPesoKg(),
