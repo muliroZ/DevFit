@@ -6,13 +6,13 @@ import java.time.LocalDate;
 
 public record FichaAvaliacaoRequest(
 
-        @NotNull(message = "O ID do aluno é obrigatório.")
-        @Min(value = 1, message = "O ID do aluno deve ser positivo.")
-        UsuarioInfoDTO aluno,
+        @NotNull(message = "O email do aluno é obrigatório.")
+        @Email(message = "O email do aluno deve ser válido.")
+        String emailAluno,
 
-        @NotNull(message = "O ID do instrutor é obrigatório.")
-        @Min(value = 1, message = "O ID do instrutor deve ser positivo.")
-        UsuarioInfoDTO instrutor,
+        @NotNull(message = "O email do instrutor é obrigatório.")
+        @Email(message = "O email do instrutor deve ser válido.")
+        String emailInstrutor,
 
         @FutureOrPresent(message = "A data de avaliação não pode ser futura.")
         LocalDate dataAvaliacao,
@@ -30,6 +30,9 @@ public record FichaAvaliacaoRequest(
 
         @Positive(message = "O valor do abdômen deve ser positivo.")
         Double circunferenciaAbdomenCm,
+
+        @Positive(message = "O valor do quadril deve ser positivo.")
+        Double circunferenciaQuadrilCm,
 
         @Size(max = 1000, message = "O histórico de saúde não pode exceder 1000 caracteres.")
         String historicoSaude,
