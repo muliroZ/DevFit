@@ -27,7 +27,7 @@ public class Exercicio {
     @Column(nullable = false)
     private String musculoPrincipal; //Ex: Peito, Costas, Pernas
 
-    @Column(length = 1000) // sera o tamnanho da descricão
+    @Column(length = 1000) // será o tamanho da descricão
     private String descricao; // descrição do exercício
 
 }
