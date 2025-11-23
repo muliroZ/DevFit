@@ -34,16 +34,9 @@ public class FichaAvaliacaoService {
         this.fichaAvaliacaoMapper = fichaAvaliacaoMapper;
     }
 
-    private double calcularImc(Double pesoKg, Double alturaM) {
-        if (pesoKg == null || pesoKg <= 0 || alturaM == null || alturaM == 0) {
-            throw new IllegalArgumentException("Altura deve ser maior que zero.");
-        }
-        return pesoKg / (alturaM * alturaM);
-    }
-
-    // Create FichaAvaliacao, recebe DTO
+    // CRUD: CREATE, FichaAvaliacao, recebe DTO
     @Transactional
-    public FichaAvaliacaoResponse create(FichaAvaliacaoRequest dto) {
+    public FichaAvaliacaoResponse criar(FichaAvaliacaoRequest dto) {
         // Busca os usuarios pelo id e role
         Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
@@ -60,48 +53,65 @@ public class FichaAvaliacaoService {
         return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
-    public List<FichaAvaliacaoResponse> findByAlunoId(Long alunoId) {
+    // CRUD: READ, ficha com id específico
+    public List<FichaAvaliacaoResponse> buscarPorId(Long alunoId) {
         return fichaAvaliacaoRepository.findByAlunoId(alunoId).stream()
                 .map(fichaAvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public List<FichaAvaliacaoResponse> findAll() {
+    // CRUD: READ, Todas as fichas existentes
+    public List<FichaAvaliacaoResponse> listar() {
         return fichaAvaliacaoRepository.findAll().stream()
                 .map(fichaAvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    //update FichaAvaliacao
+    //CRUD: UPDATE, FichaAvaliacao
     @Transactional
-    public FichaAvaliacaoResponse update(Long id, FichaAvaliacaoRequest dto) {
+    public FichaAvaliacaoResponse atualizar(Long id, FichaAvaliacaoRequest dto) {
+        FichaAvaliacao fichaAntiga = fichaAvaliacaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ficha não encontrada"));
 
-        if (!fichaAvaliacaoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Ficha não encontrada");
-        }
-
-        Usuario instrutor = usuarioRepository.findByIdAndRole(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
-                .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
-
-        Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
-                .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
+        Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
+        Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
 
         FichaAvaliacao fichaAtualizada = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor, LocalDate.now());
 
-        fichaAtualizada.setId(id);
+        fichaAtualizada.setId(fichaAntiga.getId());
 
         double imcCalculado = calcularImc(fichaAtualizada.getPesoKg(), fichaAtualizada.getAlturaCm());
         fichaAtualizada.setImc(imcCalculado);
 
-        FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
-        return fichaAvaliacaoMapper.toResponse(savedFicha);
+        /* Variável 'savedFicha' é igual a 'fichaAtualizada', use somente a 'fichaAtualizada'
+            FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
+            return fichaAvaliacaoMapper.toResponse(savedFicha);
+         */
 
+        fichaAvaliacaoRepository.save(fichaAtualizada);
+        return fichaAvaliacaoMapper.toResponse(fichaAtualizada);
     }
+
+    // CRUD: DELETE, exclui uma ficha conforme o id
     @Transactional
-    public void delete(Long id) {
+    public void deletar(Long id) {
         if (!fichaAvaliacaoRepository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException("Ficha não encontrada: " + id);
         }
         fichaAvaliacaoRepository.deleteById(id);
+    }
+
+    // método para calcular o IMC
+    private double calcularImc(Double pesoKg, Double alturaM) {
+        if (pesoKg == null || pesoKg <= 0 || alturaM == null || alturaM == 0) {
+            throw new IllegalArgumentException("Altura deve ser maior que zero.");
+        }
+        return pesoKg / (alturaM * alturaM);
+    }
+
+    // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
+    private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
+        return usuarioRepository.findByIdAndRole(id, role)
+                .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
 }

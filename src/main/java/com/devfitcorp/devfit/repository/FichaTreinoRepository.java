@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface FichaTreinoRepository extends JpaRepository<FichaTreino, Long> {
     // Metodo personalizado para buscar fichas de treino por ID do aluno
-    List<FichaTreino> FindByAlunoId(Long alunoId);
+    List<FichaTreino> findByAlunoId(Long alunoId);
 }

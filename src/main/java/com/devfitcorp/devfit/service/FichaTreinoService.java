@@ -35,8 +35,14 @@ public class FichaTreinoService {
     // Cria uma ficha de treino a partir do DTO
     @Transactional // Garantir integridade no banco (use em todos os métodos de escrita garoto)
     public FichaTreinoResponse criar(FichaTreinoRequest dto) {
-        // Usando a função auxiliar "escrever"
-        return escrever(dto);
+        Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
+        Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
+
+        List<ItemTreino> itens = listarItensDoRequest(dto);
+        FichaTreino ficha = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+
+        fichaTreinoRepository.save(ficha);
+        return fichaTreinoMapper.toResponse(ficha);
     }
 
     // Retorna todas as fichas de treino existentes
@@ -58,11 +64,19 @@ public class FichaTreinoService {
     // Atualiza uma ficha existente com base no DTO
     @Transactional
     public FichaTreinoResponse atualizar(Long id, FichaTreinoRequest dto) {
-        // Verifica se a ficha existe no banco
-        if (!fichaTreinoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Ficha não encontrada");
-        }
-        return escrever(dto);
+        FichaTreino existente = fichaTreinoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ficha não encontrada"));
+
+        Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
+        Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
+
+        List<ItemTreino> itens = listarItensDoRequest(dto);
+        FichaTreino atualizada = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+
+        atualizada.setId(existente.getId());
+
+        fichaTreinoRepository.save(atualizada);
+        return fichaTreinoMapper.toResponse(atualizada);
     }
 
     // Remove uma ficha pelo ID
@@ -74,20 +88,10 @@ public class FichaTreinoService {
         fichaTreinoRepository.delete(ficha);
     }
 
-    // método auxiliar para métodos de criação e atualização de fichas (esse código se repetia)
-    @Transactional
-    protected FichaTreinoResponse escrever(FichaTreinoRequest request) {
-        Usuario aluno = usuarioRepository.findById(request.idAluno())
-                .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
-
-        Usuario instrutor = usuarioRepository.findById(request.idInstrutor())
-                .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
-
-        List<ItemTreino> itens = listarItensDoRequest(request);
-        FichaTreino ficha = fichaTreinoMapper.toEntity(request, aluno, instrutor, itens);
-
-        fichaTreinoRepository.save(ficha);
-        return fichaTreinoMapper.toResponse(ficha);
+    // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
+    private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
+        return usuarioRepository.findByIdAndRole(id, role)
+                .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
 
     // método auxiliar para listar ItemTreino dos DTOs de FichaTreino usando o Mapper (estava se repetindo)
