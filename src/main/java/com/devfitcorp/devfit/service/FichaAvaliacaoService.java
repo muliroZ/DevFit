@@ -6,11 +6,13 @@ import com.devfitcorp.devfit.exception.ResourceNotFoundException;
 import com.devfitcorp.devfit.mappers.FichaAvaliacaoMapper;
 import com.devfitcorp.devfit.model.FichaAvaliacao;
 import com.devfitcorp.devfit.model.Usuario;
+import com.devfitcorp.devfit.model.UsuarioRole;
 import com.devfitcorp.devfit.repository.FichaAvaliacaoRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,33 +27,32 @@ public class FichaAvaliacaoService {
     public FichaAvaliacaoService(
             FichaAvaliacaoRepository fichaAvaliacaoRepository,
             UsuarioRepository usuarioRepository,
-            FichaAvaliacaoMapper fichaAvaliacaoMapper) {
+            FichaAvaliacaoMapper fichaAvaliacaoMapper
+    ) {
         this.fichaAvaliacaoRepository = fichaAvaliacaoRepository;
         this.usuarioRepository = usuarioRepository;
         this.fichaAvaliacaoMapper = fichaAvaliacaoMapper;
     }
 
     private double calcularImc(Double pesoKg, Double alturaM) {
-        if (pesoKg ==null || pesoKg <= 0 || alturaM == null || alturaM == 0) {
+        if (pesoKg == null || pesoKg <= 0 || alturaM == null || alturaM == 0) {
             throw new IllegalArgumentException("Altura deve ser maior que zero.");
         }
         return pesoKg / (alturaM * alturaM);
     }
 
-    private Usuario findUsuarioByEmail(String email, String role) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(role + "não encontrado com o email: " + email));
-
-    }
-     // Create FichaAvaliacao, recebe DTO
+    // Create FichaAvaliacao, recebe DTO
     @Transactional
     public FichaAvaliacaoResponse create(FichaAvaliacaoRequest dto) {
-             //Busca os usuarios pelo email
-        Usuario aluno = findUsuarioByEmail(dto.emailAluno(), "Aluno ");
-        Usuario instrutor = findUsuarioByEmail(dto.emailInstrutor(), "Instrutor ");
+        // Busca os usuarios pelo id e role
+        Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
+                .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
 
-        FichaAvaliacao ficha = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor);
-        double imcCalculado = calcularImc(ficha.getPesoKg(), ficha.getAlturaM());
+        Usuario instrutor = usuarioRepository.findByIdAndRole(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
+                .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
+
+        FichaAvaliacao ficha = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor, LocalDate.now());
+        double imcCalculado = calcularImc(ficha.getPesoKg(), ficha.getAlturaCm());
         ficha.setImc(imcCalculado);
 
         FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(ficha);
@@ -59,37 +60,37 @@ public class FichaAvaliacaoService {
         return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
-
     public List<FichaAvaliacaoResponse> findByAlunoId(Long alunoId) {
-        return fichaAvaliacaoRepository.FindByAlunoId(alunoId).stream()
+        return fichaAvaliacaoRepository.findByAlunoId(alunoId).stream()
                 .map(fichaAvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
     public List<FichaAvaliacaoResponse> findAll() {
         return fichaAvaliacaoRepository.findAll().stream()
                 .map(fichaAvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
     }
-    // verifica se a ficha existe
-    private FichaAvaliacao findFichaById(Long id) {
-        return fichaAvaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-    }
+
     //update FichaAvaliacao
     @Transactional
     public FichaAvaliacaoResponse update(Long id, FichaAvaliacaoRequest dto) {
 
-        FichaAvaliacao fichaExistente = findFichaById(id);
+        if (!fichaAvaliacaoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Ficha não encontrada");
+        }
 
-        Usuario instrutor = findUsuarioByEmail(dto.emailInstrutor(), "Instrutor ");
+        Usuario instrutor = usuarioRepository.findByIdAndRole(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
+                .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
 
-        Usuario aluno = findUsuarioByEmail(dto.emailAluno(), "Aluno ");
+        Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
+                .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
 
-        FichaAvaliacao fichaAtualizada = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor);
+        FichaAvaliacao fichaAtualizada = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor, LocalDate.now());
 
         fichaAtualizada.setId(id);
 
-        double imcCalculado = calcularImc(fichaAtualizada.getPesoKg(), fichaAtualizada.getAlturaM());
+        double imcCalculado = calcularImc(fichaAtualizada.getPesoKg(), fichaAtualizada.getAlturaCm());
         fichaAtualizada.setImc(imcCalculado);
 
         FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
@@ -103,5 +104,4 @@ public class FichaAvaliacaoService {
         }
         fichaAvaliacaoRepository.deleteById(id);
     }
-
 }

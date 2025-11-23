@@ -1,7 +1,7 @@
 package com.devfitcorp.devfit.dto;
 
-public record UsuarioInfoDTO(
+public record ExercicioInfoDTO(
         Long id,
         String nome,
-        String email
+        String musculoPrincipal
 ) {}

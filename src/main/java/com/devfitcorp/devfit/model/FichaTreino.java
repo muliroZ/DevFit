@@ -14,8 +14,8 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity   // entidade JPA para persistência no banco de dados
-@Table(name = "Fichas_treino") // nome da tabela no banco de dados
+@Entity // entidade JPA para persistência no banco de dados
+@Table(name = "fichas_treino") // nome da tabela no banco de dados
 public class FichaTreino {
 
     @Id
@@ -32,21 +32,17 @@ public class FichaTreino {
 
     private LocalDate dataCriacao;
     private LocalDate dataVencimento;
-    private boolean isAtiva = true;    // Indica se a ficha de treino está ativa ou não
+    private boolean isAtiva = true; // Indica se a ficha de treino está ativa ou não
 
     @OneToMany(mappedBy = "fichaTreino", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemTreino> listaDeItens = new ArrayList<>(); // Lista de itens de treino associados à ficha
 
-    @PrePersist    // vai servir para preencher a data de criacao automaticamente
+    @PrePersist // vai servir para preencher a data de criação automaticamente
     public void prePersist() {
         if (this.dataCriacao == null) {
             this.dataCriacao = LocalDate.now();
         }
     }
-
-
-
-
 }
 
 

@@ -1,11 +1,12 @@
 package com.devfitcorp.devfit.mappers;
 
-
 import com.devfitcorp.devfit.dto.FichaAvaliacaoRequest;
 import com.devfitcorp.devfit.dto.FichaAvaliacaoResponse;
 import com.devfitcorp.devfit.model.FichaAvaliacao;
 import com.devfitcorp.devfit.model.Usuario;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class FichaAvaliacaoMapper {
@@ -17,25 +18,20 @@ public class FichaAvaliacaoMapper {
         this.fichaTreinoMapper = fichaTreinoMapper;
     }
 
-
     // CONVERSÃO DTO (Entrada) -> ENTIDADE
-    public FichaAvaliacao toEntity(FichaAvaliacaoRequest dto, Usuario aluno, Usuario instrutor) {
+    public FichaAvaliacao toEntity(FichaAvaliacaoRequest dto, Usuario aluno, Usuario instrutor, LocalDate dataAvaliacao) {
         FichaAvaliacao ficha = new FichaAvaliacao();
 
         // Mapeamento dos objetos Usuario buscados pelo Service
         ficha.setAluno(aluno);
         ficha.setInstrutor(instrutor);
-
         // Mapeamento dos dados do Request para a Entidade
-        ficha.setDataAvaliacao(dto.dataAvaliacao());
+        ficha.setDataAvaliacao(dataAvaliacao);
         ficha.setPesoKg(dto.pesoKg());
-        ficha.setAlturaM(dto.alturaM());
+        ficha.setAlturaCm(dto.alturaCm());
         ficha.setCircunferenciaAbdomenCm(dto.circunferenciaAbdomenCm());
         ficha.setCircunferenciaCinturaCm(dto.circunferenciaCinturaCm());
-
-        // CORREÇÃO: Adicionando o mapeamento do campo circunferência do quadril
         ficha.setCircunferenciaQuadrilCm(dto.circunferenciaQuadrilCm());
-
         ficha.setHistoricoSaude(dto.historicoSaude());
         ficha.setObservacoesGerais(dto.observacoesGerais());
 
@@ -46,12 +42,12 @@ public class FichaAvaliacaoMapper {
     public FichaAvaliacaoResponse toResponse(FichaAvaliacao entity) {
         return new FichaAvaliacaoResponse(
                 entity.getId(),
-                entity.getDataAvaliacao(),
                 // Reuso do método do FichaTreinoMapper para converter os usuários
                 fichaTreinoMapper.toUsuarioInfoDTO(entity.getAluno()),
                 fichaTreinoMapper.toUsuarioInfoDTO(entity.getInstrutor()),
+                entity.getDataAvaliacao(),
                 entity.getPesoKg(),
-                entity.getAlturaM(),
+                entity.getAlturaCm(),
                 entity.getImc(), // O IMC calculado na camada Service
                 entity.getCircunferenciaCinturaCm(),
                 entity.getCircunferenciaAbdomenCm(),

@@ -1,10 +1,6 @@
 package com.devfitcorp.devfit.mappers;
 
-import com.devfitcorp.devfit.dto.UsuarioInfoDTO;
-import com.devfitcorp.devfit.dto.FichaTreinoRequest;
-import com.devfitcorp.devfit.dto.FichaTreinoResponse;
-import com.devfitcorp.devfit.dto.ItemTreinoRequest;
-import com.devfitcorp.devfit.dto.ItemTreinoResponse;
+import com.devfitcorp.devfit.dto.*;
 import com.devfitcorp.devfit.model.Exercicio;
 import com.devfitcorp.devfit.model.FichaTreino;
 import com.devfitcorp.devfit.model.ItemTreino;
@@ -23,21 +19,18 @@ public class FichaTreinoMapper {
 
         ficha.setAluno(aluno);
         ficha.setInstrutor(instrutor);
-
         ficha.setDataVencimento(dto.dataVencimento());
         ficha.setAtiva(true);
-
         ficha.setListaDeItens(itensTreino);
 
         return ficha;
-
     }
-    // Converte o DTO de item para a Entidade ItemTreino
+
+    // Converte o DTO de ItemTreinoRequest para a Entidade ItemTreino
     public ItemTreino toEntity(ItemTreinoRequest dto, Exercicio execicioBase) {
         ItemTreino item = new ItemTreino();
 
         item.setExercicioBase(execicioBase);
-
         item.setSeries(dto.series());
         item.setRepeticoes(dto.repeticoes());
         item.setCargaEstimadaKg(dto.cargaEstimadaKg());
@@ -47,7 +40,6 @@ public class FichaTreinoMapper {
     }
 
     public FichaTreinoResponse toResponse(FichaTreino entity) {
-
         // Converte a lista aninhada (recursivamente)
         List<ItemTreinoResponse> itensResponse = entity.getListaDeItens().stream()
                 .map(this::toResponse)
@@ -56,27 +48,35 @@ public class FichaTreinoMapper {
         // Converte a Ficha
         return new FichaTreinoResponse(
                 entity.getId(),
-                entity.getDataCriacao(),
                 toUsuarioInfoDTO(entity.getAluno()),
                 toUsuarioInfoDTO(entity.getInstrutor()),
+                entity.getDataCriacao(),
                 entity.getDataVencimento(),
                 entity.isAtiva(),
                 itensResponse
         );
     }
-     // Converte a Entidade ItemTreino para o DTO ItemTreinoResponse
+
+    public ExercicioInfoDTO toExercicioInfoDTO(Exercicio exercicio) {
+        return new ExercicioInfoDTO(
+                exercicio.getId(),
+                exercicio.getNome(),
+                exercicio.getMusculoPrincipal()
+        );
+    }
+
+    // Converte a Entidade ItemTreino para o DTO ItemTreinoResponse
     public ItemTreinoResponse toResponse(ItemTreino entity) {
         return new ItemTreinoResponse(
                 entity.getId(),
-                entity.getExercicioBase().getId(),
-                entity.getExercicioBase().getNome(),
-                entity.getExercicioBase().getMusculoPrincipal(),
+                toExercicioInfoDTO(entity.getExercicioBase()),
                 entity.getSeries(),
                 entity.getRepeticoes(),
                 entity.getCargaEstimadaKg(),
                 entity.getObservacoes()
         );
     }
+
     // Converte a Entidade Usuario para o DTO UsuarioInfoDTO
     public UsuarioInfoDTO toUsuarioInfoDTO(Usuario entity) {
         return new UsuarioInfoDTO(
@@ -85,6 +85,4 @@ public class FichaTreinoMapper {
                 entity.getEmail()
         );
     }
-
-
 }

@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-
-public interface FichaAvaliacaoRepository  extends JpaRepository<FichaAvaliacao, Long> {
-
-
-    List<FichaAvaliacao> FindByAlunoId(Long alunoId);
+public interface FichaAvaliacaoRepository extends JpaRepository<FichaAvaliacao, Long> {
+    List<FichaAvaliacao> findByAlunoId(Long alunoId);
 }
