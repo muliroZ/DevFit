@@ -19,7 +19,7 @@ public class ItemTreino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ATRIBUTOS VARIÁVEIS (REMOVIDOS DA CLASSE EXERCICIO)
+    // ATRIBUTOS VARIÁVEIS REMOVIDOS DA CLASSE EXERCICIO
     @Column(nullable = false)
     private int series;
 

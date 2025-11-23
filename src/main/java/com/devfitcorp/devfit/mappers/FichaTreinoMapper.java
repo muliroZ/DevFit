@@ -48,12 +48,12 @@ public class FichaTreinoMapper {
 
     public FichaTreinoResponse toResponse(FichaTreino entity) {
 
-        // 1. Converte a lista aninhada (recursivamente)
+        // Converte a lista aninhada (recursivamente)
         List<ItemTreinoResponse> itensResponse = entity.getListaDeItens().stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
 
-        // 2. Converte a Ficha
+        // Converte a Ficha
         return new FichaTreinoResponse(
                 entity.getId(),
                 entity.getDataCriacao(),

@@ -31,7 +31,7 @@ public class FichaTreino {
     private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de treino
 
     private LocalDate dataCriacao;
-    private LocalDate dataVencimento;   // Data de vencimento da ficha de treino
+    private LocalDate dataVencimento;
     private boolean isAtiva = true;    // Indica se a ficha de treino está ativa ou não
 
     @OneToMany(mappedBy = "fichaTreino", cascade = CascadeType.ALL, orphanRemoval = true)

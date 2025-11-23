@@ -9,7 +9,6 @@ import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.repository.FichaAvaliacaoRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class FichaAvaliacaoService {
     private final UsuarioRepository usuarioRepository; // Para findByEmail()
     private final FichaAvaliacaoMapper fichaAvaliacaoMapper;
 
-    @Autowired
+    // Injeção de dependências via construtor
     public FichaAvaliacaoService(
             FichaAvaliacaoRepository fichaAvaliacaoRepository,
             UsuarioRepository usuarioRepository,
@@ -54,18 +53,12 @@ public class FichaAvaliacaoService {
         FichaAvaliacao ficha = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor);
         double imcCalculado = calcularImc(ficha.getPesoKg(), ficha.getAlturaM());
         ficha.setImc(imcCalculado);
-            // salvamento da ficha
+
         FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(ficha);
 
         return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
-    //Read. busca uma ficha pelo id e converte para response DTO
-    public FichaAvaliacaoResponse findbyId(Long id) {
-        FichaAvaliacao ficha = fichaAvaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-        return fichaAvaliacaoMapper.toResponse(ficha);
-    }
 
     public List<FichaAvaliacaoResponse> findByAlunoId(Long alunoId) {
         return fichaAvaliacaoRepository.FindByAlunoId(alunoId).stream()
@@ -76,6 +69,32 @@ public class FichaAvaliacaoService {
         return fichaAvaliacaoRepository.findAll().stream()
                 .map(fichaAvaliacaoMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+    // verifica se a ficha existe
+    private FichaAvaliacao findFichaById(Long id) {
+        return fichaAvaliacaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+    //update FichaAvaliacao
+    @Transactional
+    public FichaAvaliacaoResponse update(Long id, FichaAvaliacaoRequest dto) {
+
+        FichaAvaliacao fichaExistente = findFichaById(id);
+
+        Usuario instrutor = findUsuarioByEmail(dto.emailInstrutor(), "Instrutor ");
+
+        Usuario aluno = findUsuarioByEmail(dto.emailAluno(), "Aluno ");
+
+        FichaAvaliacao fichaAtualizada = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor);
+
+        fichaAtualizada.setId(id);
+
+        double imcCalculado = calcularImc(fichaAtualizada.getPesoKg(), fichaAtualizada.getAlturaM());
+        fichaAtualizada.setImc(imcCalculado);
+
+        FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
+        return fichaAvaliacaoMapper.toResponse(savedFicha);
+
     }
     @Transactional
     public void delete(Long id) {
