@@ -17,7 +17,8 @@ public class GlobalExceptionHandler{
                 .status(HttpStatus.CONFLICT)
                 .body("Já existe um produto com este nome cadastrado.");
     }
-@ExceptionHandler(ProdutoNaoEncontradoException.class)
+
+    @ExceptionHandler(ProdutoNaoEncontradoException.class)
     public ResponseEntity<?> handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -36,6 +37,20 @@ public class GlobalExceptionHandler{
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(erros);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ex.getMessage() != null ? ex.getMessage() : "Ocorreu um erro interno inesperado");
+    }
+
+    @ExceptionHandler(UsuariojaExisteException.class)
+    public ResponseEntity<?> handleUsuarioJaExisteException(UsuariojaExisteException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
     }
 
 }

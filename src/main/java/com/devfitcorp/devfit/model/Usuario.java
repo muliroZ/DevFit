@@ -35,8 +35,6 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "matricula_id", referencedColumnName = "id")
     private Matricula matricula;
 
-    private Integer diasFaltososNoMes;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_roles",

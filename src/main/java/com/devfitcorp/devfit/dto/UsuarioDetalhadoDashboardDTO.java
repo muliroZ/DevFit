@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.List;
 
-
 public record UsuarioDetalhadoDashboardDTO(
         Long id,
         String nome,
@@ -17,13 +16,9 @@ public record UsuarioDetalhadoDashboardDTO(
         Set<String> roles,
         String rolePrincipal,
 
-
         String planoNome,
         BigDecimal valorMensalidade,
-        LocalDate dataVencimentoMensalidade,
-
-
-        Integer diasFaltososNoMes
+        LocalDate dataVencimentoMensalidade
 ) {
 
     private static final List<String> ORDEM_PRIORIDADE = Arrays.asList(
@@ -78,8 +73,7 @@ public record UsuarioDetalhadoDashboardDTO(
                 rolePrincipal,
                 planoNome,
                 valorMensalidade,
-                dataVencimento,
-                usuario.getDiasFaltososNoMes()
+                dataVencimento
         );
     }
 }

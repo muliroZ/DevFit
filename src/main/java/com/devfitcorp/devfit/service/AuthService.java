@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.service;
 
 import com.devfitcorp.devfit.dto.*;
+import com.devfitcorp.devfit.exception.UsuariojaExisteException;
 import com.devfitcorp.devfit.model.Role;
 import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.model.UsuarioRole;
@@ -72,7 +73,7 @@ public class AuthService {
 
     private void registrarComRole(CadastroBase request, UsuarioRole usuarioRole) {
         if (usuarioRepository.findByEmail(request.email()).isPresent()) {
-            throw new RuntimeException(); // placeholder
+            throw new UsuariojaExisteException("O usuário já existe");
         }
 
         Role role = roleRepository.findByNome(usuarioRole)
