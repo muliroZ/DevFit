@@ -37,7 +37,20 @@ public class FichaAvaliacaoService {
     // CRUD: CREATE, FichaAvaliacao, recebe DTO
     @Transactional
     public FichaAvaliacaoResponse criar(FichaAvaliacaoRequest dto) {
-        return null;
+        // Busca os usuarios pelo id e role
+        Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
+                .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
+
+        Usuario instrutor = usuarioRepository.findByIdAndRole(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
+                .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
+
+        FichaAvaliacao ficha = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor, LocalDate.now());
+        double imcCalculado = calcularImc(ficha.getPesoKg(), ficha.getAlturaCm());
+        ficha.setImc(imcCalculado);
+
+        FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(ficha);
+
+        return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
     // CRUD: READ, ficha com id específico
@@ -102,7 +115,4 @@ public class FichaAvaliacaoService {
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
 
-    public List<FichaAvaliacaoResponse> findById(Long id) {
-
-    }
 }

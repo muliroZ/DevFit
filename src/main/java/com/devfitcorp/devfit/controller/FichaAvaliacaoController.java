@@ -28,12 +28,12 @@ public class FichaAvaliacaoController {
 
     @GetMapping("/{id}")
     public List<FichaAvaliacaoResponse> getFichaAvaliacaoByIf(@PathVariable Long id) {
-        return fichaAvaliacaoService.findById(id);
+        return fichaAvaliacaoService.buscarPorId(id);
     }
 
     @GetMapping("/aluno/{alunoId}")
     public List<FichaAvaliacaoResponse>  getFichasByAluno(@PathVariable Long id) {
-        return fichaAvaliacaoService.findById(id);
+        return fichaAvaliacaoService.buscarPorId(id);
     }
 
     @GetMapping
