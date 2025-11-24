@@ -16,17 +16,11 @@ public class Matricula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "plano_id")
     private Plano plano;
 
-
     private LocalDate dataVencimento;
 
     private boolean estaAtiva;
-
-
-
-
 }

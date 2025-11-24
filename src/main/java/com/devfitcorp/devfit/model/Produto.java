@@ -18,21 +18,25 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-@NotBlank
-@Size(min = 1, max = 100)
-@Column(nullable = false, unique = true)
-private String nome;
+    @NotBlank
+    @Size(min = 1, max = 100)
+    @Column(nullable = false, unique = true)
+    private String nome;
 
-@Size(max = 500)
-private String descricao;
+    @Size(max = 500)
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
 
-@NotNull
-@PositiveOrZero
-@Column(nullable = false)
-private BigDecimal preco;
+    @NotNull
+    @PositiveOrZero
+    @Column(nullable = false)
+    private BigDecimal preco;
 
-@NotNull
-@PositiveOrZero
-@Column(nullable = false)
-private Integer estoque;
+    @NotNull
+    @PositiveOrZero
+    @Column(nullable = false)
+    private Integer estoque;
+
+    @Column(length = 500, columnDefinition = "TEXT")
+    private String imagemUrl;
 }
