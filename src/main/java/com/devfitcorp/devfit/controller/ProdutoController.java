@@ -1,107 +1,49 @@
 package com.devfitcorp.devfit.controller;
 
+import com.devfitcorp.devfit.dto.ProdutoRequest;
+import com.devfitcorp.devfit.dto.ProdutoResponse;
 import com.devfitcorp.devfit.service.ProdutoService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.devfitcorp.devfit.model.Produto;
+
 import java.util.List;
-import com.devfitcorp.devfit.dto.ProdutoResponse;
-import com.devfitcorp.devfit.dto.ProdutoRequest;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-    private final  ProdutoService produtoservice;
+    private final ProdutoService produtoService;
 
-    public ProdutoController (ProdutoService produtoservice){
-        this.produtoservice = produtoservice;
+    public ProdutoController(ProdutoService produtoService){
+        this.produtoService = produtoService;
     }
 
     @GetMapping
     public List<ProdutoResponse> listar() {
-        return produtoservice.listar()
-                .stream()
-                .map(p -> new ProdutoResponse(
-                        p.getId(),
-                        p.getNome(),
-                        p.getDescricao(),
-                        p.getPreco(),
-                        p.getEstoque(),
-                        p.getImagemUrl()
-                ))
-                .toList();
+        return produtoService.listar();
     }
-
 
     @GetMapping("/buscar/{id}")
     public ProdutoResponse buscarPorId(@PathVariable Long id){
-        var produto = produtoservice.buscarPorId(id);
-
-        return new ProdutoResponse(
-                produto.getId(),
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.getPreco(),
-                produto.getEstoque(),
-                produto.getImagemUrl()
-        );
+        return produtoService.buscarPorId(id);
     }
 
     @PostMapping("/adicionar")
     public ResponseEntity<ProdutoResponse> criar(@RequestBody @Valid ProdutoRequest request){
-        var produto = new Produto(
-                null,
-                request.nome(),
-                request.descricao(),
-                request.preco(),
-                request.estoque(),
-                request.imagemUrl()
-        );
-
-        var salvo = produtoservice.salvar(produto);
-
-        var response = new ProdutoResponse(
-                salvo.getId(),
-                salvo.getNome(),
-                salvo.getDescricao(),
-                salvo.getPreco(),
-                salvo.getEstoque(),
-                salvo.getImagemUrl()
-        );
-
-        return ResponseEntity.status(201).body(response);
+        ProdutoResponse response = produtoService.salvar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/atualizar/{id}")
     public ProdutoResponse atualizar(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
-        var dadosAtualizados = new Produto(
-                null,
-                request.nome(),
-                request.descricao(),
-                request.preco(),
-                request.estoque(),
-                request.imagemUrl()
-        );
-        var atualizado = produtoservice.atualizar(id, dadosAtualizados);
-
-        return new ProdutoResponse(
-                atualizado.getId(),
-                atualizado.getNome(),
-                atualizado.getDescricao(),
-                atualizado.getPreco(),
-                atualizado.getEstoque(),
-                atualizado.getImagemUrl()
-        );
-
+        return produtoService.atualizar(id, request);
     }
+
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-
-        produtoservice.deletar(id);
+        produtoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
