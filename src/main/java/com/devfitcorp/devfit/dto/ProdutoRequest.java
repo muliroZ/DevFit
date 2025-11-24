@@ -18,6 +18,9 @@ public record ProdutoRequest(
 
         @NotNull
         @PositiveOrZero
-        Integer estoque
+        Integer estoque,
+
+        @Size(max = 500)
+        String imagemUrl
 
 ) {}

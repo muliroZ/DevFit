@@ -28,7 +28,8 @@ public class ProdutoController {
                         p.getNome(),
                         p.getDescricao(),
                         p.getPreco(),
-                        p.getEstoque()
+                        p.getEstoque(),
+                        p.getImagemUrl()
                 ))
                 .toList();
     }
@@ -43,7 +44,8 @@ public class ProdutoController {
                 produto.getNome(),
                 produto.getDescricao(),
                 produto.getPreco(),
-                produto.getEstoque()
+                produto.getEstoque(),
+                produto.getImagemUrl()
         );
     }
 
@@ -54,7 +56,8 @@ public class ProdutoController {
                 request.nome(),
                 request.descricao(),
                 request.preco(),
-                request.estoque()
+                request.estoque(),
+                request.imagemUrl()
         );
 
         var salvo = produtoservice.salvar(produto);
@@ -64,7 +67,8 @@ public class ProdutoController {
                 salvo.getNome(),
                 salvo.getDescricao(),
                 salvo.getPreco(),
-                salvo.getEstoque()
+                salvo.getEstoque(),
+                salvo.getImagemUrl()
         );
 
         return ResponseEntity.status(201).body(response);
@@ -77,7 +81,8 @@ public class ProdutoController {
                 request.nome(),
                 request.descricao(),
                 request.preco(),
-                request.estoque()
+                request.estoque(),
+                request.imagemUrl()
         );
         var atualizado = produtoservice.atualizar(id, dadosAtualizados);
 
@@ -86,7 +91,8 @@ public class ProdutoController {
                 atualizado.getNome(),
                 atualizado.getDescricao(),
                 atualizado.getPreco(),
-                atualizado.getEstoque()
+                atualizado.getEstoque(),
+                atualizado.getImagemUrl()
         );
 
     }
