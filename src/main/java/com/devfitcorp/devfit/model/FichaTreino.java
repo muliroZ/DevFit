@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity // entidade JPA para persistência no banco de dados
-@Table(name = "fichas_treino") // nome da tabela no banco de dados
+@Table(name = "ficha_treino") // nome da tabela no banco de dados
 public class FichaTreino {
 
     @Id

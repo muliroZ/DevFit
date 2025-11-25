@@ -31,7 +31,7 @@ public class FichaAvaliacao {
     private LocalDate dataAvaliacao; // Data da Avaliação
 
     // Dados Antropométricos
-    @Column(nullable = false) double pesoKg;
+    @Column(nullable = false) private double pesoKg;
     @Column(nullable = false) private double alturaCm; // Em centímetros
     private double imc; // Índice de Massa Corporal (calculado)
 

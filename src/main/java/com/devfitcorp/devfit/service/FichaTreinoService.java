@@ -90,7 +90,7 @@ public class FichaTreinoService {
 
     // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
     private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
-        return usuarioRepository.findByIdAndRole(id, role)
+        return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
 

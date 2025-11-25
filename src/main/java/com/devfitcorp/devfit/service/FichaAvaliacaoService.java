@@ -38,10 +38,10 @@ public class FichaAvaliacaoService {
     @Transactional
     public FichaAvaliacaoResponse criar(FichaAvaliacaoRequest dto) {
         // Busca os usuarios pelo id e role
-        Usuario aluno = usuarioRepository.findByIdAndRole(dto.idAluno(), UsuarioRole.ALUNO)
+        Usuario aluno = usuarioRepository.findByIdAndRoles_Nome(dto.idAluno(), UsuarioRole.ALUNO)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
 
-        Usuario instrutor = usuarioRepository.findByIdAndRole(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
+        Usuario instrutor = usuarioRepository.findByIdAndRoles_Nome(dto.idInstrutor(), UsuarioRole.INSTRUTOR)
                 .orElseThrow(() -> new ResourceNotFoundException("Instrutor não encontrado"));
 
         FichaAvaliacao ficha = fichaAvaliacaoMapper.toEntity(dto, aluno, instrutor, LocalDate.now());
@@ -111,7 +111,7 @@ public class FichaAvaliacaoService {
 
     // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
     private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
-        return usuarioRepository.findByIdAndRole(id, role)
+        return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
 
