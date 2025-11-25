@@ -21,7 +21,7 @@ public class FichaTreinoController {
     }
 
     // CRIAR FICHA DE TREINO
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<FichaTreinoResponse> criar(@RequestBody @Valid FichaTreinoRequest request) {
         FichaTreinoResponse response = service.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -34,13 +34,13 @@ public class FichaTreinoController {
     }
 
     // BUSCAR POR ID
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<FichaTreinoResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     // ATUALIZAR FICHA
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<FichaTreinoResponse> atualizar(
             @PathVariable Long id,
             @RequestBody @Valid FichaTreinoRequest request) {
@@ -51,7 +51,7 @@ public class FichaTreinoController {
 
 
     // DELETAR FICHA
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
