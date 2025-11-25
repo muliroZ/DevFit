@@ -20,7 +20,7 @@ public class FichaAvaliacaoController {
         this.fichaAvaliacaoService = fichaAvaliacaoService;
     }
 
-    @PostMapping("criar")
+    @PostMapping("/criar")
     @ResponseStatus(HttpStatus.CREATED) // Retorna código 201
     public FichaAvaliacaoResponse createFichaAvaliacao(@Valid @RequestBody FichaAvaliacaoRequest dto) {
         return  fichaAvaliacaoService.criar(dto);
