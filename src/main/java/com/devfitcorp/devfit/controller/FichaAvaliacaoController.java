@@ -20,7 +20,7 @@ public class FichaAvaliacaoController {
         this.fichaAvaliacaoService = fichaAvaliacaoService;
     }
 
-    @PostMapping
+    @PostMapping("criar")
     @ResponseStatus(HttpStatus.CREATED) // Retorna código 201
     public FichaAvaliacaoResponse createFichaAvaliacao(@Valid @RequestBody FichaAvaliacaoRequest dto) {
         return  fichaAvaliacaoService.criar(dto);
@@ -41,11 +41,11 @@ public class FichaAvaliacaoController {
         return fichaAvaliacaoService.listar();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public FichaAvaliacaoResponse updateFichaAvaliacao(@PathVariable Long id, @Valid @RequestBody FichaAvaliacaoRequest dto) {
         return fichaAvaliacaoService.atualizar(id, dto);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/excluir/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT) // Retorna código 204
     public void deleteFichaAvalicao(@PathVariable Long id) {
         fichaAvaliacaoService.deletar(id);
