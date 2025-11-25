@@ -1,6 +1,5 @@
 package com.devfitcorp.devfit.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "FichaAvaliacao")
+@Table(name = "ficha_avaliacao")
 public class FichaAvaliacao {
 
     @Id
@@ -33,7 +32,7 @@ public class FichaAvaliacao {
 
     // Dados Antropométricos
     @Column(nullable = false) double pesoKg;
-    @Column(nullable = false) private double alturaM; // Em metros
+    @Column(nullable = false) private double alturaCm; // Em centímetros
     private double imc; // Índice de Massa Corporal (calculado)
 
     // Circunferências
@@ -42,14 +41,16 @@ public class FichaAvaliacao {
     @Column private double circunferenciaQuadrilCm;
 
     // Histórico e Observações
-    @Column(length = 1000) private String historicoSaude; // Informações prévias relevantes
-    @Column(length = 500) private String observacoesGerais;
+    @Column(length = 1000, columnDefinition = "TEXT")
+    private String historicoSaude; // Informações prévias relevantes
+
+    @Column(length = 500, columnDefinition = "TEXT")
+    private String observacoesGerais;
 
     @PrePersist
     public void prePersist() {
         if (dataAvaliacao == null) {
             dataAvaliacao = LocalDate.now();
         }
-
     }
 }

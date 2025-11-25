@@ -1,6 +1,5 @@
 package com.devfitcorp.devfit.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class ItemTreino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ATRIBUTOS VARIÁVEIS (REMOVIDOS DA CLASSE EXERCICIO)
+    // ATRIBUTOS VARIÁVEIS REMOVIDOS DA CLASSE EXERCICIO
     @Column(nullable = false)
     private int series;
 
@@ -29,15 +28,14 @@ public class ItemTreino {
     @Column
     private double cargaEstimadaKg;
 
-    @Column(length = 500)
+    @Column(length = 500, columnDefinition = "TEXT") // para indicar que é um texto grande
     private String observacoes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ficha_treino-id", nullable = false)
+    @JoinColumn(name = "ficha_treino_id", nullable = false)
     private FichaTreino fichaTreino;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "exercicio_base_id", nullable = false)
     private Exercicio exercicioBase;
-
 }
