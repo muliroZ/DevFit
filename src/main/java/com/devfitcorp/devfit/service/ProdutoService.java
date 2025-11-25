@@ -6,6 +6,7 @@ import com.devfitcorp.devfit.exception.ProdutoNaoEncontradoException;
 import com.devfitcorp.devfit.mappers.ProdutoMapper;
 import com.devfitcorp.devfit.model.Produto;
 import com.devfitcorp.devfit.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,13 +35,13 @@ public class ProdutoService {
 
         return mapper.toResponse(produto);
     }
-
+    @Transactional
     public ProdutoResponse salvar(ProdutoRequest request) {
         Produto produto = mapper.toEntity(request);
         Produto salvo = repository.save(produto);
         return mapper.toResponse(salvo);
     }
-
+    @Transactional
     public ProdutoResponse atualizar(Long id, ProdutoRequest request) {
         Produto existente = repository.findById(id)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
@@ -50,7 +51,7 @@ public class ProdutoService {
 
         return mapper.toResponse(atualizado);
     }
-
+    @Transactional
     public void deletar(Long id) {
         Produto existente = repository.findById(id)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
