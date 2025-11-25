@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fichas/avaliacao") // estou com uma duvida sobre os endpoints. confere murilo?
+@RequestMapping("/fichas/avaliacao") // estou com uma duvida sobre os endpoints. confere murilo?
 public class FichaAvaliacaoController {
 
     private final FichaAvaliacaoService fichaAvaliacaoService;
