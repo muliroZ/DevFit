@@ -2,6 +2,7 @@ package com.devfitcorp.devfit.service;
 
 import com.devfitcorp.devfit.dto.*;
 import com.devfitcorp.devfit.exception.UsuariojaExisteException;
+import com.devfitcorp.devfit.mappers.AuthMapper;
 import com.devfitcorp.devfit.model.Role;
 import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.model.UsuarioRole;
@@ -24,22 +25,22 @@ public class AuthService {
     @Value("${ADMIN_SECRET}")
     private String admSecret;
 
+    private final AuthMapper authMapper;
     private final UsuarioRepository usuarioRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
 
     public AuthService(
+            AuthMapper authMapper,
             UsuarioRepository usuarioRepository,
             RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder,
             AuthenticationManager authManager,
             JwtUtil jwtUtil
     ) {
+        this.authMapper = authMapper;
         this.usuarioRepository = usuarioRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
         this.authManager = authManager;
         this.jwtUtil = jwtUtil;
     }
@@ -79,12 +80,6 @@ public class AuthService {
         Role role = roleRepository.findByNome(usuarioRole)
                 .orElseThrow(() -> new RuntimeException("Role não encontrada: " + usuarioRole));
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(request.nome());
-        usuario.setSenha(passwordEncoder.encode(request.senha()));
-        usuario.setEmail(request.email());
-        usuario.setRoles(Set.of(role));
-
-        usuarioRepository.save(usuario);
+        usuarioRepository.save(authMapper.toEntity(request, role));
     }
 }
