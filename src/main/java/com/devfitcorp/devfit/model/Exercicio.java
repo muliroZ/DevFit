@@ -18,7 +18,7 @@ public class Exercicio {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id; // ID do exercício
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nome;
 
     @Column(nullable = false)
