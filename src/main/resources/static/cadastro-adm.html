@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro Gestor - DevFit</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/cadastro-adm.css" rel="stylesheet" />
+    <script defer src="js/cadastro-adm.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo"
+          >DevFit <span class="admin-badge">Admin</span></a
+        >
+        <div class="nav-links">
+          <a href="index.html">Início</a>
+          <a href="loja.html">Loja</a>
+        </div>
+        <div class="auth-container">
+          <a href="login.html" class="login-button">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="auth-hero">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h2>Acesso Gestor</h2>
+          <p>Crie sua conta administrativa</p>
+        </div>
+
+        <form id="admin-form">
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" required placeholder="Seu nome" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail Corporativo</label>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="admin@devfit.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input
+              type="password"
+              id="password"
+              required
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div class="form-group special-access">
+            <label for="access-code">Chave de Segurança</label>
+            <input
+              type="password"
+              id="access-code"
+              required
+              placeholder="Chave Mestra"
+            />
+            <small>Necessária para validação de privilégios</small>
+          </div>
+
+          <button type="submit" class="submit-button">Criar Conta Admin</button>
+        </form>
+
+        <div id="message-display" class="message-container"></div>
+
+        <div class="auth-footer">
+          <p>Já é gestor? <a href="login.html">Fazer Login</a></p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -56,14 +56,16 @@
               id="password"
               name="password"
               placeholder="Digite sua senha"
-              pattern="^[A-Za-z\\d@$!%*?&]{8,}$"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W]{8,}$"
               minlength="8"
               required
             />
-            <p class="password-requirements">
-              * A senha deve ter no mínimo 8 caracteres e pode incluir letras,
-              números e símbolos especiais.
-            </p>
+            <ul class="password-requirements">
+              <li class="check length">Mínimo de 8 caracteres</li>
+              <li class="check lower">Pelo menos 1 letra minúscula</li>
+              <li class="check upper">Pelo menos 1 letra maiúscula</li>
+              <li class="check number">Pelo menos 1 número</li>
+            </ul>
           </div>
 
           <div class="form-group">
@@ -81,6 +83,10 @@
 
           <button type="submit" class="btn-register">Criar Conta</button>
         </form>
+
+        <div class="auth-footer">
+          <p>Já tem uma conta? <a href="login.html">Fazer Login</a></p>
+        </div>
       </div>
     </div>
   </body>

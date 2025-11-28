@@ -2,6 +2,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('register-form');
     const errorMsg = document.getElementById('error-message');
 
+    const passCheck = document.getElementById('password');
+    passCheck.addEventListener('input', () => {
+        const pass = passCheck.value;
+
+        updateCheck(".length", pass.length >= 8);
+        updateCheck(".lower", /[a-z]/.test(pass));
+        updateCheck(".upper", /[A-Z]/.test(pass));
+        updateCheck(".number", /\d/.test(pass));
+    });
+
+    function updateCheck(selector, condition) {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        if (condition) {
+            el.classList.add("ok");
+        } else {
+            el.classList.remove("ok");
+        }
+    }
+
     form.addEventListener('submit', cadastro)
 
     async function cadastro(event) {

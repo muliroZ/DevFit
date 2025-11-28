@@ -66,8 +66,18 @@ body {
 
 .password-requirements {
   font-size: 0.8rem;
-  color: #bbbbbb;
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  align-items: center;
+}
+
+.check {
+  color: red;
+  transition: color .2s ease;
+}
+
+.check.ok {
+  color: green;
 }
 
 .btn-register {
