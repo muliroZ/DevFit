@@ -2,10 +2,13 @@ package com.devfitcorp.devfit.controller;
 
 import com.devfitcorp.devfit.dto.FichaTreinoRequest;
 import com.devfitcorp.devfit.dto.FichaTreinoResponse;
+import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.service.FichaTreinoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,7 @@ public class FichaTreinoController {
 
     // CRIAR FICHA DE TREINO
     @PostMapping
+    @PreAuthorize("hasAnyRole('GESTOR', 'INSTRUTOR')")
     public ResponseEntity<FichaTreinoResponse> criar(@RequestBody @Valid FichaTreinoRequest request) {
         FichaTreinoResponse response = service.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -29,18 +33,32 @@ public class FichaTreinoController {
 
     // LISTAR TODAS AS FICHAS
     @GetMapping
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
     public ResponseEntity<List<FichaTreinoResponse>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
     public ResponseEntity<FichaTreinoResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
+    // falta por o metodo para o aluno ver suas proprias fichas de treino
+    // tentei colocar e constou um erro, vou deixar comentado por enquanto
+    @GetMapping("/minhas-fichas")
+    @PreAuthorize("hasAnyRole('ALUNO', 'INSTRUTOR', 'GESTOR')")
+    public ResponseEntity<List<FichaTreinoResponse>> listarMinhasFichas() {
+        Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long alunoId = usuarioAutenticado.getId();
+        List<FichaTreinoResponse> fichas = service.buscarFichasPorId(alunoId);
+        return ResponseEntity.ok(fichas);
+    }
+
     // ATUALIZAR FICHA
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('GESTOR', 'INSTRUTOR')")
     public ResponseEntity<FichaTreinoResponse> atualizar(
             @PathVariable Long id,
             @RequestBody @Valid FichaTreinoRequest request) {
@@ -52,6 +70,7 @@ public class FichaTreinoController {
 
     // DELETAR FICHA
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('GESTOR')")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();

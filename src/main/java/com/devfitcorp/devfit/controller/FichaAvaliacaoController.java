@@ -3,15 +3,19 @@ package com.devfitcorp.devfit.controller;
 
 import com.devfitcorp.devfit.dto.FichaAvaliacaoRequest;
 import com.devfitcorp.devfit.dto.FichaAvaliacaoResponse;
+import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.service.FichaAvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/fichas/avaliacao") // estou com uma duvida sobre os endpoints. confere murilo?
+@RequestMapping("/fichas/avaliacao")
 public class FichaAvaliacaoController {
 
     private final FichaAvaliacaoService fichaAvaliacaoService;
@@ -21,33 +25,57 @@ public class FichaAvaliacaoController {
     }
 
     @PostMapping("/criar")
-    @ResponseStatus(HttpStatus.CREATED) // Retorna código 201
-    public FichaAvaliacaoResponse createFichaAvaliacao(@Valid @RequestBody FichaAvaliacaoRequest dto) {
-        return  fichaAvaliacaoService.criar(dto);
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')") // Apenas instrutores e admins podem criar fichas de avaliação
+    public ResponseEntity<FichaAvaliacaoResponse> criarFichaAvaliacao(@Valid @RequestBody FichaAvaliacaoRequest dto) {
+        FichaAvaliacaoResponse response = fichaAvaliacaoService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public List<FichaAvaliacaoResponse> getFichaAvaliacaoByIf(@PathVariable Long id) {
-        return fichaAvaliacaoService.buscarPorId(id);
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
+    public ResponseEntity<FichaAvaliacaoResponse> buscarFichaAvaliacaoPorId(@PathVariable Long id) {
+        FichaAvaliacaoResponse response = fichaAvaliacaoService.buscarFichasPorId(id).stream().findFirst().orElse(null);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/aluno/{alunoId}")
-    public List<FichaAvaliacaoResponse>  getFichasByAluno(@PathVariable Long id) {
-        return fichaAvaliacaoService.buscarPorId(id);
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
+    public ResponseEntity<List<FichaAvaliacaoResponse>>  buscarFichasPorAluno(@PathVariable Long alunoId) {
+
+        List<FichaAvaliacaoResponse> response = fichaAvaliacaoService.buscarFichasPorId(alunoId);
+        return ResponseEntity.ok(response);
+
     }
 
     @GetMapping
-    public List<FichaAvaliacaoResponse> getAllFichas() {
-        return fichaAvaliacaoService.listar();
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
+    public ResponseEntity<List<FichaAvaliacaoResponse>> buscarTodasAsFichas() {
+        return  ResponseEntity.ok(fichaAvaliacaoService.listar());
+    }
+    // Novo metodo para o aluno ver suas proprias avaliacoes
+    @GetMapping("/minhas-avaliacoes")
+    @PreAuthorize("hasAnyRole('ALUNO', INSTRUTOR', 'GESTOR')")
+    public ResponseEntity<List<FichaAvaliacaoResponse>> listarMinhasAvaliacoes() {
+        Usuario UsuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long alunoId = UsuarioAutenticado.getId();
+
+        List<FichaAvaliacaoResponse> lista = fichaAvaliacaoService.buscarFichasPorId(alunoId);
+        return ResponseEntity.ok(lista);
+
     }
 
     @PutMapping("/atualizar/{id}")
-    public FichaAvaliacaoResponse updateFichaAvaliacao(@PathVariable Long id, @Valid @RequestBody FichaAvaliacaoRequest dto) {
-        return fichaAvaliacaoService.atualizar(id, dto);
+    @PreAuthorize(("hasAnyRole('INSTRUTOR','GESTOR')"))
+    public ResponseEntity<FichaAvaliacaoResponse> atualizarFichaAvaliacao(@PathVariable Long id, @Valid @RequestBody FichaAvaliacaoRequest dto) {
+        FichaAvaliacaoResponse response = fichaAvaliacaoService.atualizar(id, dto);
+        return ResponseEntity.ok(response);
+
     }
+
     @DeleteMapping("/excluir/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // Retorna código 204
-    public void deleteFichaAvalicao(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)// Retorna código 204
+    @PreAuthorize(("hasRole('GESTOR')")) // Apenas Gerente podem deletar
+    public void deletarFichaAvalicao(@PathVariable Long id) {
         fichaAvaliacaoService.deletar(id);
     }
 
