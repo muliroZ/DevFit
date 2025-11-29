@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("register-form");
+  const form = document.getElementById("admin-form");
   const messageDisplay = document.getElementById("message-display");
 
   const passCheck = document.getElementById("password");
@@ -28,31 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
     messageDisplay.innerHTML = "";
     messageDisplay.classList = "message-container";
 
-    const nome = document.getElementById("username").value;
+    const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
     const senha = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm-password").value;
-
-    if (senha !== confirmPassword) {
-      messageDisplay.innerHTML = `<span class="error-msg">As senhas não batem</span>`;
-      return;
-    }
+    const admCode = document.getElementById("access-code").value;
 
     const data = {
-      nome,
-      email,
-      senha,
+      nome: nome,
+      email: email,
+      senha: senha,
+      gestorCode: admCode,
     };
 
     try {
-      const response = await fetch("/auth/cadastro", {
+      const response = await fetch("/auth/cadastro/gestor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       const statusCode = response.status;
-
       if (!response.ok) {
         const errorText = await response.text();
         messageDisplay.innerHTML = `<span class="error-msg">Erro: ${
@@ -61,13 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      messageDisplay.innerHTML = `<span class="success-msg">Cadastro realizado com sucesso. Redirecionando...</span>`;
+      messageDisplay.innerHTML = `<span class="success-msg">Gestor cadastrado com sucesso! Redirecionando...</span>`;
       setTimeout(() => {
         window.location.href = "/login.html";
       }, 2000);
     } catch (error) {
-      console.error("Erro: ", error);
-      messageDisplay.innerHTML = `<span class="error-msg">Erro de conexão com o servidor</span>`;
+      console.error("Erro na requisição: ", error);
+      messageDisplay.innerHTML = `<span class="error-msg">Erro de conexão com o servidor.</span>`;
     }
   });
 });

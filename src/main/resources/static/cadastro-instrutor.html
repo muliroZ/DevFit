@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Instrutor - DevFit</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/cadastro-instrutor.css" rel="stylesheet" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/cadastro-instrutor.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo"
+          >DevFit <span class="admin-badge">Gestão</span></a
+        >
+        <div class="nav-links">
+          <a href="admin-dashboard.html">Dashboard</a>
+          <a href="#" class="active">Novo Instrutor</a>
+        </div>
+        <div class="auth-container">
+          <a href="#" id="logout-btn" class="login-button">Sair</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="form-hero">
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Cadastrar Instrutor</h2>
+          <p>Adicione um novo profissional à equipe</p>
+        </div>
+
+        <form id="instructor-form">
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input
+              type="text"
+              id="nome"
+              required
+              placeholder="Ex: Ramon Dino"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="instrutor@devfit.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="especialidade">Especialidade</label>
+            <select id="especialidade" required>
+              <option value="MUSCULACAO">Musculação</option>
+              <option value="YOGA">Yoga</option>
+              <option value="DANCA">Dança</option>
+              <option value="PERSONAL">Personal Trainer</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" required placeholder="••••••••" />
+            <ul class="password-requirements">
+              <li class="check length">Mínimo de 8 caracteres</li>
+              <li class="check lower">Pelo menos 1 letra minúscula</li>
+              <li class="check upper">Pelo menos 1 letra maiúscula</li>
+              <li class="check number">Pelo menos 1 número</li>
+            </ul>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirme a senha</label>
+            <input
+              type="password"
+              id="confirm-password"
+              required
+              placeholder="Repita a senha"
+            />
+          </div>
+
+          <button type="submit" class="submit-button">
+            Cadastrar Instrutor
+          </button>
+        </form>
+
+        <div id="message-display" class="message-container"></div>
+      </div>
+    </section>
+  </body>
+</html>

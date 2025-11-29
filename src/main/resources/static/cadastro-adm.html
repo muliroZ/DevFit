@@ -3,15 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Criar Conta</title>
+    <title>Cadastro Gestor - DevFit</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/cadastro.css" />
-    <script defer src="js/cadastro.js"></script>
+    <link rel="stylesheet" href="css/cadastro-adm.css" />
+    <script defer src="js/cadastro-adm.js"></script>
   </head>
   <body>
     <header class="header">
       <nav class="nav-container">
-        <a href="index.html" class="logo">DevFit</a>
+        <a href="index.html" class="logo"
+          >DevFit <span class="admin-badge">Admin</span></a
+        >
         <div class="nav-links">
           <a href="index.html" class="index-button">Início</a>
         </div>
@@ -21,23 +23,21 @@
       </nav>
     </header>
 
-    <section class="register-hero">
-      <div class="register-card">
-        <div class="register-header">
-          <h2>Criar Conta</h2>
+    <section class="auth-hero">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h2>Cadastro Gestor</h2>
+          <p>Cadastre-se como administrador na DevFit</p>
         </div>
 
-        <form id="register-form">
+        <form id="admin-form">
           <div class="form-group">
-            <label for="username">Usuário</label>
+            <label for="nome">Usuário</label>
             <input
               type="text"
-              id="username"
-              name="username"
-              placeholder="Digite seu usuário"
-              minlength="3"
-              maxlength="30"
+              id="nome"
               required
+              placeholder="Digite seu usuário"
             />
           </div>
 
@@ -46,9 +46,8 @@
             <input
               type="email"
               id="email"
-              name="email"
-              placeholder="admin@devfit.com"
               required
+              placeholder="admin@devfit.com"
             />
           </div>
 
@@ -57,10 +56,8 @@
             <input
               type="password"
               id="password"
-              name="password"
-              placeholder="••••••••"
-              minlength="8"
               required
+              placeholder="••••••••"
             />
             <ul class="password-requirements">
               <li class="check length">Mínimo de 8 caracteres</li>
@@ -71,23 +68,33 @@
           </div>
 
           <div class="form-group">
-            <label for="confirm-password">Confirmar Senha</label>
+            <label for="confirm-password">Confirme a sua senha</label>
             <input
               type="password"
               id="confirm-password"
-              name="confirm-password"
-              placeholder="Repita sua senha"
               required
+              placeholder="Repita sua senha"
             />
           </div>
 
-          <button type="submit" class="submit-button">Criar Conta</button>
+          <div class="form-group special-access">
+            <label for="access-code">Chave de Segurança</label>
+            <input
+              type="password"
+              id="access-code"
+              required
+              placeholder="Chave Mestra"
+            />
+            <small>Necessária para validação de privilégios</small>
+          </div>
+
+          <button type="submit" class="submit-button">Criar Conta Admin</button>
         </form>
 
         <div id="message-display" class="message-container"></div>
 
-        <div class="register-footer">
-          <p>Já tem uma conta? <a href="login.html">Fazer Login</a></p>
+        <div class="auth-footer">
+          <p>Já é gestor? <a href="login.html">Fazer Login</a></p>
         </div>
       </div>
     </section>
