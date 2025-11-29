@@ -55,6 +55,7 @@ public class SecurityConfig {
                                 "/js/**"
                         ).permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/dashboard/financeiro/**").hasRole("GESTOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
