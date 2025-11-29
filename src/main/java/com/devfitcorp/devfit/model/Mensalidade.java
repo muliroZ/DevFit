@@ -25,6 +25,6 @@ public class Mensalidade {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usario;
+    private Usuario usuario;
 
 }
