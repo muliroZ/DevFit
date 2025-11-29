@@ -1,37 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("login-form");
+  const messageDisplay = document.getElementById("message-display");
 
-    const loginForm = document.getElementById('login-form')
-    const errorMsg = document.getElementById('error-message');
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    loginForm.addEventListener('submit', login)
+    messageDisplay.innerHTML = "";
+    messageDisplay.classList = "message-container";
 
-    async function login(event) {
-        event.preventDefault();
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("password").value;
 
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('password').value;
+    const data = {
+      email: email,
+      senha: senha,
+    };
 
-        const payload = {
-            email: email,
-            senha: senha
-        }
+    try {
+      const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-        const response = await fetch('/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
+      const statusCode = response.status;
 
-        if (!response.ok) {
-            const text = await response.text();
-            errorMsg.textContent = 'Erro no login: ' + response.status + ' - ' + text;
-            errorMsg.style.display = 'block';
-            return;
-        }
+      if (!response.ok) {
+        const errorText = await response.text();
+        messageDisplay.innerHTML = `<span class="error-msg">Erro: ${
+          errorText || "Credenciais Inválidas"
+        } - Status: ${statusCode}</span>`;
+        return;
+      }
 
-        const result = await response.json();
-        localStorage.setItem('authToken', result.token);
+      const result = await response.json();
+      localStorage.setItem("token", result.token);
+      messageDisplay.innerHTML = `<span class=success-msg>Login realizado com sucesso. Redirecionando...</span>`;
 
-        window.location.href = '/index.html'
+      setTimeout(() => {
+        window.location.href = "/index.html";
+      }, 2000);
+    } catch (error) {
+      console.error("Erro: ", error);
     }
-})
+  });
+});

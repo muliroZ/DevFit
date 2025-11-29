@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro Gestor - DevFit</title>
-    <link href="css/style.css" rel="stylesheet" />
-    <link href="css/cadastro-adm.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-adm.css" />
     <script defer src="js/cadastro-adm.js"></script>
   </head>
   <body>
@@ -15,8 +15,7 @@
           >DevFit <span class="admin-badge">Admin</span></a
         >
         <div class="nav-links">
-          <a href="index.html">Início</a>
-          <a href="loja.html">Loja</a>
+          <a href="index.html" class="index-button">Início</a>
         </div>
         <div class="auth-container">
           <a href="login.html" class="login-button">Login</a>
@@ -27,18 +26,23 @@
     <section class="auth-hero">
       <div class="auth-card">
         <div class="auth-header">
-          <h2>Acesso Gestor</h2>
-          <p>Crie sua conta administrativa</p>
+          <h2>Cadastro Gestor</h2>
+          <p>Cadastre-se como administrador na DevFit</p>
         </div>
 
         <form id="admin-form">
           <div class="form-group">
-            <label for="nome">Nome Completo</label>
-            <input type="text" id="nome" required placeholder="Seu nome" />
+            <label for="nome">Usuário</label>
+            <input
+              type="text"
+              id="nome"
+              required
+              placeholder="Digite seu usuário"
+            />
           </div>
 
           <div class="form-group">
-            <label for="email">E-mail Corporativo</label>
+            <label for="email">E-mail</label>
             <input
               type="email"
               id="email"
@@ -54,6 +58,22 @@
               id="password"
               required
               placeholder="••••••••"
+            />
+            <ul class="password-requirements">
+              <li class="check length">Mínimo de 8 caracteres</li>
+              <li class="check lower">Pelo menos 1 letra minúscula</li>
+              <li class="check upper">Pelo menos 1 letra maiúscula</li>
+              <li class="check number">Pelo menos 1 número</li>
+            </ul>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirme a sua senha</label>
+            <input
+              type="password"
+              id="confirm-password"
+              required
+              placeholder="Repita sua senha"
             />
           </div>
 

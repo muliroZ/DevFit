@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,13 +16,16 @@
           <a href="index.html" class="index-button">Início</a>
         </div>
         <div class="auth-container">
-          <a href="login.html" class="login-button">Faça Login</a>
+          <a href="login.html" class="login-button">Login</a>
         </div>
       </nav>
     </header>
-    <div class="register-wrapper">
+
+    <section class="register-hero">
       <div class="register-card">
-        <h2>Criar Conta</h2>
+        <div class="register-header">
+          <h2>Criar Conta</h2>
+        </div>
 
         <form id="register-form">
           <div class="form-group">
@@ -44,7 +47,7 @@
               type="email"
               id="email"
               name="email"
-              placeholder="Digite seu e-mail"
+              placeholder="admin@devfit.com"
               required
             />
           </div>
@@ -55,8 +58,7 @@
               type="password"
               id="password"
               name="password"
-              placeholder="Digite sua senha"
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\W]{8,}$"
+              placeholder="••••••••"
               minlength="8"
               required
             />
@@ -79,15 +81,15 @@
             />
           </div>
 
-          <p id="error-message" class="error-message"></p>
-
-          <button type="submit" class="btn-register">Criar Conta</button>
+          <button type="submit" class="submit-button">Criar Conta</button>
         </form>
 
-        <div class="auth-footer">
+        <div id="message-display" class="message-container"></div>
+
+        <div class="register-footer">
           <p>Já tem uma conta? <a href="login.html">Fazer Login</a></p>
         </div>
       </div>
-    </div>
+    </section>
   </body>
 </html>

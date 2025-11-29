@@ -1,205 +1,206 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-    color: #ffffff;
-    line-height: 1.6;
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  color: #ffffff;
+  line-height: 1.6;
 }
 
 .header {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 1rem 0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  position: relative;
 }
 
 .logo {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #00ff88;
-    text-decoration: none;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00ff88;
+  text-decoration: none;
 }
 
 .nav-links {
-    display: flex;
-    gap: 2rem;
+  display: flex;
+  gap: 2rem;
 }
 
 .nav-links a {
-    padding: 0.5rem 1.5rem;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #00ff88;
+  color: #00ff88;
 }
 
 .index-button {
-    margin-right: 15px;
-    padding: 8px 16px;
-    background-color: #1a1a1a;
-    color: #00ff88;
-    border: 2px solid #00ff88;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: background-color .3s ease;
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  transform: translateX(-50%);
+
+  background-color: #1a1a1a;
+  border: 2px solid #00ff88;
+  border-radius: 50px;
 }
 
 .auth-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .login-button {
-    background: #1a1a1a;
-    color: #00ff88;
-    border: 2px solid #00ff88;
-    border-radius: 50px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: color 0.3s ease, background 0.7s ease;
+  background: #1a1a1a;
+  color: #00ff88;
+  border: 2px solid #00ff88;
+  border-radius: 50px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease, background 0.7s ease;
 }
 
 .login-button:hover {
-    background: #00ff88;
-    color: #1a1a1a;
+  background: #00ff88;
+  color: #1a1a1a;
 }
 
 .signup-button {
-    background: #00ff88;
-    color: #1a1a1a;
-    border: none;
-    border-radius: 50px;
-    padding: 0.5rem 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: color 0.3s ease, background 0.7s ease;
+  background: #00ff88;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 50px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease, background 0.7s ease;
 }
 
 .signup-button:hover {
-    background: #1a1a1a;
-    color: #00ff88;
+  background: #1a1a1a;
+  color: #00ff88;
 }
 
 .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 2rem;
-    background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center;
-    background-size: cover;
-    position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  background: url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")
+    no-repeat center center;
+  background-size: cover;
+  position: relative;
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .hero-content {
-    position: relative;
-    max-width: 800px;
+  position: relative;
+  max-width: 800px;
 }
 
 .hero h1 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #00ff88;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #00ff88;
 }
 
 .hero p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .cta-button {
-    display: inline-block;
-    padding: 1rem 3rem;
-    background-color: #00ff88;
-    color: #1a1a1a;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #00ff88;
+  color: #1a1a1a;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .cta-button:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .features {
-    padding: 5rem 2rem;
-    background-color: #1a1a1a;
+  padding: 5rem 2rem;
+  background-color: #1a1a1a;
 }
 
 .features-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
 .feature-card {
-    background-color: #2d2d2d;
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s ease;
+  background-color: #2d2d2d;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 
 .feature-card h3 {
-    color: #00ff88;
-    margin-bottom: 1rem;
+  color: #00ff88;
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
-    }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
 
-    .hero p {
-        font-size: 1.2rem;
-    }
+  .hero p {
+    font-size: 1.2rem;
+  }
 
-    .nav-links {
-        display: none;
-    }
+  .nav-links {
+    display: none;
+  }
 }
