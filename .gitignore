@@ -3,6 +3,8 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+### .env ###
 .env
 
 ### STS ###
@@ -13,7 +15,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -32,3 +33,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Sistema operacional ###
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+### Logs ###
+*.log
+
+### Docker ###
+/postgres-data/
+/pgadmin_data/
