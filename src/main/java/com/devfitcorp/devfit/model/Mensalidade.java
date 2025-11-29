@@ -23,4 +23,8 @@ public class Mensalidade {
     private BigDecimal valorPago;
     private LocalDate dataPagamento;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usario;
+
 }
