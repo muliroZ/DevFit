@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loja - DevFit</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/loja.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/loja.css" />
+    <script defer src="js/auth-util.js"></script>
     <script defer src="js/loja.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <header class="header">
-        <nav class="nav-container">
-            <a href="index.html" class="logo">DevFit</a>
-            <div class="nav-links">
-                <a href="loja.html" class="active">Loja</a>
-                <a href="index.html#planos">Planos</a>
-                <a href="index.html#sobre">Sobre</a>
-                <a href="index.html#contato">Contato</a>
-            </div>
-            <div class="auth-container">
-                <a href="login.html" class="login-button">Login</a>
-                <a href="cadastro.html" class="signup-button">Cadastre-se</a>
-            </div>
-        </nav>
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="loja.html" class="active">Loja</a>
+          <a href="index.html#planos">Planos</a>
+          <a href="index.html#sobre">Sobre</a>
+          <a href="index.html#contato">Contato</a>
+        </div>
+        <div class="auth-container">
+          <a href="login.html" class="login-button">Login</a>
+          <a href="cadastro.html" class="signup-button">Cadastre-se</a>
+        </div>
+      </nav>
     </header>
 
     <section class="store-hero">
-        <div class="store-hero-content">
-            <h1>Nossos Produtos</h1>
-            <p>Equipamentos e suplementos para potencializar seu treino</p>
-        </div>
+      <div class="store-hero-content">
+        <h1>Nossos Produtos</h1>
+        <p>Equipamentos e suplementos para potencializar seu treino</p>
+      </div>
     </section>
 
     <section class="products-section">
-        <div class="filters-container">
-            <input type="text" id="search-input" placeholder="Buscar produtos...">
-        </div>
-        
-        <div id="products-container" class="products-grid">
-            <div class="loading">Carregando produtos...</div>
-        </div>
+      <div class="filters-container">
+        <input type="text" id="search-input" placeholder="Buscar produtos..." />
+      </div>
+
+      <div id="products-container" class="products-grid">
+        <div class="loading">Carregando produtos...</div>
+      </div>
     </section>
-</body>
+  </body>
 </html>

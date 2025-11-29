@@ -1,62 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('products-container')
-    const searchInput = document.getElementById('search-input')
-    let allProducts = []
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("products-container");
+  const searchInput = document.getElementById("search-input");
+  let allProducts = [];
 
-    async function fetchProducts() {
-        try {
-            const token = localStorage.getItem('authToken')
-            const headers = {
-                'Content-Type': 'application/json'
-            }
+  async function fetchProducts() {
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
 
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`
-            }
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
 
-            const response = await fetch('/produtos', {
-                method: 'GET',
-                headers: headers
-            })
+      const response = await fetch("/produtos", {
+        method: "GET",
+        headers: headers,
+      });
 
-            if (!response.ok) {
-                throw new Error('Falha ao carregar produtos')
-            }
+      if (!response.ok) {
+        throw new Error("Falha ao carregar produtos");
+      }
 
-            allProducts = await response.json()
-            renderProducts(allProducts)
-            
-        } catch (error) {
-            console.error('Erro ao buscar produtos:', error)
-            container.innerHTML = '<p class="error">Erro ao carregar a loja. Tente novamente mais tarde</p>'
-        }
+      allProducts = await response.json();
+      renderProducts(allProducts);
+    } catch (error) {
+      console.error("Erro ao buscar produtos:", error);
+      container.innerHTML =
+        '<p class="error">Erro ao carregar a loja. Tente novamente mais tarde</p>';
+    }
+  }
+
+  function renderProducts(products) {
+    container.innerHTML = "";
+
+    if (products.lenght === 0) {
+      container.innerHTML =
+        '<p class="no-results">Nenhum produto encontrado.</p>';
+      return;
     }
 
-    function renderProducts(products) {
-        container.innerHTML = ''
+    products.forEach((product) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
 
-        if (products.lenght === 0) {
-            container.innerHTML = '<p class="no-results">Nenhum produto encontrado.</p>'
-            return
-        }
+      const precoFormatado = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(product.preco);
 
-        products.forEach(product => {
-            const card = document.createElement('div')
-            card.className = 'product-card'
+      const temEstoque = product.estoque > 0;
+      const actionBtn = temEstoque
+        ? `<button class="buy-button" onclick="adicionarAoCarrinho(${product.id})">Comprar</button>`
+        : `<button class="buy-button" disabled>Esgotado</button>`;
 
-            const precoFormatado = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(product.preco)
+      const imagem = product.imagemUrl;
 
-            const temEstoque = product.estoque > 0
-            const actionBtn = temEstoque 
-                ? `<button class="buy-button" onclick="adicionarAoCarrinho(${product.id})">Comprar</button>`
-                : `<button class="buy-button" disabled>Esgotado</button>`
-
-            const imagem = product.imagemUrl
-
-            card.innerHTML = `
+      card.innerHTML = `
                 <div class="product-image-container">
                     <img src="${imagem}" alt="${product.nome}" class="product-image">
                 </div>
@@ -68,33 +69,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${actionBtn}
                     </div>
                 </div>
-            `
+            `;
 
-            container.appendChild(card)
-        });
+      container.appendChild(card);
+    });
+  }
+
+  // Filtro de busca em tempo real
+  searchInput.addEventListener("input", (e) => {
+    const termo = e.target.value.toLowerCase();
+    const produtosFiltrados = allProducts.filter(
+      (product) =>
+        product.nome.toLowerCase().includes(termo) ||
+        product.descricao.toLowerCase().includes(termo)
+    );
+    renderProducts(produtosFiltrados);
+  });
+
+  // Simulação de adicionar ao carrinho
+  window.adicionarAoCarrinho = (id) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Por favor, faça login para adicionar produtos ao carrinho.");
+      window.location.href = "/login.html";
+      return;
     }
+    alert(
+      `Produto com ID: ${id}, adicionado ao carrinho! (Implementação futura)`
+    );
+  };
 
-    // Filtro de busca em tempo real
-    searchInput.addEventListener('input', (e) => {
-        const termo = e.target.value.toLowerCase()
-        const produtosFiltrados = allProducts.filter(product => 
-            product.nome.toLowerCase().includes(termo) ||
-            product.descricao.toLowerCase().includes(termo)
-        )
-        renderProducts(produtosFiltrados)
-    })
-
-    // Simulação de adicionar ao carrinho
-    window.adicionarAoCarrinho = (id) => {
-        const token = localStorage.getItem('authToken')
-        if (!token) {
-            alert('Por favor, faça login para adicionar produtos ao carrinho.')
-            window.location.href = '/login.html'
-            return
-        }
-        alert(`Produto com ID: ${id}, adicionado ao carrinho! (Implementação futura)`)
-    }
-
-    // Inicializa
-    fetchProducts()
-})
+  // Inicializa
+  fetchProducts();
+});

@@ -3,6 +3,10 @@ body {
   overflow: hidden;
 }
 
+.nav-links {
+  transform: translateX(-15%);
+}
+
 .form-hero {
   min-height: 100vh;
   display: flex;
@@ -111,16 +115,6 @@ body {
 .submit-button:hover {
   background-color: #ffffff;
   transform: translateY(-2px);
-}
-
-.admin-badge {
-  background-color: #ffaa00; /* Laranja para diferenciar gestão */
-  color: #000;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  vertical-align: top;
-  margin-left: 5px;
 }
 
 .message-container {
