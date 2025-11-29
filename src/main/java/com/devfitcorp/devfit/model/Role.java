@@ -15,6 +15,11 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String nome;
+    private UsuarioRole nome;
+
+    public Role(UsuarioRole nome) {
+        this.nome = nome;
+    }
 }
