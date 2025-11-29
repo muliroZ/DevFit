@@ -54,7 +54,7 @@ public class FichaAvaliacaoController {
     }
     // Novo metodo para o aluno ver suas proprias avaliacoes
     @GetMapping("/minhas-avaliacoes")
-    @PreAuthorize("hasAnyRole('ALUNO', INSTRUTOR', 'GESTOR')")
+    @PreAuthorize("hasAnyRole('ALUNO', 'INSTRUTOR', 'GESTOR')")
     public ResponseEntity<List<FichaAvaliacaoResponse>> listarMinhasAvaliacoes() {
         Usuario UsuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long alunoId = UsuarioAutenticado.getId();
