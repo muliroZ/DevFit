@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.HttpStatus;
-import com.devfitcorp.devfit.exception.ProdutoNaoEncontradoException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @RestControllerAdvice
@@ -50,6 +49,14 @@ public class GlobalExceptionHandler{
     public ResponseEntity<?> handleUsuarioJaExisteException(UsuariojaExisteException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    // Novo Handler, captura erros de logica de negocio e valicadao na camada de service
+    @ExceptionHandler(CalculoImcFoundException.class)
+    public ResponseEntity<?> handleFalhaNoCalcularImcException(CalculoImcFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
 
