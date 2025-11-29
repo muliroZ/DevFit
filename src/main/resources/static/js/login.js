@@ -23,13 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(data),
       });
 
-      const statusCode = response.status;
-
       if (!response.ok) {
         const errorText = await response.text();
         messageDisplay.innerHTML = `<span class="error-msg">Erro: ${
           errorText || "Credenciais Inválidas"
-        } - Status: ${statusCode}</span>`;
+        }`;
         return;
       }
 
