@@ -38,6 +38,7 @@
 }
 
 .user-greeting {
+  text-align: center;
   margin-right: 15px;
   font-size: 0.9rem;
   color: #ccc;

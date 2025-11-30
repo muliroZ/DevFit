@@ -80,7 +80,7 @@ function atualizarInterfaceAuth() {
     const emailUsuario = dados.sub || "Usuário";
 
     authContainer.innerHTML = `
-            <span class="user-greeting">${emailUsuario}</span>
+            <span class="user-greeting">Bem Vindo(a),<br>${emailUsuario}</span>
             <button id="logout-btn" class="logout-button">Sair</button>
         `;
 

@@ -11,23 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/admin/dashboard") // Coreção do /api
+@RequestMapping("/admin/dashboard")
 public class AdminDashboardController {
 
-
     private final UsuarioService usuarioService;
-
 
     public AdminDashboardController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
-
     @PreAuthorize("hasRole('GESTOR')")
     @GetMapping("/usuarios/detalhado")
     public ResponseEntity<Map<String, List<UsuarioDetalhadoDashboardDTO>>> getUsersListDetalhado() {
-
-
         Map<String, List<UsuarioDetalhadoDashboardDTO>> usuariosAgrupados = usuarioService.findAndGroupByRole();
         Map<String, List<UsuarioDetalhadoDashboardDTO>> resultado = Optional.ofNullable(usuariosAgrupados)
                 .orElse(Collections.emptyMap());
