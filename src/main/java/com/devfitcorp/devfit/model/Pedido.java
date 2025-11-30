@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "pedidos")
 public class Pedido {
 
     @Id
@@ -22,10 +23,15 @@ public class Pedido {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private LocalDateTime dataCriacao;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens;
 
     private BigDecimal valorTotal;
+
+    @PrePersist
+    protected void onCreate() {
+        this.dataCriacao = LocalDateTime.now();
+    }
 }

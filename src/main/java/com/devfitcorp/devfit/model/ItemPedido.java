@@ -17,9 +17,11 @@ public class ItemPedido {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
     @Column(nullable = false)

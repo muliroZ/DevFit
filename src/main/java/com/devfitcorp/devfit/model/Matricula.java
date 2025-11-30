@@ -1,15 +1,17 @@
 package com.devfitcorp.devfit.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
 import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "matriculas")
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter // tirei o @Data pois podia dar loop infinito nos logs, por conta do @ToString embutido
 public class Matricula {
 
     @Id
@@ -19,6 +21,9 @@ public class Matricula {
     @ManyToOne
     @JoinColumn(name = "plano_id")
     private Plano plano;
+
+    @OneToOne(mappedBy = "matricula") // relacionamento bidirecional
+    private Usuario usuario;
 
     private LocalDate dataVencimento;
 
