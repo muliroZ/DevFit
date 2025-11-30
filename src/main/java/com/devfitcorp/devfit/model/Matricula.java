@@ -22,5 +22,5 @@ public class Matricula {
 
     private LocalDate dataVencimento;
 
-    private boolean estaAtiva;
+    private boolean isAtiva;
 }

@@ -17,6 +17,12 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    public Long getUserIdFromUsername(String username) {
+        Usuario usuario = usuarioRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException(("Usuário logado não encontrado no banco de dados.")));
+
+        return usuario.getId();
+    }
 
     public Map<String, List<UsuarioDetalhadoDashboardDTO>> findAndGroupByRole() {
         List<Usuario> usuarios = usuarioRepository.findAll();
