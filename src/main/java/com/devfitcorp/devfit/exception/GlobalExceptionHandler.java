@@ -59,5 +59,12 @@ public class GlobalExceptionHandler{
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<?> handleUsuarioNaoEncontradoException(UsuarioNaoEncontradoException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
+
 
 }
