@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dashboard/financeiro")
+@RequestMapping("/admin/dashboard/financeiro")
 public class FinanceiroDashboardController {
 
     private final FinanceiroService financeiroService;
@@ -17,7 +17,6 @@ public class FinanceiroDashboardController {
     public FinanceiroDashboardController(FinanceiroService financeiroService) {
         this.financeiroService = financeiroService;
     }
-
 
     @PreAuthorize("hasRole('GESTOR')")
     @GetMapping("/resumo")

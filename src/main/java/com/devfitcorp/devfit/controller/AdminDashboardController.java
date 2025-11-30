@@ -17,9 +17,8 @@ import java.time.LocalDate;
 
 
 @RestController
-@RequestMapping("/admin/dashboard") // Coreção do /api
+@RequestMapping("/admin/dashboard")
 public class AdminDashboardController {
-
 
     private final UsuarioService usuarioService;
     private final AdminDashboardService adminDashboardService;
@@ -30,12 +29,9 @@ public class AdminDashboardController {
         this.adminDashboardService = adminDashboardService;
     }
 
-
     @PreAuthorize("hasRole('GESTOR')")
     @GetMapping("/usuarios/detalhado")
     public ResponseEntity<Map<String, List<UsuarioDetalhadoDashboardDTO>>> getUsersListDetalhado() {
-
-
         Map<String, List<UsuarioDetalhadoDashboardDTO>> usuariosAgrupados = usuarioService.findAndGroupByRole();
         Map<String, List<UsuarioDetalhadoDashboardDTO>> resultado = Optional.ofNullable(usuariosAgrupados)
                 .orElse(Collections.emptyMap());

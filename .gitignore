@@ -48,3 +48,9 @@ Desktop.ini
 ### Docker ###
 /postgres-data/
 /pgadmin_data/
+
+### AMBIENTES VIRTUAIS ###
+venv/
+.venv/
+ENV/
+env/
