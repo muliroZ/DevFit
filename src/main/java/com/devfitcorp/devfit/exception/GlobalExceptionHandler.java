@@ -53,10 +53,10 @@ public class GlobalExceptionHandler{
     }
 
     // Novo Handler, captura erros de logica de negocio e valicadao na camada de service
-    @ExceptionHandler(CalculoImcFoundException.class)
-    public ResponseEntity<?> handleFalhaNoCalcularImcException(CalculoImcFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
 

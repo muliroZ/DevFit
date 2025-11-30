@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 
-public class CalculoImcFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
     // Construtor que aceita o ID da entidade não encontrada
 
-    public CalculoImcFoundException(Long id) {
+    public ResourceNotFoundException(Long id) {
         super("Recurso (ID " + id + ") não encontrado.");
     }
 
     // Construtor para mensagens mais específicas
 
-    public CalculoImcFoundException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 
