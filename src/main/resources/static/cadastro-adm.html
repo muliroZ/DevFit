@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro Gestor - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-adm.css" />
+    <script defer src="js/cadastro-adm.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="index.html" class="index-button">Início</a>
+        </div>
+        <div class="auth-container">
+          <a href="login.html" class="login-button">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="auth-hero">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h2>Cadastro Gestor</h2>
+          <p>Cadastre-se como administrador na DevFit</p>
+        </div>
+
+        <form id="admin-form">
+          <div class="form-group">
+            <label for="nome">Usuário</label>
+            <input
+              type="text"
+              id="nome"
+              required
+              placeholder="Digite seu usuário"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="admin@devfit.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input
+              type="password"
+              id="password"
+              required
+              placeholder="••••••••"
+            />
+            <ul class="password-requirements">
+              <li class="check length">Mínimo de 8 caracteres</li>
+              <li class="check lower">Pelo menos 1 letra minúscula</li>
+              <li class="check upper">Pelo menos 1 letra maiúscula</li>
+              <li class="check number">Pelo menos 1 número</li>
+            </ul>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirme a sua senha</label>
+            <input
+              type="password"
+              id="confirm-password"
+              required
+              placeholder="Repita sua senha"
+            />
+          </div>
+
+          <div class="form-group special-access">
+            <label for="access-code">Chave de Segurança</label>
+            <input
+              type="password"
+              id="access-code"
+              required
+              placeholder="Chave Mestra"
+            />
+            <small>Necessária para validação de privilégios</small>
+          </div>
+
+          <button type="submit" class="submit-button">Criar Conta Admin</button>
+        </form>
+
+        <div id="message-display" class="message-container"></div>
+
+        <div class="auth-footer">
+          <p>Já é gestor? <a href="login.html">Fazer Login</a></p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

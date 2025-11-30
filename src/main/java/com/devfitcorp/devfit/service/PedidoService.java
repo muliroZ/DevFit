@@ -2,12 +2,16 @@ package com.devfitcorp.devfit.service;
 
 import com.devfitcorp.devfit.dto.*;
 import com.devfitcorp.devfit.exception.ProdutoNaoEncontradoException;
+import com.devfitcorp.devfit.exception.UsuarioNaoEncontradoException;
 import com.devfitcorp.devfit.mappers.PedidoMapper;
 import com.devfitcorp.devfit.model.ItemPedido;
 import com.devfitcorp.devfit.model.Pedido;
 import com.devfitcorp.devfit.model.Produto;
+import com.devfitcorp.devfit.model.Usuario;
 import com.devfitcorp.devfit.repository.PedidoRepository;
 import com.devfitcorp.devfit.repository.ProdutoRepository;
+import com.devfitcorp.devfit.repository.UsuarioRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +23,16 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ProdutoRepository produtoRepository;
+    private final UsuarioRepository usuarioRepository;
     private final PedidoMapper mapper;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          ProdutoRepository produtoRepository,
+                         UsuarioRepository usuarioRepository,
                          PedidoMapper mapper) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
+        this.usuarioRepository = usuarioRepository;
         this.mapper = mapper;
     }
 
@@ -33,7 +40,11 @@ public class PedidoService {
     public PedidoResponse criarPedido(PedidoRequest request) {
 
         Pedido pedido = new Pedido();
-        pedido.setUsuarioId(request.usuarioId());
+
+        Usuario usuario = usuarioRepository.findById(request.usuarioId())
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(request.usuarioId()));
+
+        pedido.setUsuario(usuario);
 
         List<ItemPedido> itens = request.itens().stream().map(i -> {
 
@@ -41,32 +52,19 @@ public class PedidoService {
                     .orElseThrow(() -> new ProdutoNaoEncontradoException(i.produtoId()));
 
             if (produto.getEstoque() < i.quantidade()) {
-                throw new RuntimeException("Estoque insuficiente para o produto: " + produto.getNome());
+                throw new RuntimeException(
+                        "Estoque insuficiente para o produto: " + produto.getNome()
+                );
             }
 
             produto.setEstoque(produto.getEstoque() - i.quantidade());
             produtoRepository.save(produto);
 
-            // Criar item
-            ItemPedido item = new ItemPedido();
-            item.setPedido(pedido);
-            item.setProduto(produto);
-            item.setQuantidade(i.quantidade());
-
-            // Preço de uma unidade de item
-            item.setPrecoUnitario(produto.getPreco());
-
-            // calculando preço total de todas as quantidades de um item
-            BigDecimal subtotal = produto.getPreco()
-                    .multiply(BigDecimal.valueOf(i.quantidade()));
-            item.setSubtotal(subtotal);
-
-            return item;
+            return mapper.toEntity(i, produto, pedido);
 
         }).toList();
 
         pedido.setItens(itens);
-        // soma do subtotal de cada um dos itens
         BigDecimal valorTotal = itens.stream()
                 .map(ItemPedido::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

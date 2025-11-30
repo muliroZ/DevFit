@@ -1,0 +1,144 @@
+body {
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.nav-links {
+  transform: translateX(-15%);
+}
+
+.form-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem 2rem;
+  background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+    url("https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+}
+
+.form-card {
+  background-color: #2d2d2d;
+  padding: 2.5rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border: 1px solid #3d3d3d;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #00ff88;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  color: aliceblue;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: #1a1a1a;
+  border: 2px solid #3d3d3d;
+  border-radius: 8px;
+  color: aliceblue;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #00ff88;
+}
+
+.password-requirements {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  align-items: center;
+}
+
+.check {
+  color: #ff4444;
+  transition: color 0.2s ease;
+}
+
+.check.ok {
+  color: #00ff88;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #00ff88;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.message-container {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  min-height: 18px;
+  padding: 5px;
+}
+
+.error-msg {
+  color: #ff4444;
+  background: #0d0d0d;
+  border: 2px solid #ff4444;
+  border-radius: 50px;
+  padding: 8px;
+  box-shadow: 0 0 2px #ff4444;
+}
+.success-msg {
+  color: #00ff88;
+  background: #0d0d0d;
+  border: 2px solid #00ff88;
+  border-radius: 50px;
+  padding: 8px;
+  box-shadow: 0 0 2px #00ff88;
+}
