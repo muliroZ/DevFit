@@ -55,8 +55,8 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/error"
                         ).permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("GESTOR")
+                        .requestMatchers("/auth/login", "/auth/cadastro", "/auth/cadastro/gestor").permitAll()
+                        .requestMatchers("/admin/**", "/auth/cadastro/instrutor").hasAuthority("ROLE_GESTOR")
                         .requestMatchers(HttpMethod.GET, "/produtos", "/produtos/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

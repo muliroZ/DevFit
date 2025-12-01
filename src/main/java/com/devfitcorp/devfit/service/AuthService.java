@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -54,8 +56,8 @@ public class AuthService {
         );
 
         UserDetails usuario = (UserDetails) auth.getPrincipal();
-        String role = usuario.getAuthorities().iterator().next().getAuthority();
-        String token = jwtUtil.generateToken(usuario.getUsername(), role);
+        String rolePrincipal = determinarRolePrincipal(usuario);
+        String token = jwtUtil.generateToken(usuario.getUsername(), rolePrincipal);
 
         return new AuthResponse(token);
     }
@@ -82,5 +84,26 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Role não encontrada: " + usuarioRole));
 
         usuarioRepository.save(authMapper.toEntity(request, role));
+    }
+
+    private String determinarRolePrincipal(UserDetails usuario) {
+
+        // Mapeia todas as authorities para uma lista de Strings (ex: ["ROLE_GESTOR", "ROLE_ALUNO"])
+        List<String> authorities = usuario.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+
+        if (authorities.contains("ROLE_GESTOR")) {
+            return "ROLE_GESTOR";
+        }
+        if (authorities.contains("ROLE_INSTRUTOR")) {
+            return "ROLE_INSTRUTOR";
+        }
+        if (authorities.contains("ROLE_ALUNO")) {
+            return "ROLE_ALUNO";
+        }
+
+        // Caso de fallback (se a autenticação passou, mas nenhuma role foi encontrada)
+        throw new RuntimeException("Usuário autenticado sem role definida no sistema.");
     }
 }

@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       senha: document.getElementById("senha").value,
     };
 
+    const token = localStorage.getItem("token");
+
     try {
       const response = await fetch("/auth/cadastro/instrutor", {
         method: "POST",
