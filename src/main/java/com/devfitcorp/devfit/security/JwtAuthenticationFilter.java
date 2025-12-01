@@ -1,8 +1,10 @@
 package com.devfitcorp.devfit.security;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -31,7 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
         if (request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.startsWith("/auth")
+                || path.startsWith("/auth/login")
+                || path.equals("/auth/cadastro")
+                || path.startsWith("/auth/cadastro/gestor")
                 || path.endsWith(".html")
                 || path.startsWith("/css/")
                 || path.startsWith("/js/")
@@ -52,6 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
         String email = jwtUtil.getEmailFromToken(token);
+        String role = jwtUtil.getRoleFromToken(token);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -61,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
-                                userDetails.getAuthorities()
+                                List.of(new SimpleGrantedAuthority(role))
                         );
                 auth.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
