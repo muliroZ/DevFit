@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import lombok.Data;
 
 @Entity
 @Table(name = "matriculas")
@@ -22,10 +21,17 @@ public class Matricula {
     @JoinColumn(name = "plano_id")
     private Plano plano;
 
-    @OneToOne(mappedBy = "matricula") // relacionamento bidirecional
+    @OneToOne(mappedBy = "matricula")
     private Usuario usuario;
+
+    private LocalDate dataInicio;
 
     private LocalDate dataVencimento;
 
     private boolean isAtiva;
+
+    @PrePersist
+    protected void onCreate() {
+        this.dataInicio = LocalDate.now();
+    }
 }

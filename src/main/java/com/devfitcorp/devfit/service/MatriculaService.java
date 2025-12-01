@@ -39,37 +39,38 @@ public class MatriculaService {
         Plano plano = planoRepository.findById(planoId)
                 .orElseThrow(() -> new RuntimeException("Plano não encontrado."));
 
-        if (!plano.isAtiva()) {
+        if (!plano.isAtivo()) {
             throw new IllegalArgumentException("O plano selecionado não está ativo.");
         }
 
         matriculaRepository.findTopByUsuarioIdAndIsAtivaTrueOrderByDataVencimentoDesc(usuarioId)
                 .ifPresent(mat -> {
-                    mat.setIsAtiva(false);
+                    mat.setAtiva(false);
                     matriculaRepository.save(mat);
                 });
 
         Matricula novaMatricula = new Matricula();
         LocalDate hoje = LocalDate.now();
 
-        novaMatricula.setAluno(aluno);
+        novaMatricula.setUsuario(aluno);
         novaMatricula.setPlano(plano);
         novaMatricula.setDataInicio(hoje);
         novaMatricula.setDataVencimento(hoje.plusMonths(plano.getDuracaoMeses()));
 
-        novaMatricula.setIsAtiva(true);
+        novaMatricula.setAtiva(true);
         return matriculaRepository.save(novaMatricula);
     }
 
     public boolean isMatriculaAtiva(Long usuarioId) {
-        Optional<Matricula> matriculaOpt = matriculaRepository.findTopByUsuarioIdAndIsAtivaTrueOrderByDataVencimentoDesc(usuarioId);
+        Optional<Matricula> matriculaOpt = matriculaRepository
+                .findTopByUsuarioIdAndIsAtivaTrueOrderByDataVencimentoDesc(usuarioId);
         if (matriculaOpt.isEmpty()) {
             return false;
         }
 
         Matricula matricula = matriculaOpt.get();
 
-        if (!matricula.isIsAtiva()) {
+        if (!matricula.isAtiva()) {
             return false;
         }
 
