@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Treinos - DevFit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard-fichas.css">
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/treinos.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">DevFit</a>
+            <div class="nav-links">
+                <a href="treinos.html" class="active">Treinos</a>
+                <a href="avaliacoes.html">Avaliações</a>
+                <a href="loja.html">Loja</a>
+            </div>
+            <div class="auth-container">
+                </div>
+        </nav>
+    </header>
+
+    <section class="dashboard-hero">
+        <h2>Fichas de Treino</h2>
+        <p>Acompanhe sua evolução e rotina de exercícios</p>
+    </section>
+
+    <div class="action-bar">
+        <button id="btn-novo-treino" class="btn-create">+ Criar Nova Ficha</button>
+    </div>
+
+    <div id="treinos-container" class="cards-container">
+        <div class="loading-msg">Carregando treinos...</div>
+    </div>
+
+    <div id="modal-detalhes" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <h3 id="modal-titulo" style="color:#00ff88; margin-bottom:1rem;">Detalhes do Treino</h3>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+</body>
+</html>
