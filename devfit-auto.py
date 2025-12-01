@@ -1,9 +1,22 @@
 import subprocess
 import threading
 import os
+import shutil
 import json
 import customtkinter as ctk
 from tkinter import messagebox, filedialog
+
+# ===========================================
+# WATCHDOG IMPORT
+# ===========================================
+
+try:
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler
+    WATCHDOG_AVAILABLE = True
+except ImportError:
+    WATCHDOG_AVAILABLE = False
+
 
 # ===========================================
 # CONFIGURAÇÃO / ARQUIVO DE SALVAMENTO
@@ -23,6 +36,9 @@ def save_config(config):
 
 config = load_config()
 
+observer = None
+watchdog_enabled = False
+
 # ===========================================
 # FUNÇÕES AUXILIARES
 # ===========================================
@@ -30,10 +46,16 @@ config = load_config()
 def run_command(cmd):
     """Executa comandos e devolve código, stdout, stderr"""
     process = subprocess.Popen(
-        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        cmd, 
+        shell=True, 
+        stdout=subprocess.PIPE, 
+        stderr=subprocess.PIPE,
+        text=True,            # <<< transforma bytes em string automaticamente
+        encoding="utf-8",     # ou simplesmente remova encoding
+        errors="replace"
     )
     stdout, stderr = process.communicate()
-    return process.returncode, stdout.decode(), stderr.decode()
+    return process.returncode, stdout, stderr
 
 
 def ensure_compose_selected():
@@ -51,6 +73,112 @@ def ensure_compose_selected():
 
     return compose_dir
 
+def detect_terminal(cmd, compose_dir):
+    """
+    Retorna o comando final corretamente formatado por terminal.
+    """
+
+    windows_cmd = f'cmd.exe /k "cd /d \\"{compose_dir}\\" && {cmd}"'
+    windows_pwsh = f'powershell.exe -NoExit -Command "Set-Location \\"{compose_dir}\\"; {cmd}"'
+    windows_wt_pwsh = f'wt.exe powershell.exe -NoExit -Command "Set-Location \\"{compose_dir}\\"; {cmd}"'
+    windows_wt_cmd = f'wt.exe cmd.exe /k "cd /d \\"{compose_dir}\\" && {cmd}"'
+
+    terminals = [
+        # Linux
+        f"x-terminal-emulator -e bash -c \"cd '{compose_dir}' && {cmd}; exec bash\"",
+        f"gnome-terminal -- bash -c \"cd '{compose_dir}' && {cmd}; exec bash\"",
+        f"xfce4-terminal -e \"bash -c 'cd \"{compose_dir}\" && {cmd}; exec bash'\"",
+        f"konsole -e bash -c \"cd '{compose_dir}' && {cmd}; exec bash\"",
+        f"xterm -e \"bash -c 'cd \"{compose_dir}\" && {cmd}; exec bash'\"",
+
+        # Windows (CMD)
+        windows_cmd,
+
+        # PowerShell
+        windows_pwsh,
+
+        # Windows Terminal (WT)
+        windows_wt_pwsh,
+        windows_wt_cmd,
+
+        # Git Bash
+        f"C:\\Program Files\\Git\\bin\\bash.exe -c \"cd '{compose_dir}' && {cmd}; exec bash\"",
+        f"C:\\Program Files\\Git\\git-bash.exe -c \"cd '{compose_dir}' && {cmd}; exec bash\"",
+    ]
+
+    for t in terminals:
+        exe = t.split()[0].replace('"', "")
+        if shutil.which(exe):
+            return t
+
+    return None
+
+
+# ===========================================
+# WATCHDOG (MONITORAMENTO OPCIONAL)
+# ===========================================
+
+def start_watcher():
+    global observer, watchdog_enabled
+
+    if not WATCHDOG_AVAILABLE:
+        messagebox.showerror("Erro", "Watchdog não instalado!\nUse: pip install watchdog")
+        return
+
+    compose_dir = ensure_compose_selected()
+    if not compose_dir:
+        return
+
+    class ComposeChangeHandler(FileSystemEventHandler):
+        def __init__(self, compose_dir):
+            self.compose_file = os.path.join(compose_dir, "docker-compose.yml")
+
+        def on_modified(self, event):
+            if event.src_path == self.compose_file:
+                output_text.set("🔄 Mudança detectada! Recarregando containers...")
+                threading.Thread(target=auto_reload).start()
+
+    def auto_reload():
+        compose_dir = config["compose_dir"]
+        cmd = f'cd "{compose_dir}" && docker compose up -d --build'
+        code, out, err = run_command(cmd)
+
+        if code == 0:
+            output_text.set("✔ Reload automático concluído!")
+        else:
+            output_text.set("❌ Erro no reload automático:\n" + err)
+
+    # Criar observer corretamente
+    event_handler = ComposeChangeHandler(compose_dir)
+    observer = Observer()
+    observer.schedule(event_handler, compose_dir, recursive=False)
+    observer.daemon = True
+    observer.start()
+
+    watchdog_enabled = True
+    watchdog_button_text.set("Desativar Watchdog")
+    output_text.set("👀 Watchdog ATIVADO")
+
+
+def stop_watcher():
+    global observer, watchdog_enabled
+
+    if observer:
+        observer.stop()
+        observer.join()
+        observer = None
+
+    watchdog_enabled = False
+    watchdog_button_text.set("Ativar Watchdog")
+    output_text.set("🛑 Watchdog DESATIVADO")
+
+
+def toggle_watcher():
+    if watchdog_enabled:
+        stop_watcher()
+    else:
+        start_watcher()
+
 
 # ===========================================
 # AÇÕES DO DOCKER
@@ -62,7 +190,7 @@ def docker_up():
         return
 
     output_text.set("Rodando: docker compose up -d --build ...")
-    cmd = f"cd '{compose_dir}' && docker compose up -d --build"
+    cmd = f'cd "{compose_dir}" && docker compose up -d --build'
 
     code, out, err = run_command(cmd)
 
@@ -77,7 +205,7 @@ def docker_only_up():
         return
 
     output_text.set("Rodando: docker compose up -d ...")
-    cmd = f"cd '{compose_dir}' && docker compose up -d"
+    cmd = f'cd "{compose_dir}" && docker compose up -d'
 
     code, out, err = run_command(cmd)
 
@@ -92,7 +220,7 @@ def docker_down():
         return
 
     output_text.set("Derrubando containers...")
-    cmd = f"cd '{compose_dir}' && docker compose down"
+    cmd = f'cd "{compose_dir}" && docker compose down'
 
     code, out, err = run_command(cmd)
 
@@ -107,7 +235,7 @@ def docker_down_with_volumes():
         return
 
     output_text.set("Derrubando containers...")
-    cmd = f"cd '{compose_dir}' && docker compose down -v"
+    cmd = f'cd "{compose_dir}" && docker compose down -v'
 
     code, out, err = run_command(cmd)
 
@@ -129,25 +257,20 @@ def show_logs():
 
     output_text.set("Abrindo logs em um terminal externo...")
 
-    cmd = f"cd '{compose_dir}' && docker compose logs -f"
+    cmd = "docker compose logs -f"
 
-    # lista de terminais possíveis no Linux Mint / Ubuntu
-    terminals = [
-        f"x-terminal-emulator -e bash -c \"{cmd}; exec bash\"",
-        f"gnome-terminal -- bash -c \"{cmd}; exec bash\"",
-        f"xfce4-terminal -e \"bash -c '{cmd}; exec bash'\"",
-        f"konsole -e bash -c \"{cmd}; exec bash\"",
-        f"xterm -e \"bash -c '{cmd}; exec bash'\"",
-    ]
+    final_cmd = detect_terminal(cmd, compose_dir)
+    if not final_cmd:
+        messagebox.showerror("Erro", "Nenhum terminal encontrado para abrir os logs.")
+        return
 
-    for t in terminals:
+    def run():
         try:
-            subprocess.Popen(t, shell=True)
-            return
-        except FileNotFoundError:
-            pass
+            subprocess.Popen(final_cmd, shell=True)
+        except Exception as e:
+            messagebox.showerror("Erro ao abrir terminal", str(e))
 
-    messagebox.showerror("Erro", "Nenhum terminal encontrado para abrir os logs.")
+    threading.Thread(target=run, daemon=True).start()
 
 
 # ===========================================
@@ -181,7 +304,7 @@ ctk.set_default_color_theme("blue")
 
 app = ctk.CTk()
 app.title("Docker Controller")
-app.geometry("500x600")
+app.geometry("500x620+400+170")
 
 # Título
 title_label = ctk.CTkLabel(app, text="Docker Controller", font=("Arial", 26, "bold"))
@@ -221,6 +344,16 @@ for i, (label, action) in enumerate(buttons):
     )
     btn.grid(row=i, column=0, padx=10, pady=5)
 
+watchdog_button_text = ctk.StringVar(value="Ativar Watchdog")
+
+watchdog_btn = ctk.CTkButton(
+    app,
+    textvariable=watchdog_button_text,
+    width=260,
+    height=40,
+    command=lambda: threading.Thread(target=toggle_watcher).start()
+)
+watchdog_btn.pack(pady=10)
 
 # Output
 output_text = ctk.StringVar(value="Aguardando ação...")
