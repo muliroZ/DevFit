@@ -45,6 +45,11 @@ public class JwtUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public String getRoleFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return claims.get("role", String.class);
+    }
+
     public boolean validateToken(String token, String email) {
         try {
             final String tokenEmail = getEmailFromToken(token);

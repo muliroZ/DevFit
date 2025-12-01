@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliações Físicas - DevFit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard-fichas.css">
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/avaliacoes.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">DevFit</a>
+            <div class="nav-links">
+                <a href="treinos.html">Treinos</a>
+                <a href="avaliacoes.html" class="active">Avaliações</a>
+                <a href="loja.html">Loja</a>
+            </div>
+            <div class="auth-container">
+                 </div>
+        </nav>
+    </header>
+
+    <section class="dashboard-hero">
+        <h2>Avaliações Físicas</h2>
+        <p>Histórico de composição corporal e medidas</p>
+    </section>
+
+    <div class="action-bar">
+        <button id="btn-nova-avaliacao" class="btn-create">+ Nova Avaliação</button>
+    </div>
+
+    <div id="avaliacoes-container" class="cards-container">
+        <div class="loading-msg">Carregando avaliações...</div>
+    </div>
+
+    <div id="modal-avaliacao" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <h3 style="color:#00ff88; margin-bottom:1rem;">Detalhes da Avaliação</h3>
+            <div id="modal-body-avaliacao"></div>
+        </div>
+    </div>
+</body>
+</html>

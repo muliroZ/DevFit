@@ -1,0 +1,178 @@
+/* css/dashboard-fichas.css */
+
+/* Ajuste para header fixo */
+body {
+    padding-top: 90px;
+}
+
+.dashboard-hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #00ff88;
+}
+
+.dashboard-hero h2 {
+    color: #00ff88;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
+
+.action-bar {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-create {
+    background-color: #00ff88;
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: none; /* Só aparece para Instrutor/Gestor via JS */
+}
+
+.btn-create:hover {
+    transform: scale(1.05);
+    background-color: #fff;
+}
+
+/* Grid de Cards */
+.cards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.data-card {
+    background-color: #2d2d2d;
+    border: 1px solid #3d3d3d;
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.data-card:hover {
+    transform: translateY(-5px);
+    border-color: #00ff88;
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+}
+
+.card-date {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.card-body p {
+    color: #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.card-body strong {
+    color: #fff;
+}
+
+.status-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    background: #444;
+}
+
+.status-badge.ativa {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+.btn-details {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: transparent;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-details:hover {
+    background: #00ff88;
+    color: #1a1a1a;
+}
+
+/* MODAL */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #2d2d2d;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    border: 1px solid #00ff88;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.info-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.info-item {
+    background: #1a1a1a;
+    margin-bottom: 0.8rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid #00ff88;
+}
+
+.loading-msg, .error-msg {
+    text-align: center;
+    width: 100%;
+    color: #ccc;
+    font-size: 1.2rem;
+}

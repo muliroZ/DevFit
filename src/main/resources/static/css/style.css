@@ -17,7 +17,7 @@
 /* Cores e alinhamentos diferentes para cada nível */
 .user-badge.gestor { background-color: #ffaa00; color: #000; vertical-align: top; }
 .user-badge.instrutor { background-color: #00ccff; color: #000; vertical-align: middle; }
-.user-badge.aluno { background-color: #ffffff; color: #1a1a1a; vertical-align: middle; }
+.user-badge.aluno { background-color: #ffffff; color: #1a1a1a; vertical-align: bottom; }
 
 /* Botão de Logout */
 .logout-button {

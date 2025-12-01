@@ -34,7 +34,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Aluno registrado com sucesso!");
     }
 
-    @PreAuthorize("hasRole('GESTOR')")
+    @PreAuthorize("hasAuthority('ROLE_GESTOR')")
     @PostMapping("/cadastro/instrutor")
     public ResponseEntity<String> cadastroInstrutor(@RequestBody CadastroRequest request) {
         authService.registrarInstrutor(request);
