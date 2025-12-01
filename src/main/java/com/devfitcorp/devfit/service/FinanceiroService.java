@@ -3,6 +3,7 @@ package com.devfitcorp.devfit.service;
 import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
 import com.devfitcorp.devfit.repository.MensalidadeRepository;
 import com.devfitcorp.devfit.repository.DespesaRepository;
+import com.devfitcorp.devfit.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,13 +17,16 @@ public class FinanceiroService {
 
     private final MensalidadeRepository mensalidadeRepository;
     private final DespesaRepository despesaRepository;
-    private final ProdutoRepository produtoRepository;
+    private final PedidoRepository pedidoRepository;
 
-    public FinanceiroService(MensalidadeRepository mensalidadeRepository,
-                             DespesaRepository despesaRepository,
-                             ProdutoRepository produtoRepository){
+    public FinanceiroService(
+            MensalidadeRepository mensalidadeRepository,
+            DespesaRepository despesaRepository,
+            PedidoRepository pedidoRepository
+    ){
         this.mensalidadeRepository = mensalidadeRepository;
         this.despesaRepository = despesaRepository;
+        this.pedidoRepository = pedidoRepository;
     }
 
     public FinanceiroDashboardDTO getAggregatedFinanceiroSummary(){
@@ -33,7 +37,7 @@ public class FinanceiroService {
 
 
         BigDecimal receitaMensalidades = mensalidadeRepository.sumValorPagoByPeriodo(primeiroDiaMes, ultimoDiaMes);
-        BigDecimal receitaProduto = produtoRepository.sumValorTotalByPeriodo(primeiroDiaDoMes, ultimoDiaDoMes);
+        BigDecimal receitaProduto = pedidoRepository.sumValorTotalByPeriodo(primeiroDiaMes, ultimoDiaMes);
 
         BigDecimal receitaTotal = receitaMensalidades.add(receitaProduto);
 
