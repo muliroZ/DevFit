@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel do Gestor - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard-gestor.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/dashboard-gestor.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="treinos.html">Treinos</a>
+          <a href="avaliacoes.html">Avaliações</a>
+          <a href="dashboard-gestor.html" class="active">Dashboard</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="dashboard-hero">
+      <h2>Visão Geral da Academia</h2>
+      <p>Métricas financeiras, gestão de usuários e inventário</p>
+    </section>
+
+    <main class="dashboard-content">
+      <section class="kpi-grid" id="finance-kpis">
+        <div class="kpi-card">
+          <h3>Receita Mensal</h3>
+          <p class="kpi-value positive" id="kpi-receita">R$ 0,00</p>
+          <small>Mensalidades + Produtos</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Despesas</h3>
+          <p class="kpi-value negative" id="kpi-despesa">R$ 0,00</p>
+          <small>Operacional</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Lucro Líquido</h3>
+          <p class="kpi-value" id="kpi-lucro">R$ 0,00</p>
+          <small>Balanço do mês</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Total Alunos</h3>
+          <p class="kpi-value highlight" id="kpi-alunos">0</p>
+          <small>Ativos no sistema</small>
+        </div>
+      </section>
+
+      <section class="charts-section">
+        <div class="chart-container">
+          <h3>Distribuição de Usuários</h3>
+          <canvas id="usersChart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>Fontes de Receita</h3>
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </section>
+
+      <section class="data-section">
+        <div class="list-container">
+          <div class="list-header">
+            <h3>Usuários Recentes</h3>
+            <button
+              class="btn-action"
+              onclick="window.location.href='cadastro.html'"
+            >
+              + Novo Usuário
+            </button>
+          </div>
+          <table class="devfit-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Perfil</th>
+                <th>Plano</th>
+              </tr>
+            </thead>
+            <tbody id="table-users-body"></tbody>
+          </table>
+        </div>
+
+        <div class="list-container">
+          <div class="list-header">
+            <h3>Equipamentos</h3>
+            <button
+              class="btn-action"
+              onclick="alert('Implementar cadastro de equipamentos')"
+            >
+              + Adicionar
+            </button>
+          </div>
+          <table class="devfit-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Qtd</th>
+                <th>Valor Unit.</th>
+                <th>Aquisicão</th>
+              </tr>
+            </thead>
+            <tbody id="table-equip-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
