@@ -21,6 +21,16 @@ body {
   padding: 0 2rem 4rem;
 }
 
+.section-title {
+    color: #fff;
+    border-left: 4px solid #00ff88;
+    padding-left: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /* KPIs */
 .kpi-grid {
   display: grid;

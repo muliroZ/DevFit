@@ -13,7 +13,7 @@
   <body>
     <header class="header">
       <nav class="nav-container">
-        <a href="index.html" class="logo">DevFit</a>
+        <a href="index.html" class="logo">DevFit <span class="user-badge gestor">ADMIN</span></a>
         <div class="nav-links">
           <a href="treinos.html">Treinos</a>
           <a href="avaliacoes.html">Avaliações</a>
@@ -24,21 +24,23 @@
     </header>
 
     <section class="dashboard-hero">
-      <h2>Visão Geral da Academia</h2>
-      <p>Métricas financeiras, gestão de usuários e inventário</p>
+      <h2>Painel Administrativo</h2>
+      <p>Monitoramento em tempo real de KPIs e métricas de desempenho</p>
     </section>
 
     <main class="dashboard-content">
-      <section class="kpi-grid" id="finance-kpis">
+      
+      <h3 class="section-title">Financeiro</h3>
+      <section class="kpi-grid">
         <div class="kpi-card">
-          <h3>Receita Mensal</h3>
+          <h3>Receita Real</h3>
           <p class="kpi-value positive" id="kpi-receita">R$ 0,00</p>
-          <small>Mensalidades + Produtos</small>
+          <small>Entradas confirmadas</small>
         </div>
         <div class="kpi-card">
           <h3>Despesas</h3>
           <p class="kpi-value negative" id="kpi-despesa">R$ 0,00</p>
-          <small>Operacional</small>
+          <small>Custos operacionais</small>
         </div>
         <div class="kpi-card">
           <h3>Lucro Líquido</h3>
@@ -46,9 +48,57 @@
           <small>Balanço do mês</small>
         </div>
         <div class="kpi-card">
-          <h3>Total Alunos</h3>
-          <p class="kpi-value highlight" id="kpi-alunos">0</p>
-          <small>Ativos no sistema</small>
+          <h3>Faturamento Previsto</h3>
+          <p class="kpi-value highlight" id="kpi-faturamento-previsto">R$ 0,00</p>
+          <small>Baseado em mensalidades ativas</small>
+        </div>
+      </section>
+
+      <h3 class="section-title">Membros & Retenção</h3>
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <h3>Alunos Ativos</h3>
+          <p class="kpi-value highlight" id="kpi-alunos-ativos">0</p>
+          <small>Matrículas vigentes</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Alunos Inativos</h3>
+          <p class="kpi-value" id="kpi-alunos-inativos" style="color: #ccc;">0</p>
+          <small>Matrículas vencidas/canceladas</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Taxa de Retenção</h3>
+          <p class="kpi-value positive" id="kpi-taxa-retencao">0%</p>
+          <small>Alunos ativos / Total</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Total Cadastros</h3>
+          <p class="kpi-value" id="kpi-total-users">0</p>
+          <small>Usuários registrados no sistema</small>
+        </div>
+      </section>
+
+      <h3 class="section-title">Operacional & Estrutura</h3>
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <h3>Check-ins Hoje</h3>
+          <p class="kpi-value highlight" id="kpi-checkins">0</p>
+          <small>Acessos nas últimas 24h</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Ocupação Atual</h3>
+          <p class="kpi-value" id="kpi-ocupacao">0%</p>
+          <small>Baseado na cap. máx (<span id="txt-capacidade">0</span>)</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Total Equipamentos</h3>
+          <p class="kpi-value" id="kpi-equip-total">0</p>
+          <small>Patrimônio inventariado</small>
+        </div>
+        <div class="kpi-card">
+          <h3>Em Manutenção</h3>
+          <p class="kpi-value negative" id="kpi-equip-manutencao">0</p>
+          <small>Equipamentos indisponíveis</small>
         </div>
       </section>
 
@@ -67,12 +117,7 @@
         <div class="list-container">
           <div class="list-header">
             <h3>Usuários Recentes</h3>
-            <button
-              class="btn-action"
-              onclick="window.location.href='cadastro.html'"
-            >
-              + Novo Usuário
-            </button>
+            <button class="btn-action" onclick="window.location.href='cadastro.html'">+ Novo Usuário</button>
           </div>
           <table class="devfit-table">
             <thead>
@@ -89,13 +134,8 @@
 
         <div class="list-container">
           <div class="list-header">
-            <h3>Equipamentos</h3>
-            <button
-              class="btn-action"
-              onclick="alert('Implementar cadastro de equipamentos')"
-            >
-              + Adicionar
-            </button>
+            <h3>Inventário de Equipamentos</h3>
+            <button class="btn-action" onclick="alert('Funcionalidade futura')">+ Adicionar</button>
           </div>
           <table class="devfit-table">
             <thead>
@@ -103,8 +143,7 @@
                 <th>Nome</th>
                 <th>Qtd</th>
                 <th>Valor Unit.</th>
-                <th>Aquisicão</th>
-              </tr>
+                <th>Status</th> </tr>
             </thead>
             <tbody id="table-equip-body"></tbody>
           </table>
