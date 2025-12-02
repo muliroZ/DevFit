@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Equipamento {
 
@@ -25,15 +28,7 @@ public class Equipamento {
     private Integer quantidade;
     private BigDecimal valor;
     private LocalDate dataAquisicao;
-
-    public Equipamento(String nome, String descricao, Integer quantidade, BigDecimal valor, LocalDate dataAquisicao) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.quantidade = quantidade;
-        this.valor = valor;
-        this.dataAquisicao = dataAquisicao;
-    }
-
+    private String status;
 
 }
 
