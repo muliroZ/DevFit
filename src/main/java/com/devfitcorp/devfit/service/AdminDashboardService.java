@@ -6,7 +6,6 @@ import com.devfitcorp.devfit.repository.EquipamentoRepository;
 import com.devfitcorp.devfit.repository.MatriculaRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
-import com.devfitcorp.devfit.service.FinanceiroService;
 import com.devfitcorp.devfit.dto.CheckinStatsByHourDTO;
 import java.time.LocalDate;
 

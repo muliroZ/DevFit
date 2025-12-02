@@ -21,14 +21,13 @@ public class Checkin {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @PrePersist
-    public void onCreate() {
-        this.dataHora = LocalDateTime.now();
-    }
     private LocalDateTime dataHora;
 
     @Enumerated(EnumType.STRING) //marca a entrada e saida dos marombas
     private CheckinType tipo;
 
-
+    @PrePersist
+    public void onCreate() {
+        this.dataHora = LocalDateTime.now();
+    }
 }

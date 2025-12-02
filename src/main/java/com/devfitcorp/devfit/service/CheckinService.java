@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.service;
 
 import com.devfitcorp.devfit.dto.CheckinStatsByHourDTO;
+import com.devfitcorp.devfit.exception.UsuarioNaoEncontradoException;
 import com.devfitcorp.devfit.model.Checkin;
 import com.devfitcorp.devfit.model.CheckinType; // ENTRADA ou SAIDA
 import com.devfitcorp.devfit.model.Usuario;
@@ -34,7 +35,7 @@ public class CheckinService {
     public Checkin registrarCheckin(Long usuarioId, CheckinType tipo) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado para check-in."));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 
         boolean matriculaAtiva = matriculaRepository.existsByUsuarioIdAndIsAtivaTrue(usuarioId);
 
@@ -54,7 +55,6 @@ public class CheckinService {
     public long countCheckinsToday() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
-        // Assume que o CheckinRepository tem o método countByDataHoraBetween
         return checkinRepository.countByDataHoraBetween(startOfDay, endOfDay);
     }
 
