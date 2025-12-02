@@ -1,25 +1,16 @@
 package com.devfitcorp.devfit.dto;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
+public record AdminStatsDTO (
+        BigDecimal faturamentoMensalPrevisto,
+        long totalAlunosAtivos,
+        long totalAlunosInativos,
 
-@Getter
-@Setter
-public class AdminStatsDTO {
-
-
-    private BigDecimal faturamentoMensalPrevisto;
-    private long totalAlunosAtivos;
-    private long totalAlunosInativos;
-
-    private double taxaRetencao;
-    private long totalUsuariosCadastrados;
-    private int capacidadeMaxima;
-    private long equipamentosEmManutencao;
-    private long equipamentosTotais;
-    private long checkinsHoje;
-
-}
+        double taxaRetencao,
+        long totalUsuariosCadastrados,
+        int capacidadeMaxima,
+        long equipamentosEmManutencao,
+        long equipamentosTotais,
+        long checkinsHoje
+){}
