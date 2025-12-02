@@ -18,6 +18,5 @@ public class FinanceiroDashboardDTO {
     private BigDecimal lucroLiquido;
 
     private Map<String, BigDecimal> receitaPorFonte;
-
     private Map<String, BigDecimal> despesaPorCategoria;
 }
