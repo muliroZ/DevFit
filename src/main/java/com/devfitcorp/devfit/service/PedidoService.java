@@ -1,6 +1,7 @@
 package com.devfitcorp.devfit.service;
 
 import com.devfitcorp.devfit.dto.*;
+import com.devfitcorp.devfit.exception.EstoqueInsuficienteException;
 import com.devfitcorp.devfit.exception.ProdutoNaoEncontradoException;
 import com.devfitcorp.devfit.exception.UsuarioNaoEncontradoException;
 import com.devfitcorp.devfit.mappers.PedidoMapper;
@@ -52,9 +53,8 @@ public class PedidoService {
                     .orElseThrow(() -> new ProdutoNaoEncontradoException(i.produtoId()));
 
             if (produto.getEstoque() < i.quantidade()) {
-                throw new RuntimeException(
-                        "Estoque insuficiente para o produto: " + produto.getNome()
-                );
+                throw  new EstoqueInsuficienteException(i.produtoId(), produto.getNome());
+
             }
 
             produto.setEstoque(produto.getEstoque() - i.quantidade());
