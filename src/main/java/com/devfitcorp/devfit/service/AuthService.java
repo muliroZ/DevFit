@@ -55,9 +55,9 @@ public class AuthService {
                 )
         );
 
-        UserDetails usuario = (UserDetails) auth.getPrincipal();
+        Usuario usuario = (Usuario) auth.getPrincipal();
         String rolePrincipal = determinarRolePrincipal(usuario);
-        String token = jwtUtil.generateToken(usuario.getUsername(), rolePrincipal);
+        String token = jwtUtil.generateToken(usuario.getEmail(), rolePrincipal, usuario.getId(), usuario.getNome());
 
         return new AuthResponse(token);
     }

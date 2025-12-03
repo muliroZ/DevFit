@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nova Ficha de Treino - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-instrutor.css" />
+    <link rel="stylesheet" href="css/criar-treino.css" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/criar-treino.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="treinos.html">Voltar para Treinos</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="form-hero" style="min-height: auto; padding-top: 2rem">
+      <div class="form-header">
+        <h2>Criar Nova Ficha</h2>
+        <p>Monte o treino personalizado para seu aluno</p>
+      </div>
+    </section>
+
+    <main class="treino-container">
+      <div class="form-card">
+        <h3 style="color: #00ff88; margin-bottom: 1rem">1. Dados da Ficha</h3>
+
+        <div class="form-group">
+          <label>Selecione o Aluno</label>
+          <select id="select-aluno" required>
+            <option value="">Carregando alunos...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Validade da Ficha</label>
+          <input type="date" id="data-vencimento" required />
+        </div>
+
+        <hr style="border-color: #333; margin: 2rem 0" />
+
+        <h3 style="color: #00ff88; margin-bottom: 1rem">
+          2. Adicionar Exercício
+        </h3>
+
+        <form id="form-item">
+          <div class="form-group">
+            <label>Exercício</label>
+            <select id="select-exercicio" required>
+              <option value="">Carregando exercícios...</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="form-group">
+              <label>Séries</label>
+              <input type="number" id="series" min="1" value="3" required />
+            </div>
+            <div class="form-group">
+              <label>Repetições</label>
+              <input
+                type="number"
+                id="repeticoes"
+                min="1"
+                value="12"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Carga (kg) <small>(Opcional)</small></label>
+            <input type="number" id="carga" step="0.5" />
+          </div>
+
+          <div class="form-group">
+            <label>Observações <small>(Ex: dropset, falha)</small></label>
+            <input type="text" id="obs-exercicio" />
+          </div>
+
+          <button type="submit" class="btn-add-item">
+            + Adicionar na Lista
+          </button>
+        </form>
+      </div>
+
+      <div class="item-list-container">
+        <h3 style="color: #fff; margin-bottom: 1rem">Resumo do Treino</h3>
+        <div id="lista-itens-visual" style="min-height: 200px">
+          <p style="color: #888; text-align: center; margin-top: 2rem">
+            Nenhum exercício adicionado ainda.
+          </p>
+        </div>
+
+        <div
+          style="
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+            padding-top: 1rem;
+          "
+        >
+          <button id="btn-salvar-ficha" class="submit-button">
+            FINALIZAR E SALVAR FICHA
+          </button>
+          <div id="msg-final" class="message-container"></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
