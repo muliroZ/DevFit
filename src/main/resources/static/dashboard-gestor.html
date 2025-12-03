@@ -29,7 +29,6 @@
     </section>
 
     <main class="dashboard-content">
-      
       <h3 class="section-title">Financeiro</h3>
       <section class="kpi-grid">
         <div class="kpi-card">
@@ -49,7 +48,9 @@
         </div>
         <div class="kpi-card">
           <h3>Faturamento Previsto</h3>
-          <p class="kpi-value highlight" id="kpi-faturamento-previsto">R$ 0,00</p>
+          <p class="kpi-value highlight" id="kpi-faturamento-previsto">
+            R$ 0,00
+          </p>
           <small>Baseado em mensalidades ativas</small>
         </div>
       </section>
@@ -63,7 +64,9 @@
         </div>
         <div class="kpi-card">
           <h3>Alunos Inativos</h3>
-          <p class="kpi-value" id="kpi-alunos-inativos" style="color: #ccc;">0</p>
+          <p class="kpi-value" id="kpi-alunos-inativos" style="color: #ccc">
+            0
+          </p>
           <small>Matrículas vencidas/canceladas</small>
         </div>
         <div class="kpi-card">
@@ -88,7 +91,9 @@
         <div class="kpi-card">
           <h3>Ocupação Atual</h3>
           <p class="kpi-value" id="kpi-ocupacao">0%</p>
-          <small>Baseado na cap. máx (<span id="txt-capacidade">0</span>)</small>
+          <small
+            >Baseado na cap. máx (<span id="txt-capacidade">0</span>)</small
+          >
         </div>
         <div class="kpi-card">
           <h3>Total Equipamentos</h3>
@@ -117,7 +122,12 @@
         <div class="list-container">
           <div class="list-header">
             <h3>Usuários Recentes</h3>
-            <button class="btn-action" onclick="window.location.href='cadastro.html'">+ Novo Usuário</button>
+            <button
+              class="btn-action"
+              onclick="window.location.href='cadastro.html'"
+            >
+              + Novo Usuário
+            </button>
           </div>
           <table class="devfit-table">
             <thead>
@@ -135,7 +145,12 @@
         <div class="list-container">
           <div class="list-header">
             <h3>Inventário de Equipamentos</h3>
-            <button class="btn-action" onclick="alert('Funcionalidade futura')">+ Adicionar</button>
+            <button
+              class="btn-action"
+              onclick="window.location.href='/equipamentos.html'"
+            >
+              + Gerenciar
+            </button>
           </div>
           <table class="devfit-table">
             <thead>
@@ -143,7 +158,8 @@
                 <th>Nome</th>
                 <th>Qtd</th>
                 <th>Valor Unit.</th>
-                <th>Status</th> </tr>
+                <th>Status</th>
+              </tr>
             </thead>
             <tbody id="table-equip-body"></tbody>
           </table>

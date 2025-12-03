@@ -17,7 +17,8 @@ public interface CheckinRepository extends JpaRepository<Checkin, Long> {
             "FROM Checkin c " +
             "WHERE DATE(c.dataHora) = :data " +
             "GROUP BY hora " +
-            "ORDER BY hora ASC")
+            "ORDER BY 1 ASC",
+        nativeQuery = true)
     List<Object[]> findCheckinCountByHour(@Param("data") LocalDate data);
 
     List<Checkin> findTop20ByOrderByIdDesc();
