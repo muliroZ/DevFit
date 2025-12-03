@@ -31,10 +31,10 @@ function parseJwt(token) {
 
 /**
  * Verifica se o usuário tem a permissão necessária.
- * @param {string} roleNecessaria - Ex: 'GESTOR', 'ADMIN', 'INSTRUTOR'
+ * @param {string|string[]} rolesNecessarias - Ex: 'GESTOR', 'ADMIN', 'INSTRUTOR'
  * @returns {boolean} - True se permitido, False se negado.
  */
-function verificarPermissao(roleNecessaria) {
+function verificarPermissao(rolesNecessarias) {
   const token = localStorage.getItem("token");
   if (!token) return false;
 
@@ -45,9 +45,14 @@ function verificarPermissao(roleNecessaria) {
     return false;
   }
 
-  return (
-    dados &&
-    (dados.role === roleNecessaria || dados.role === `ROLE_${roleNecessaria}`)
+  if (!dados || !dados.role) return false;
+
+  const listaPermissoes = Array.isArray(rolesNecessarias)
+    ? rolesNecessarias
+    : [rolesNecessarias];
+
+  return listaPermissoes.some(
+    (role) => dados.role === role || dados.role === `ROLE_${role}`
   );
 }
 
@@ -79,19 +84,19 @@ function atualizarInterfaceAuth() {
     authContainer.innerHTML = "";
 
     if (verificarPermissao("GESTOR")) {
-      const btnAdmin = document.createElement("button")
-      btnAdmin.className = "btn-admin-toggle"
-      btnAdmin.innerHTML = "Admin"
-      btnAdmin.onclick = 
-      authContainer.appendChild(btnAdmin)
+      const btnAdmin = document.createElement("button");
+      btnAdmin.className = "btn-admin-toggle";
+      btnAdmin.innerHTML = "Gestor";
+      btnAdmin.onclick = toggleAdminSidebar;
+      authContainer.appendChild(btnAdmin);
 
-      injetarSidebarAdmin()
+      injetarSidebarAdmin();
     }
 
     const greeting = document.createElement("span");
     greeting.className = "user-greeting";
     greeting.innerHTML = `Bem vindo(a), <br>${emailUsuario}`;
-    
+
     const btnLogout = document.createElement("button");
     btnLogout.id = "logout-btn";
     btnLogout.className = "logout-button";
@@ -103,7 +108,6 @@ function atualizarInterfaceAuth() {
 
     authContainer.appendChild(greeting);
     authContainer.appendChild(btnLogout);
-
   } else {
     authContainer.innerHTML = `
         <a href="login.html" class="login-button">Login</a>
@@ -113,10 +117,9 @@ function atualizarInterfaceAuth() {
 }
 
 function injetarSidebarAdmin() {
-    // Evita duplicidade se já foi injetado
-    if (document.getElementById("admin-sidebar")) return;
+  if (document.getElementById("admin-sidebar")) return;
 
-    const sidebarHTML = `
+  const sidebarHTML = `
         <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
         <aside id="admin-sidebar" class="admin-sidebar">
             <div class="sidebar-header">
@@ -127,26 +130,27 @@ function injetarSidebarAdmin() {
                 <a href="/dashboard-gestor.html">📊 Dashboard Geral</a>
                 <a href="/cadastro-instrutor.html">💪 Cadastrar Instrutor</a>
                 <a href="/cadastro-adm.html">👔 Novo Admin</a>
-                <a href="#" onclick="alert('Ir para Gestão de Produtos')">📦 Estoque/Loja</a>
-                <a href="#" onclick="alert('Ir para Relatórios Financeiros')">💰 Financeiro</a>
+                <a href="/estoque.html">📦 Estoque/Loja</a>
+                <a href="/equipamentos.html">🛠️ Gerenciar Equipamentos</a>
+                <a href="/financeiro.html">💰 Financeiro</a>
                 <hr style="border-color:#333; width:100%">
                 <a href="/treinos.html">🏋️ Ver Todos Treinos</a>
-                <a href="/avaliacoes.html">medical_services Ver Avaliações</a>
+                <a href="/avaliacoes.html">🩺 Ver Avaliações</a>
             </nav>
         </aside>
     `;
 
-    document.body.insertAdjacentHTML('beforeend', sidebarHTML);
+  document.body.insertAdjacentHTML("beforeend", sidebarHTML);
 }
 
 function toggleAdminSidebar() {
-    const sidebar = document.getElementById("admin-sidebar");
-    const overlay = document.getElementById("sidebar-overlay");
-    
-    if (sidebar && overlay) {
-        sidebar.classList.toggle("open");
-        overlay.classList.toggle("active");
-    }
+  const sidebar = document.getElementById("admin-sidebar");
+  const overlay = document.getElementById("sidebar-overlay");
+
+  if (sidebar && overlay) {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("active");
+  }
 }
 
 function logout() {
