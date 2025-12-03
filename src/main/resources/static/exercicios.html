@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banco de Exercícios - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-instrutor.css" />
+    <link rel="stylesheet" href="css/dashboard-gestor.css" />
+    <link rel="stylesheet" href="css/exercicios.css" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/exercicios.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="treinos.html">Voltar para Treinos</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="form-hero">
+      <div class="form-card" style="max-width: 800px">
+        <div class="form-header">
+          <h2>Novo Exercício</h2>
+          <p>Alimente o banco de dados para os treinos</p>
+        </div>
+
+        <form
+          id="form-exercicio"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem"
+        >
+          <div class="form-group">
+            <label>Nome do Exercício</label>
+            <input
+              type="text"
+              id="nome"
+              required
+              placeholder="Ex: Supino Reto"
+            />
+          </div>
+          <div class="form-group">
+            <label>Grupo Muscular</label>
+            <select id="musculo" required>
+              <option value="">Selecione...</option>
+              <option value="Peito">Peito</option>
+              <option value="Costas">Costas</option>
+              <option value="Pernas">Pernas (Quadríceps/Posterior)</option>
+              <option value="Ombros">Ombros</option>
+              <option value="Bíceps">Bíceps</option>
+              <option value="Tríceps">Tríceps</option>
+              <option value="Abdômen">Abdômen</option>
+              <option value="Cardio">Cardio</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1">
+            <label>Descrição / Instruções</label>
+            <textarea
+              id="descricao"
+              rows="2"
+              style="
+                width: 100%;
+                background: #1a1a1a;
+                border: 1px solid #3d3d3d;
+                color: #fff;
+                padding: 10px;
+                border-radius: 8px;
+              "
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="submit-button"
+            style="grid-column: 1 / -1"
+          >
+            Cadastrar Exercício
+          </button>
+        </form>
+        <div id="msg" class="message-container"></div>
+      </div>
+    </section>
+
+    <div class="dashboard-content">
+      <h3 class="section-title">Exercícios Cadastrados</h3>
+      <div class="list-container">
+        <table class="devfit-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Músculo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista-exercicios"></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
