@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Relatório Financeiro - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard-gestor.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/financeiro.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="dashboard-gestor.html">Voltar ao Dashboard</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="dashboard-hero">
+      <h2>Relatório Financeiro</h2>
+      <p>Visão detalhada de receitas e despesas</p>
+    </section>
+
+    <main class="dashboard-content">
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <h3>Receita Total</h3>
+          <p class="kpi-value positive" id="fin-receita">R$ 0,00</p>
+        </div>
+        <div class="kpi-card">
+          <h3>Despesa Total</h3>
+          <p class="kpi-value negative" id="fin-despesa">R$ 0,00</p>
+        </div>
+        <div class="kpi-card">
+          <h3>Lucro Líquido</h3>
+          <p class="kpi-value" id="fin-lucro">R$ 0,00</p>
+        </div>
+      </section>
+
+      <section class="charts-section">
+        <div class="chart-container">
+          <h3>Composição de Receita</h3>
+          <canvas id="receitaChart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h3>Categorias de Despesa</h3>
+          <canvas id="despesaChart"></canvas>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
