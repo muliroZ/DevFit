@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/checkin")
@@ -49,5 +50,10 @@ public class CheckinController {
             data = LocalDate.now();
         }
         return ResponseEntity.ok(checkinService.getPeakHoursStats(data));
+    }
+
+    @GetMapping("/listar")
+    public List<Checkin> listarTop20() {
+        return checkinService.listarTop20();
     }
 }

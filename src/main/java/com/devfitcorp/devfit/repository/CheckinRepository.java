@@ -20,5 +20,8 @@ public interface CheckinRepository extends JpaRepository<Checkin, Long> {
             "ORDER BY hora ASC")
     List<Object[]> findCheckinCountByHour(@Param("data") LocalDate data);
 
+    List<Checkin> findTop20ByOrderByIdDesc();
+
     long countByDataHoraBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
+    boolean existsByUsuarioIdAndDataHoraBetween(Long usuarioId, LocalDateTime dezMinutosAtras, LocalDateTime agora);
 }

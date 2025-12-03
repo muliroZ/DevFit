@@ -48,7 +48,20 @@ public class CheckinService {
         checkin.setTipo(tipo);
         checkin.setDataHora(LocalDateTime.now());
 
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime dezMinutosAtras = agora.minusMinutes(10);
+
+        boolean existeRecente = checkinRepository.existsByUsuarioIdAndDataHoraBetween(usuarioId, dezMinutosAtras, agora);
+
+        if (existeRecente) {
+            throw new RuntimeException("Aguarde alguns minutos para realizar um novo registro.");
+        }
+
         return checkinRepository.save(checkin);
+    }
+
+    public List<Checkin> listarTop20() {
+        return checkinRepository.findTop20ByOrderByIdDesc();
     }
 
     //Conta os checks-in no dia atual
