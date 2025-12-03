@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nossos Planos - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/loja.css" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/planos.js"></script>
+    <style>
+      .plan-card {
+        background: #2d2d2d;
+        border: 1px solid #00ff88;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .plan-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+      }
+      .plan-price {
+        font-size: 2.5rem;
+        color: #fff;
+        margin: 1rem 0;
+      }
+      .plan-price small {
+        font-size: 1rem;
+        color: #ccc;
+      }
+      .btn-subscribe {
+        background: #00ff88;
+        color: #1a1a1a;
+        padding: 10px;
+        border: none;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+      }
+      .btn-subscribe:hover {
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="index.html">Início</a>
+          <a href="planos.html" class="active">Planos</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="store-hero">
+      <div class="store-hero-content">
+        <h1>Escolha seu Plano</h1>
+        <p>Invista em você com a melhor estrutura</p>
+      </div>
+    </section>
+
+    <section class="products-section">
+      <div id="planos-container" class="products-grid">
+        <p class="loading">Carregando planos...</p>
+      </div>
+    </section>
+  </body>
+</html>
