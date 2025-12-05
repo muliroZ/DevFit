@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestão de Estoque - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-instrutor.css" />
+    <link rel="stylesheet" href="css/dashboard-gestor.css" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/estoque.js"></script>
+    <style>
+      .thumb-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #444;
+      }
+      .actions-cell {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-edit {
+        color: #00ccff;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-weight: bold;
+      }
+      .btn-delete {
+        color: #ff4444;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-weight: bold;
+      }
+      .btn-cancel {
+        background-color: #444;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        display: none;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="dashboard-gestor.html">Voltar ao Dashboard</a>
+          <a href="loja.html" target="_blank">Ver Loja</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section
+      class="form-hero"
+      style="min-height: auto; padding-top: 2rem; padding-bottom: 2rem"
+    >
+      <div class="form-card" style="max-width: 900px">
+        <div class="form-header">
+          <h2 id="form-title">Adicionar Produto</h2>
+          <p>Gerencie o catálogo da loja</p>
+        </div>
+
+        <form
+          id="produto-form"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem"
+        >
+          <input type="hidden" id="produto-id" />
+          <div class="form-group">
+            <label for="nome">Nome do Produto</label>
+            <input
+              type="text"
+              id="nome"
+              required
+              placeholder="Ex: Whey Protein"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="preco">Preço (R$)</label>
+            <input
+              type="number"
+              id="preco"
+              required
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="estoque">Estoque (Qtd)</label>
+            <input
+              type="number"
+              id="estoque"
+              required
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="imagemUrl">URL da Imagem</label>
+            <input type="text" id="imagemUrl" placeholder="https://..." />
+          </div>
+
+          <div class="form-group" style="grid-column: 1 / -1">
+            <label for="descricao">Descrição Detalhada</label>
+            <input
+              type="text"
+              id="descricao"
+              placeholder="Descrição do produto..."
+            />
+          </div>
+
+          <div style="grid-column: 1 / -1; display: flex; align-items: center">
+            <button type="submit" class="submit-button" id="btn-salvar">
+              Salvar Produto
+            </button>
+            <button
+              type="button"
+              id="btn-cancelar"
+              class="btn-cancel"
+              onclick="cancelarEdicao()"
+            >
+              Cancelar Edição
+            </button>
+          </div>
+        </form>
+        <div id="msg" class="message-container"></div>
+      </div>
+    </section>
+
+    <div class="dashboard-content">
+      <h3 class="section-title">Produtos Cadastrados</h3>
+      <div class="list-container">
+        <table class="devfit-table">
+          <thead>
+            <tr>
+              <th style="width: 70px">Img</th>
+              <th>Nome</th>
+              <th>Estoque</th>
+              <th>Preço</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista-produtos"></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

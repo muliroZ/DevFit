@@ -1,0 +1,43 @@
+body {
+  overflow-y: auto;
+  padding-top: 80px;
+  height: auto;
+}
+
+.form-hero {
+  min-height: auto;
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+
+.avaliacao-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem 2rem;
+}
+
+.form-card {
+  max-width: 100%;
+  padding: 2rem;
+}
+
+.form-section-title {
+  color: #00ff88;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  grid-column: 1 / -1;
+}
+
+.measurements-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .measurements-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,106 +1,115 @@
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("token")) window.location.href = "/login.html";
-    carregarAvaliacoes();
-    
-    if (verificarPermissao("INSTRUTOR") || verificarPermissao("GESTOR")) {
-        const btn = document.getElementById("btn-nova-avaliacao");
-        if(btn) {
-            btn.style.display = "block";
-            btn.addEventListener("click", () => alert("Implementar formulário de criação"));
-        }
-    }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  configurarInterface();
+  carregarAvaliacoes();
 });
 
-async function carregarAvaliacoes() {
-    const container = document.getElementById("avaliacoes-container");
-    const token = localStorage.getItem("token");
-    
-    // Lógica similar: Aluno vê as suas, Instrutor vê todas (ou busca por aluno específico via input de busca, implementação futura)
-    let url = "/fichas/avaliacao/minhas-avaliacoes";
-    if (verificarPermissao("INSTRUTOR") || verificarPermissao("GESTOR")) {
-        url = "/fichas/avaliacao"; 
-    }
+function configurarInterface() {
+  const isProfissional = verificarPermissao(["INSTRUTOR", "GESTOR"]);
+  const btnNovo = document.getElementById("btn-nova-avaliacao");
 
-    try {
-        const response = await fetch(url, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        if (!response.ok) throw new Error("Erro na requisição");
-        const lista = await response.json();
-        
-        renderizarAvaliacoes(lista);
-
-    } catch (error) {
-        container.innerHTML = `<p class="error-msg">Erro ao carregar dados.</p>`;
-    }
+  if (isProfissional && btnNovo) {
+    btnNovo.style.display = "block";
+    btnNovo.onclick = () => (window.location.href = "/criar-avaliacao.html");
+  } else if (btnNovo) {
+    btnNovo.style.display = "none";
+  }
 }
 
-function renderizarAvaliacoes(lista) {
-    const container = document.getElementById("avaliacoes-container");
+async function carregarAvaliacoes() {
+  const container = document.getElementById("avaliacoes-container");
+  const token = localStorage.getItem("token");
+
+  const url = verificarPermissao(["INSTRUTOR", "GESTOR"])
+    ? "/fichas/avaliacao"
+    : "/fichas/avaliacao/minhas-avaliacoes";
+
+  try {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const lista = await response.json();
     container.innerHTML = "";
 
     if (!lista || lista.length === 0) {
-        container.innerHTML = `<p class="loading-msg">Nenhuma avaliação encontrada.</p>`;
-        return;
+      container.innerHTML = `<p class="loading-msg">Nenhuma avaliação registrada.</p>`;
+      return;
     }
 
-    lista.forEach(av => {
-        const card = document.createElement("div");
-        card.className = "data-card";
-        const dataAv = new Date(av.dataAvaliacao).toLocaleDateString('pt-BR');
-        
-        // Formatar IMC
-        const imc = av.imc ? av.imc.toFixed(2) : "--";
+    renderizarAvaliacoes(lista, container);
+  } catch (error) {
+    container.innerHTML = `<p class="error-msg">Erro ao carregar dados.</p>`;
+  }
+}
 
-        card.innerHTML = `
+function renderizarAvaliacoes(lista, container) {
+  const isAluno = verificarPermissao("ALUNO");
+
+  lista.forEach((av) => {
+    const card = document.createElement("div");
+    card.className = "data-card";
+    const dataAv = new Date(av.dataAvaliacao).toLocaleDateString("pt-BR");
+    const imc = av.imc ? av.imc.toFixed(2) : "--";
+
+    const linhaNome = isAluno
+      ? `<p><strong>Instrutor:</strong> ${av.instrutor.nome}</p>`
+      : `<p><strong>Aluno:</strong> ${av.aluno.nome}</p>`;
+
+    card.innerHTML = `
             <div class="card-header">
                 <span class="card-date">${dataAv}</span>
                 <span class="status-badge" style="background:#00ff88; color:#000;">IMC: ${imc}</span>
             </div>
             <div class="card-body">
-                <p><strong>Aluno:</strong> ${av.aluno.nome}</p>
-                <p><strong>Peso:</strong> ${av.pesoKg}kg</p>
-                <p><strong>Altura:</strong> ${av.alturaM}m</p>
+                ${linhaNome}
+                <p>Peso: ${av.pesoKg}kg | Altura: ${av.alturaM}m</p>
             </div>
-            <button class="btn-details" onclick='abrirDetalhes(${JSON.stringify(av)})'>Ver Medidas</button>
+            <button class="btn-details" onclick='abrirDetalhes(${JSON.stringify(
+              av
+            )})'>Ver Medidas</button>
         `;
-        container.appendChild(card);
-    });
+    container.appendChild(card);
+  });
 }
 
 function abrirDetalhes(av) {
-    const modal = document.getElementById("modal-avaliacao");
-    const body = document.getElementById("modal-body-avaliacao");
-    modal.style.display = "flex";
+  const modal = document.getElementById("modal-avaliacao");
+  const body = document.getElementById("modal-body-avaliacao");
+  modal.style.display = "flex";
 
-    body.innerHTML = `
+  body.innerHTML = `
         <ul class="info-list">
             <li class="info-item">
-                <strong>Instrutor Responsável:</strong> ${av.instrutor.nome}
-            </li>
-            <li class="info-item">
-                <strong>Circunferências:</strong><br>
-                Cintura: ${av.circunferenciaCinturaCm || '--'} cm<br>
-                Abdômen: ${av.circunferenciaAbdomenCm || '--'} cm<br>
-                Quadril: ${av.circunferenciaQuadrilCm || '--'} cm
+                <strong>Medidas Corporais:</strong><br>
+                Cintura: ${av.circunferenciaCinturaCm || "--"} cm<br>
+                Abdômen: ${av.circunferenciaAbdomenCm || "--"} cm<br>
+                Quadril: ${av.circunferenciaQuadrilCm || "--"} cm
             </li>
             <li class="info-item">
                 <strong>Histórico de Saúde:</strong><br>
-                <span style="color:#ccc; font-size:0.9rem">${av.historicoSaude || "Nenhum registro."}</span>
+                <span style="color:#ccc;">${
+                  av.historicoSaude || "Nenhum registro."
+                }</span>
             </li>
             <li class="info-item">
                 <strong>Observações:</strong><br>
-                <span style="color:#ccc; font-size:0.9rem">${av.observacoesGerais || "Nenhuma observação."}</span>
+                <span style="color:#ccc;">${
+                  av.observacoesGerais || "Nenhuma observação."
+                }</span>
             </li>
         </ul>
     `;
 }
 
 function fecharModal() {
-    document.getElementById("modal-avaliacao").style.display = "none";
+  document.getElementById("modal-avaliacao").style.display = "none";
 }
-
-window.onclick = function(e) {
-    if(e.target == document.getElementById("modal-avaliacao")) fecharModal();
-}
+window.onclick = (e) => {
+  if (e.target == document.getElementById("modal-avaliacao")) fecharModal();
+};

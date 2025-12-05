@@ -83,13 +83,8 @@ public class FichaAvaliacaoService {
         double imcCalculado = calcularImc(fichaAtualizada.getPesoKg(), fichaAtualizada.getAlturaCm());
         fichaAtualizada.setImc(imcCalculado);
 
-        /* Variável 'savedFicha' é igual a 'fichaAtualizada', use somente a 'fichaAtualizada'
-            FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
-            return fichaAvaliacaoMapper.toResponse(savedFicha);
-         */
-
-        fichaAvaliacaoRepository.save(fichaAtualizada);
-        return fichaAvaliacaoMapper.toResponse(fichaAtualizada);
+        FichaAvaliacao savedFicha = fichaAvaliacaoRepository.save(fichaAtualizada);
+        return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
     // CRUD: DELETE, exclui uma ficha conforme o id

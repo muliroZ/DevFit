@@ -3,6 +3,7 @@ package com.devfitcorp.devfit.service;
 import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
 import com.devfitcorp.devfit.repository.MensalidadeRepository;
 import com.devfitcorp.devfit.repository.DespesaRepository;
+import com.devfitcorp.devfit.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,13 +17,16 @@ public class FinanceiroService {
 
     private final MensalidadeRepository mensalidadeRepository;
     private final DespesaRepository despesaRepository;
-    private final ProdutoRepository produtoRepository;
+    private final PedidoRepository pedidoRepository;
 
-    public FinanceiroService(MensalidadeRepository mensalidadeRepository,
-                             DespesaRepository despesaRepository,
-                             ProdutoRepository produtoRepository){
+    public FinanceiroService(
+            MensalidadeRepository mensalidadeRepository,
+            DespesaRepository despesaRepository,
+            PedidoRepository pedidoRepository
+    ){
         this.mensalidadeRepository = mensalidadeRepository;
         this.despesaRepository = despesaRepository;
+        this.pedidoRepository = pedidoRepository;
     }
 
     public FinanceiroDashboardDTO getAggregatedFinanceiroSummary(){
@@ -31,12 +35,10 @@ public class FinanceiroService {
         LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate ultimoDiaMes = hoje.with(TemporalAdjusters.lastDayOfMonth());
 
-
         BigDecimal receitaMensalidades = mensalidadeRepository.sumValorPagoByPeriodo(primeiroDiaMes, ultimoDiaMes);
-        BigDecimal receitaProduto = produtoRepository.sumValorTotalByPeriodo(primeiroDiaDoMes, ultimoDiaDoMes);
+        BigDecimal receitaProduto = pedidoRepository.sumValorTotalByPeriodo(primeiroDiaMes, ultimoDiaMes);
 
         BigDecimal receitaTotal = receitaMensalidades.add(receitaProduto);
-
 
         BigDecimal despesaSalarios = despesaRepository.sumValorByCategoriaAndPeriodo("SALARIOS", primeiroDiaMes, ultimoDiaMes);
         BigDecimal despesaEquipamentos = despesaRepository.sumValorByCategoriaAndPeriodo("EQUIPAMENTOS", primeiroDiaMes, ultimoDiaMes);
@@ -44,13 +46,11 @@ public class FinanceiroService {
 
         BigDecimal despesaTotal = despesaSalarios.add(despesaEquipamentos).add(despesaAluguel);
 
-
         FinanceiroDashboardDTO dto = new FinanceiroDashboardDTO();
 
         dto.setReceitaTotal(receitaTotal);
         dto.setDespesaTotal(despesaTotal);
         dto.setLucroLiquido(receitaTotal.subtract(despesaTotal));
-
 
         Map<String,BigDecimal> receitaPorFonte = new HashMap<>();
         receitaPorFonte.put("Mensalidades", receitaMensalidades);
@@ -61,7 +61,6 @@ public class FinanceiroService {
             receitaPorFonte.put("Produto", receitaTotal);
         }
         dto.setReceitaPorFonte(receitaPorFonte);
-
 
         Map<String, BigDecimal> despesaPorCategoria = new HashMap<>();
         if (despesaSalarios.compareTo(BigDecimal.ZERO) > 0) {

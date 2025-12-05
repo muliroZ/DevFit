@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nova Avaliação Física - DevFit</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cadastro-instrutor.css" />
+    <link rel="stylesheet" href="css/criar-avaliacao.css" />
+    <script defer src="js/auth-util.js"></script>
+    <script defer src="js/criar-avaliacao.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav-container">
+        <a href="index.html" class="logo">DevFit</a>
+        <div class="nav-links">
+          <a href="avaliacoes.html">Voltar para Avaliações</a>
+        </div>
+        <div class="auth-container"></div>
+      </nav>
+    </header>
+
+    <section class="form-hero">
+      <div class="form-header">
+        <h2>Nova Avaliação Física</h2>
+        <p>Registre medidas e acompanhe a evolução do aluno</p>
+      </div>
+    </section>
+
+    <main class="avaliacao-container">
+      <div class="form-card">
+        <form id="form-avaliacao">
+          <div class="form-group">
+            <label>Selecione o Aluno</label>
+            <select id="select-aluno" required>
+              <option value="">Carregando lista...</option>
+            </select>
+          </div>
+
+          <h3 class="form-section-title">Dados Corporais</h3>
+          <div class="measurements-grid">
+            <div class="form-group">
+              <label>Peso (kg)</label>
+              <input
+                type="number"
+                id="peso"
+                step="0.1"
+                required
+                placeholder="Ex: 75.5"
+              />
+            </div>
+            <div class="form-group">
+              <label>Altura (cm)</label>
+              <input
+                type="number"
+                id="altura"
+                step="1"
+                required
+                placeholder="Ex: 175"
+              />
+            </div>
+          </div>
+
+          <h3 class="form-section-title">Medidas (Circunferências)</h3>
+          <div class="measurements-grid">
+            <div class="form-group">
+              <label>Cintura (cm)</label>
+              <input type="number" id="cintura" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Abdômen (cm)</label>
+              <input type="number" id="abdomen" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label>Quadril (cm)</label>
+              <input type="number" id="quadril" step="0.1" />
+            </div>
+          </div>
+
+          <h3 class="form-section-title">Anamnese & Observações</h3>
+          <div class="form-group">
+            <label>Histórico de Saúde / Lesões</label>
+            <textarea
+              id="historico"
+              rows="3"
+              style="
+                width: 100%;
+                background: #1a1a1a;
+                border: 1px solid #3d3d3d;
+                color: #fff;
+                padding: 10px;
+                border-radius: 8px;
+              "
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Observações Gerais</label>
+            <textarea
+              id="observacoes"
+              rows="2"
+              style="
+                width: 100%;
+                background: #1a1a1a;
+                border: 1px solid #3d3d3d;
+                color: #fff;
+                padding: 10px;
+                border-radius: 8px;
+              "
+            ></textarea>
+          </div>
+
+          <div style="margin-top: 2rem">
+            <button type="submit" class="submit-button">
+              SALVAR AVALIAÇÃO
+            </button>
+          </div>
+
+          <div id="msg" class="message-container"></div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

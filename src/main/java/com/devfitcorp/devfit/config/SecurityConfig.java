@@ -55,9 +55,20 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/error"
                         ).permitAll()
-                        .requestMatchers("/auth/login", "/auth/cadastro", "/auth/cadastro/gestor").permitAll()
-                        .requestMatchers("/admin/**", "/auth/cadastro/instrutor").hasAuthority("ROLE_GESTOR")
+                        .requestMatchers("/admin/dashboard/stats").hasRole("GESTOR")
+                        .requestMatchers("/dashboard/financeiro/**").hasRole("GESTOR")
+                        .requestMatchers(HttpMethod.POST, "/planos").hasRole("GESTOR")
+                        .requestMatchers(HttpMethod.PUT, "/planos/**").hasRole("GESTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/planos/**").hasRole("GESTOR")
+                        .requestMatchers("/planos").permitAll()
+                        .requestMatchers("/matricula/assinar/**").authenticated()
+                        .requestMatchers("/checkin").authenticated()
+                        .requestMatchers("/checkin/picos").hasRole("GESTOR")
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("GESTOR")
                         .requestMatchers(HttpMethod.GET, "/produtos", "/produtos/**").permitAll()
+                        .requestMatchers("/checkin").authenticated()
+                        .requestMatchers("/checkin/picos").hasRole("GESTOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -75,3 +86,4 @@ public class SecurityConfig {
             return source;
         }
 }
+

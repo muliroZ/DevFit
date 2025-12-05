@@ -1,0 +1,21 @@
+body {
+  overflow-y: auto !important;
+  padding-top: 80px;
+}
+.form-hero {
+  min-height: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.btn-delete {
+  color: #ff4444;
+  background: none;
+  border: 1px solid #ff4444;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+.btn-delete:hover {
+  background: #ff4444;
+  color: #fff;
+}
