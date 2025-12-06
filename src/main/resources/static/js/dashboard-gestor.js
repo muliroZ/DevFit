@@ -34,7 +34,7 @@ async function carregarDashboard() {
     if (resStats.ok) {
         const statsData = await resStats.json();
         atualizarKPIs(statsData);
-        atualizarGraficoFinanceiro(statsData.financeiroDashboardDTO);
+        atualizarGraficoFinanceiro(statsData.financeiro);
     }
     
     if (resUsuarios.ok) atualizarGraficoUsuariosETabela(await resUsuarios.json());
@@ -47,7 +47,7 @@ async function carregarDashboard() {
 
 // --- PREENCHIMENTO DOS CARDS (KPIs) ---
 function atualizarKPIs(stats) {
-    const fin = stats.financeiroDashboardDTO;
+    const fin = stats.financeiro;
 
     // 1. Financeiro
     document.getElementById("kpi-receita").innerText = formatter.format(fin.receitaTotal);
@@ -65,24 +65,24 @@ function atualizarKPIs(stats) {
     }
 
     // 2. Membros & Retenção
-    document.getElementById("kpi-alunos-ativos").innerText = stats.totalAlunosAtivos;
-    document.getElementById("kpi-alunos-inativos").innerText = stats.totalAlunosInativos;
-    document.getElementById("kpi-total-users").innerText = stats.totalUsuariosCadastrados;
+    document.getElementById("kpi-alunos-ativos").innerText = stats.totalAlunosOn;
+    document.getElementById("kpi-alunos-inativos").innerText = stats.totalAlunosOff;
+    document.getElementById("kpi-total-users").innerText = stats.totalAlunos;
     
     // Taxa de retenção vem como double (ex: 0.85 para 85%)
     document.getElementById("kpi-taxa-retencao").innerText = percentFormatter.format(stats.taxaRetencao);
 
     // 3. Operacional
     document.getElementById("kpi-checkins").innerText = stats.checkinsHoje;
-    document.getElementById("txt-capacidade").innerText = stats.capacidadeMaxima;
+    document.getElementById("txt-capacidade").innerText = stats.capacidadeMax;
     
     // Calculo simples de ocupação baseado nos checkins de hoje vs capacidade
     // (Num cenário real, seria checkins simultâneos, mas usaremos o total do dia como proxy para o exemplo)
-    const ocupacao = stats.capacidadeMaxima > 0 ? (stats.checkinsHoje / stats.capacidadeMaxima) : 0;
+    const ocupacao = stats.capacidadeMax > 0 ? (stats.checkinsHoje / stats.capacidadeMax) : 0;
     document.getElementById("kpi-ocupacao").innerText = percentFormatter.format(ocupacao);
 
-    document.getElementById("kpi-equip-total").innerText = stats.equipamentosTotais;
-    document.getElementById("kpi-equip-manutencao").innerText = stats.equipamentosEmManutencao;
+    document.getElementById("kpi-equip-total").innerText = stats.totalEquip;
+    document.getElementById("kpi-equip-manutencao").innerText = stats.manutencaoEquip;
 }
 
 // --- GRÁFICO FINANCEIRO ---

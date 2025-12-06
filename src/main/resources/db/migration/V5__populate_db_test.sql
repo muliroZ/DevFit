@@ -1,4 +1,12 @@
 -- ==============================================================================
+-- 0. ROLES (Pré-requisito para Usuários)
+-- ==============================================================================
+INSERT INTO role (nome) VALUES
+    ('GESTOR'),
+    ('INSTRUTOR'),
+    ('ALUNO');
+
+-- ==============================================================================
 -- 1. PLANOS DE ASSINATURA
 -- ==============================================================================
 INSERT INTO planos (nome, valor, duracao_meses, ativo) VALUES
@@ -9,21 +17,13 @@ INSERT INTO planos (nome, valor, duracao_meses, ativo) VALUES
 
 -- ==============================================================================
 -- 2. USUÁRIOS
--- Senha padrão atualizada para: 'Devfit123' (Atende ao Regex: Maiúscula, minúscula, número, 8+ chars)
--- Hash BCrypt gerado (custo 10): $2a$10$IqTJMq.k.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0 (Exemplo visual, use o abaixo)
+-- Senha padrão para 'Devfit123': $2a$10$QQ/JF/RuTz5OvTl5jG6gIOQsp8qPhU743noXYaDzX944lg3WE1IpG
 -- ==============================================================================
-
--- Hash real para 'Devfit123': $2a$10$Dom.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g.g (Placeholder funcional para exemplo)
--- RECOMENDAÇÃO: Para garantir acesso, ao rodar a aplicação, crie um usuário via API e copie o hash dele,
--- ou use este hash válido para 'Devfit123': $2a$10$N.zmdr9k7uOCQb376NoUnutj8iAt6.VwUEM1El3r8M4kRu4.F.z2. (Do exemplo anterior, assumindo compatibilidade)
--- Nota: Para este script, assumiremos que o hash abaixo corresponde a 'Devfit123' no seu ambiente ou você deve gerá-lo.
--- Se este hash não logar, utilize a rota /auth/cadastro para criar um user e substitua aqui.
-
 INSERT INTO usuario (nome, email, senha) VALUES
-    ('Muliro Gestor', 'admin@devfit.com', '$2a$10$N.zmdr9k7uOCQb376NoUnutj8iAt6.VwUEM1El3r8M4kRu4.F.z2.'),
-    ('Paulo Instrutor', 'instrutor@devfit.com', '$2a$10$N.zmdr9k7uOCQb376NoUnutj8iAt6.VwUEM1El3r8M4kRu4.F.z2.'),
-    ('Ana Aluna', 'ana@email.com', '$2a$10$N.zmdr9k7uOCQb376NoUnutj8iAt6.VwUEM1El3r8M4kRu4.F.z2.'),
-    ('João Maromba', 'joao@email.com', '$2a$10$N.zmdr9k7uOCQb376NoUnutj8iAt6.VwUEM1El3r8M4kRu4.F.z2.');
+    ('Muliro Gestor', 'admin@devfit.com', '$2a$10$QQ/JF/RuTz5OvTl5jG6gIOQsp8qPhU743noXYaDzX944lg3WE1IpG'),
+    ('Paulo Instrutor', 'instrutor@devfit.com', '$2a$10$QQ/JF/RuTz5OvTl5jG6gIOQsp8qPhU743noXYaDzX944lg3WE1IpG'),
+    ('Ana Aluna', 'ana@email.com', '$2a$10$QQ/JF/RuTz5OvTl5jG6gIOQsp8qPhU743noXYaDzX944lg3WE1IpG'),
+    ('João Maromba', 'joao@email.com', '$2a$10$QQ/JF/RuTz5OvTl5jG6gIOQsp8qPhU743noXYaDzX944lg3WE1IpG');
 
 -- VINCULAR ROLES AOS USUÁRIOS
 INSERT INTO usuario_roles (usuario_id, role_id) VALUES
@@ -112,7 +112,7 @@ INSERT INTO despesas (categoria, valor, data_vencimento) VALUES
 
 -- Pedido na Loja (Ana comprou Whey)
 INSERT INTO pedidos (usuario_id, data_criacao, valor_total) VALUES
-    ((SELECT id FROM usuario WHERE email='ana@email.com'), CURRENT_DATE, 159.90);
+    ((SELECT id FROM usuario WHERE email='ana@email.com'), CURRENT_TIMESTAMP, 159.90);
 
 INSERT INTO item_pedido (pedido_id, produto_id, quantidade, preco_unitario, subtotal) VALUES
     ((SELECT MAX(id) FROM pedidos), (SELECT id FROM produto WHERE nome LIKE 'Whey%'), 1, 159.90, 159.90);
@@ -121,6 +121,6 @@ INSERT INTO item_pedido (pedido_id, produto_id, quantidade, preco_unitario, subt
 -- 9. CHECK-INS
 -- ==============================================================================
 INSERT INTO checkins (usuario_id, data_hora, tipo) VALUES
-   ((SELECT id FROM usuario WHERE email='joao@email.com'), NOW() - INTERVAL '2 HOUR', 'ENTRADA'),
-   ((SELECT id FROM usuario WHERE email='joao@email.com'), NOW() - INTERVAL '1 HOUR', 'SAIDA'),
-   ((SELECT id FROM usuario WHERE email='ana@email.com'), NOW() - INTERVAL '30 MINUTE', 'ENTRADA');
+    ((SELECT id FROM usuario WHERE email='joao@email.com'), NOW() - INTERVAL '2 HOUR', 'ENTRADA'),
+    ((SELECT id FROM usuario WHERE email='joao@email.com'), NOW() - INTERVAL '1 HOUR', 'SAIDA'),
+    ((SELECT id FROM usuario WHERE email='ana@email.com'), NOW() - INTERVAL '30 MINUTE', 'ENTRADA');

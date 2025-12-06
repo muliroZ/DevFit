@@ -1,18 +1,19 @@
 package com.devfitcorp.devfit.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.devfitcorp.devfit.dto.AdminStatsDTO;
+import com.devfitcorp.devfit.dto.CheckinStatsByHourDTO;
+import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
 import com.devfitcorp.devfit.mappers.DashboardMapper;
 import com.devfitcorp.devfit.repository.EquipamentoRepository;
 import com.devfitcorp.devfit.repository.MatriculaRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import com.devfitcorp.devfit.dto.CheckinStatsByHourDTO;
-import java.time.LocalDate;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class AdminDashboardService {
@@ -44,32 +45,37 @@ public class AdminDashboardService {
     }
 
     public AdminStatsDTO getGeneralStats() {
-        HashMap<String, Object> stats = new HashMap<>();
+        try {
+            HashMap<String, Object> stats = new HashMap<>();
 
-        financeiroService.getAggregatedFinanceiroSummary();
+            FinanceiroDashboardDTO financeiro = financeiroService.getAggregatedFinanceiroSummary();
 
-        // Extração das estatísticas (os metodos q tu colocou foram reutilizados marolina)
-        long ativos = matriculaRepository.countByIsAtiva(true);
-        long inativos = matriculaRepository.countByIsAtiva(false);
-        long totalAlunos = ativos + inativos;
-        double taxa = totalAlunos > 0 ? (double) ativos / totalAlunos : 0;
-        long manutencao = equipamentoRepository.countByStatus("MANUTENCAO");
-        long totais = equipamentoRepository.count();
+            // Extração das estatísticas (os metodos q tu colocou foram reutilizados marolina)
+            Long ativos = matriculaRepository.countByIsAtiva(true);
+            Long inativos = matriculaRepository.countByIsAtiva(false);
+            long totalAlunos = ativos + inativos;
+            Double taxa = totalAlunos > 0 ? (double) ativos / totalAlunos : 0;
+            Long manutencao = equipamentoRepository.countByStatus("MANUTENCAO");
+            Long totais = equipamentoRepository.count();
 
-        // Coloquei num HashMap (dicionário) pra usar o mapper lá no final (fica organizado)
-        stats.put("faturamentoMP", BigDecimal.valueOf(15000.00));
-        stats.put("totalAlunosOn", ativos);
-        stats.put("totalAlunosOff", inativos);
-        stats.put("taxaRetencao", BigDecimal.valueOf(taxa).setScale(4, RoundingMode.HALF_UP).doubleValue());
-        stats.put("totalUsers", usuarioRepository.count());
-        stats.put("capacidadeMax", CAPACIDADE_MAXIMA);
-        stats.put("mautencaoEquip", manutencao);
-        stats.put("totalEquip", totais);
-        stats.put("checkinsHoje", checkinService.countCheckinsToday());
-        stats.put("financeiro", financeiroService.getAggregatedFinanceiroSummary());
+            // Coloquei num HashMap (dicionário) pra usar o mapper lá no final (fica organizado)
+            stats.put("faturamentoMensalPrevisto", BigDecimal.valueOf(15000.00));
+            stats.put("totalAlunosOn", ativos);
+            stats.put("totalAlunosOff", inativos);
+            stats.put("taxaRetencao", taxa);
+            stats.put("totalAlunos", usuarioRepository.count());
+            stats.put("capacidadeMax", CAPACIDADE_MAXIMA);
+            stats.put("manutencaoEquip", manutencao);
+            stats.put("totalEquip", totais);
+            stats.put("checkinsHoje", checkinService.countCheckinsToday());
+            stats.put("financeiro", financeiro);
 
-        // Mapper pra organizar (veja o DashboardMapper)
-        return dashboardMapper.toResponse(stats);
+            // Mapper pra organizar (veja o DashboardMapper)
+            return dashboardMapper.toResponse(stats);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro: ", e);
+        }
     }
 
     //Método para obter estatísticas de Horários de Pico (Gráfico)

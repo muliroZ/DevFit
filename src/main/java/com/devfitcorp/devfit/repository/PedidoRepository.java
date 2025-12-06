@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
+
     @Query(
             "SELECT COALESCE(SUM(p.valorTotal), 0) FROM Pedido p " +
             "WHERE p.dataCriacao BETWEEN :dataInicio AND :dataFinal"

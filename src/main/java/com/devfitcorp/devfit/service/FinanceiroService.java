@@ -36,15 +36,30 @@ public class FinanceiroService {
         LocalDate ultimoDiaMes = hoje.with(TemporalAdjusters.lastDayOfMonth());
 
         BigDecimal receitaMensalidades = mensalidadeRepository.sumValorPagoByPeriodo(primeiroDiaMes, ultimoDiaMes);
+        receitaMensalidades = receitaMensalidades == null ? BigDecimal.ZERO : receitaMensalidades;
+
         BigDecimal receitaProduto = pedidoRepository.sumValorTotalByPeriodo(primeiroDiaMes, ultimoDiaMes);
+        receitaProduto = receitaProduto == null ? BigDecimal.ZERO : receitaProduto;
 
         BigDecimal receitaTotal = receitaMensalidades.add(receitaProduto);
 
         BigDecimal despesaSalarios = despesaRepository.sumValorByCategoriaAndPeriodo("SALARIOS", primeiroDiaMes, ultimoDiaMes);
-        BigDecimal despesaEquipamentos = despesaRepository.sumValorByCategoriaAndPeriodo("EQUIPAMENTOS", primeiroDiaMes, ultimoDiaMes);
-        BigDecimal despesaAluguel = despesaRepository.sumValorByCategoriaAndPeriodo("ALUGUEL", primeiroDiaMes, ultimoDiaMes);
+        despesaSalarios = despesaSalarios == null ? BigDecimal.ZERO : despesaSalarios;
 
-        BigDecimal despesaTotal = despesaSalarios.add(despesaEquipamentos).add(despesaAluguel);
+        BigDecimal despesaEquipamentos = despesaRepository.sumValorByCategoriaAndPeriodo("EQUIPAMENTOS", primeiroDiaMes, ultimoDiaMes);
+        despesaEquipamentos = despesaEquipamentos == null ? BigDecimal.ZERO : despesaEquipamentos;
+
+        BigDecimal despesaAluguel = despesaRepository.sumValorByCategoriaAndPeriodo("ALUGUEL", primeiroDiaMes, ultimoDiaMes);
+        despesaAluguel = despesaAluguel == null ? BigDecimal.ZERO : despesaAluguel;
+
+        // Adicionando a Despesa LUZ que está no V5 (popula_db_test.sql) e deve ser contabilizada.
+        BigDecimal despesaLuz = despesaRepository.sumValorByCategoriaAndPeriodo("LUZ", primeiroDiaMes, ultimoDiaMes);
+        despesaLuz = despesaLuz == null ? BigDecimal.ZERO : despesaLuz;
+
+        BigDecimal despesaTotal = despesaSalarios
+                .add(despesaEquipamentos)
+                .add(despesaAluguel)
+                .add(despesaLuz);
 
         FinanceiroDashboardDTO dto = new FinanceiroDashboardDTO();
 
@@ -57,11 +72,6 @@ public class FinanceiroService {
         receitaPorFonte.put("Produto", receitaProduto);
         dto.setReceitaPorFonte(receitaPorFonte);
 
-        if (receitaProduto.compareTo(receitaTotal) == 0) {
-            receitaPorFonte.put("Produto", receitaTotal);
-        }
-        dto.setReceitaPorFonte(receitaPorFonte);
-
         Map<String, BigDecimal> despesaPorCategoria = new HashMap<>();
         if (despesaSalarios.compareTo(BigDecimal.ZERO) > 0) {
             despesaPorCategoria.put("Salários", despesaSalarios);
@@ -71,6 +81,9 @@ public class FinanceiroService {
         }
         if (despesaAluguel.compareTo(BigDecimal.ZERO) > 0) {
             despesaPorCategoria.put("Aluguel", despesaAluguel);
+        }
+        if (despesaLuz.compareTo(BigDecimal.ZERO) > 0) {
+            despesaPorCategoria.put("Luz", despesaLuz);
         }
         dto.setDespesaPorCategoria(despesaPorCategoria);
 

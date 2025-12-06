@@ -48,7 +48,7 @@ async function salvarEquipamento(e) {
   };
 
   try {
-    const res = await fetch("/dashboard/equipamentos", {
+    const res = await fetch("/dashboard/equipamentos/criar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,26 +1,37 @@
-package com.devfitcorp.devfit.mappers;
+// src/main/java/com/devfitcorp/devfit/mappers/DashboardMapper.java
 
-import com.devfitcorp.devfit.dto.AdminStatsDTO;
-import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
-import org.springframework.stereotype.Component;
+package com.devfitcorp.devfit.mappers;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+
+import org.springframework.stereotype.Component;
+
+import com.devfitcorp.devfit.dto.AdminStatsDTO;
+import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
 
 @Component
 public class DashboardMapper {
 
     public AdminStatsDTO toResponse(HashMap<String, Object> stats) {
+
+        Long totalAlunosOn = ((Number) stats.get("totalAlunosOn")).longValue();
+        Long totalAlunosOff = ((Number) stats.get("totalAlunosOff")).longValue();
+        Long totalAlunos = ((Number) stats.get("totalAlunos")).longValue();
+        Long manutencaoEquip = ((Number) stats.get("manutencaoEquip")).longValue();
+        Long totalEquip = ((Number) stats.get("totalEquip")).longValue();
+        Long checkinsHoje = ((Number) stats.get("checkinsHoje")).longValue();
+
         return new AdminStatsDTO(
-                (BigDecimal) stats.get("faturamentoMP"),
-                (Long) stats.get("totalAlunosOn"),
-                (Long) stats.get("totalAlunosOff"),
+                (BigDecimal) stats.get("faturamentoMensalPrevisto"),
+                totalAlunosOn,
+                totalAlunosOff,
                 (Double) stats.get("taxaRetencao"),
-                (Long) stats.get("totalUsers"),
+                totalAlunos,
                 (Integer) stats.get("capacidadeMax"),
-                (Long) stats.get("manutencaoEquip"),
-                (Long) stats.get("totalEquip"),
-                (Long) stats.get("checkinsHoje"),
+                manutencaoEquip,
+                totalEquip,
+                checkinsHoje,
                 (FinanceiroDashboardDTO) stats.get("financeiro")
         );
     }

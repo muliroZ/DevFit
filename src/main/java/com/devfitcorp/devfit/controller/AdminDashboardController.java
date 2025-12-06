@@ -36,7 +36,7 @@ public class AdminDashboardController {
         Map<String, List<UsuarioDetalhadoDashboardDTO>> resultado = Optional.ofNullable(usuariosAgrupados)
                 .orElse(Collections.emptyMap());
 
-        return ResponseEntity.ok(usuariosAgrupados);
+        return ResponseEntity.ok(resultado);
     }
 
     @PreAuthorize("hasRole('GESTOR')")
