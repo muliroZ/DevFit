@@ -1,7 +1,7 @@
 # 📦 Módulo de Produtos — Documentação Técnica
 
 O módulo de **Produtos** é responsável por gerenciar os itens disponíveis na loja.  
-Ele centraliza as operações de cadastro, listagem, atualização, exclusão e controle de estoque.
+Ele centraliza as operações de cadastro, listagem, atualização, exclusão e fornece dados necessários para controle de estoque pelo módulo de pedidos.
 
 ---
 
@@ -15,14 +15,14 @@ O módulo é composto por:
 - **Produto** (entidade) → representa o produto no banco
 - **DTOs** → definem entrada e saída da API
 - **ProdutoMapper** → responsável por converter Entidade ↔ DTO
-- **GlobalExceptionHandler** → trata erros gerados pelo módulo
+- Integra-se com o **GlobalExceptionHandler**, responsável por padronizar respostas de erro.
 
 ---
 
 # 📌 Estrutura da Entidade Produto
 
 A entidade `Produto` representa um item disponível para venda no sistema.  
-Ela utiliza validações do Bean Validation e mapeamento com JPA.
+Ela aplica anotações de validação de domínio e define o modelo persistido no banco usando JPA.
 
 ```java
 @Data
