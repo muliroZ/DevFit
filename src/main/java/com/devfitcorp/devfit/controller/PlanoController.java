@@ -18,8 +18,8 @@ public class PlanoController {
         this.planoService = planoService;
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Plano> listarAtivos() {
-        return planoService.listarAtivos();
+        return planoService.listar();
     }
 }

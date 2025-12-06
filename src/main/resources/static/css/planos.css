@@ -1,0 +1,156 @@
+/* css/planos.css */
+body {
+  padding-top: 80px; /* Espaço para o header fixo */
+  background-color: #121212;
+}
+
+.hero-planos {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),
+    url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1950&q=80");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid #00ff88;
+  margin-bottom: 2rem;
+}
+
+.hero-content h1 {
+  color: #00ff88;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.container-planos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.planos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Card do Plano */
+.plano-card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.plano-card:hover {
+  transform: translateY(-10px);
+  border-color: #00ff88;
+  box-shadow: 0 10px 20px rgba(0, 255, 136, 0.1);
+}
+
+.plano-nome {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.plano-preco {
+  font-size: 2.5rem;
+  color: #00ff88;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.plano-duracao {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.plano-beneficios {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 2rem;
+  color: #ddd;
+}
+
+.plano-beneficios li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.btn-assinar {
+  background: transparent;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.btn-assinar:hover {
+  background: #00ff88;
+  color: #000;
+}
+
+.loading-msg {
+  text-align: center;
+  color: #ccc;
+  font-size: 1.2rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Fundo escuro transparente */
+    display: none; /* Oculto por padrão */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Garante que fique acima de tudo */
+    backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+}
+
+.modal-content {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+    text-align: center;
+    animation: modalPopUp 0.3s ease-out;
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    color: #ccc;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+@keyframes modalPopUp {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

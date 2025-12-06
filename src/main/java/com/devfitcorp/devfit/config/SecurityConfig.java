@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/planos").hasRole("GESTOR")
                         .requestMatchers(HttpMethod.PUT, "/planos/**").hasRole("GESTOR")
                         .requestMatchers(HttpMethod.DELETE, "/planos/**").hasRole("GESTOR")
-                        .requestMatchers("/planos").permitAll()
+                        .requestMatchers("/planos/listar").permitAll()
                         .requestMatchers("/matricula/assinar/**").authenticated()
                         .requestMatchers("/checkin").authenticated()
                         .requestMatchers("/checkin/picos").hasRole("GESTOR")

@@ -15,6 +15,10 @@ public class PlanoService {
          this.planoRepository = planoRepository;
      }
 
+     public List<Plano> listar() {
+         return planoRepository.findAll();
+     }
+
      public List<Plano> listarAtivos() {
          return planoRepository.findAllByAtivo(true);
      }

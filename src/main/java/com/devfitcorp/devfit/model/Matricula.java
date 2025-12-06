@@ -1,5 +1,6 @@
 package com.devfitcorp.devfit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Matricula {
 
     @ManyToOne
     @JoinColumn(name = "plano_id")
+    @JsonIgnore
     private Plano plano;
 
     @OneToOne(mappedBy = "matricula")
