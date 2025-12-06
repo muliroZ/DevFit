@@ -5,9 +5,9 @@ Ele coordena o fluxo entre controller → validações → persistência no banc
 
 O objetivo principal dessa classe é garantir que:
 
-- Produtos sejam criados com dados válidos
-- Atualizações respeitem regras de integridade
-- Estoque nunca assuma valores inválidos
+- Trabalhar apenas com dados previamente validados pelo controller
+- Executar operações de CRUD respeitando as restrições impostas pelo banco e pelas validações de domínio
+- Atualizações respeitem regras de integridade 
 - Exceções adequadas sejam lançadas quando necessário
 
 ---
@@ -21,7 +21,6 @@ O `ProdutoService` centraliza as operações:
 - Buscar produto por ID
 - Atualizar produto existente
 - Remover produto
-- Garantir integridade das informações (nome único, estoque válido, etc.)
 
 ---
 
@@ -31,11 +30,10 @@ Abaixo está o funcionamento detalhado de cada método.
 
 ---
 
-## 1️⃣ **criarProduto(ProdutoRequest request)**
+## 1️⃣ **Salvar (ProdutoRequest request)**
 
 ### ✔ O que faz
 - Converte o DTO recebido em entidade (`ProdutoMapper`)
-- Aplica validações do Bean Validation automaticamente
 - Salva o produto no banco
 - Retorna um `ProdutoResponse`
 
@@ -47,14 +45,15 @@ Abaixo está o funcionamento detalhado de cada método.
 4. Service retorna `mapper.toResponse(produtoSalvo)`
 
 ### 🧨 Exceções Possíveis
-| Situação | Exceção | Status |
-|----------|----------|--------|
-| Nome duplicado | `DataIntegrityViolationException` | 409 |
-| Campos inválidos | `MethodArgumentNotValidException` | 400 |
+| Situação | Exceção | Origem | Status |
+|----------|----------|--------|--------|
+| Nome duplicado | DataIntegrityViolationException | Banco | 409 |
+| Campos inválidos | MethodArgumentNotValidException | Controller | 400 |
+
 
 ---
 
-## 2️⃣ **listarProdutos()**
+## 2️⃣ **listar()**
 
 ### ✔ O que faz
 Retorna a lista completa de produtos cadastrados.
@@ -82,7 +81,7 @@ Busca um produto específico pelo ID.
 
 ---
 
-## 4️⃣ **atualizarProduto(Long id, ProdutoRequest request)**
+## 4️⃣ **atualizar(Long id, ProdutoRequest request)**
 
 ### ✔ O que faz
 Atualiza os dados do produto existente.
@@ -109,7 +108,7 @@ Atualiza os dados do produto existente.
 
 ---
 
-## 5️⃣ **removerProduto(Long id)**
+## 5️⃣ **deletar(Long id)**
 
 ### ✔ O que faz
 Remove um produto do banco.
@@ -119,7 +118,7 @@ Remove um produto do banco.
 1. Verifica se existe
 2. Se não existir → not found
 3. Tenta remover pelo repositório
-4. Se houver pedidos vinculados → o banco bloqueia (FK constraint)
+4. Se houver pedidos vinculados → o banco bloqueia a exclusão
 
 ### 🧨 Possíveis erros
 | Caso | Motivo | Tratamento |
@@ -142,8 +141,7 @@ Validados por:
 - e pelos DTOs (opcional)
 
 ## ✔ Produto só pode ser deletado se não houver pedidos vinculados
-Se houver → disparará `DataIntegrityViolationException`.
-
+O banco impede a exclusão caso existam pedidos vinculados (regra aplicada por FK).
 ---
 
 # 🧠 Integração com PedidoService
@@ -164,7 +162,6 @@ O `ProdutoService` apenas gerencia **operações diretas** sobre produtos.
 O serviço implementa:
 
 - CRUD completo
-- Validações automáticas via Bean Validation
 - Tratamento de exceções via ControllerAdvice
 - Conversão limpa com ProdutoMapper
 - Regras simples de integridade (nome único, estoque ≥ 0)
