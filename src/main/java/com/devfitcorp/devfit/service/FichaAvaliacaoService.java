@@ -97,11 +97,11 @@ public class FichaAvaliacaoService {
     }
 
     // método para calcular o IMC
-    private double calcularImc(Double pesoKg, Double alturaM) {
-        if (pesoKg == null || pesoKg <= 0 || alturaM == null || alturaM == 0) {
-            throw new IllegalArgumentException("Altura deve ser maior que zero.");
+    private double calcularImc(Double pesoKg, Double alturaCm) {
+        if (pesoKg == null || pesoKg <= 0 || alturaCm == null || alturaCm == 0) {
+            throw new IllegalArgumentException("Altura/Peso deve ser maior que zero.");
         }
-        return pesoKg / (alturaM * alturaM);
+        return pesoKg / ((alturaCm / 100) * (alturaCm / 100));
     }
 
     // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
