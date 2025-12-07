@@ -1,16 +1,18 @@
 package com.devfitcorp.devfit.service;
 
-import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
-import com.devfitcorp.devfit.repository.MensalidadeRepository;
-import com.devfitcorp.devfit.repository.DespesaRepository;
-import com.devfitcorp.devfit.repository.PedidoRepository;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.devfitcorp.devfit.dto.FinanceiroDashboardDTO;
+import com.devfitcorp.devfit.mappers.FinanceiroMapper;
+import com.devfitcorp.devfit.repository.DespesaRepository;
+import com.devfitcorp.devfit.repository.MensalidadeRepository;
+import com.devfitcorp.devfit.repository.PedidoRepository;
 
 @Service
 public class FinanceiroService {
@@ -18,15 +20,18 @@ public class FinanceiroService {
     private final MensalidadeRepository mensalidadeRepository;
     private final DespesaRepository despesaRepository;
     private final PedidoRepository pedidoRepository;
+    private final FinanceiroMapper financeiroMapper;
 
     public FinanceiroService(
             MensalidadeRepository mensalidadeRepository,
             DespesaRepository despesaRepository,
-            PedidoRepository pedidoRepository
+            PedidoRepository pedidoRepository,
+            FinanceiroMapper financeiroMapper
     ){
         this.mensalidadeRepository = mensalidadeRepository;
         this.despesaRepository = despesaRepository;
         this.pedidoRepository = pedidoRepository;
+        this.financeiroMapper = financeiroMapper;
     }
 
     public FinanceiroDashboardDTO getAggregatedFinanceiroSummary(){
@@ -52,7 +57,6 @@ public class FinanceiroService {
         BigDecimal despesaAluguel = despesaRepository.sumValorByCategoriaAndPeriodo("ALUGUEL", primeiroDiaMes, ultimoDiaMes);
         despesaAluguel = despesaAluguel == null ? BigDecimal.ZERO : despesaAluguel;
 
-        // Adicionando a Despesa LUZ que está no V5 (popula_db_test.sql) e deve ser contabilizada.
         BigDecimal despesaLuz = despesaRepository.sumValorByCategoriaAndPeriodo("LUZ", primeiroDiaMes, ultimoDiaMes);
         despesaLuz = despesaLuz == null ? BigDecimal.ZERO : despesaLuz;
 
@@ -61,16 +65,9 @@ public class FinanceiroService {
                 .add(despesaAluguel)
                 .add(despesaLuz);
 
-        FinanceiroDashboardDTO dto = new FinanceiroDashboardDTO();
-
-        dto.setReceitaTotal(receitaTotal);
-        dto.setDespesaTotal(despesaTotal);
-        dto.setLucroLiquido(receitaTotal.subtract(despesaTotal));
-
         Map<String,BigDecimal> receitaPorFonte = new HashMap<>();
         receitaPorFonte.put("Mensalidades", receitaMensalidades);
         receitaPorFonte.put("Produto", receitaProduto);
-        dto.setReceitaPorFonte(receitaPorFonte);
 
         Map<String, BigDecimal> despesaPorCategoria = new HashMap<>();
         if (despesaSalarios.compareTo(BigDecimal.ZERO) > 0) {
@@ -85,8 +82,13 @@ public class FinanceiroService {
         if (despesaLuz.compareTo(BigDecimal.ZERO) > 0) {
             despesaPorCategoria.put("Luz", despesaLuz);
         }
-        dto.setDespesaPorCategoria(despesaPorCategoria);
 
-        return dto;
+        return financeiroMapper.toResponse(
+                receitaTotal,
+                despesaTotal,
+                receitaTotal.subtract(despesaTotal),
+                (HashMap<String, BigDecimal>) receitaPorFonte,
+                (HashMap<String, BigDecimal>) despesaPorCategoria
+        );
     }
 }
