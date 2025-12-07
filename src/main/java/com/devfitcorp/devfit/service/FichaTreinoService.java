@@ -10,6 +10,8 @@ import com.devfitcorp.devfit.repository.FichaTreinoRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +35,14 @@ public class FichaTreinoService {
         this.fichaTreinoMapper = fichaTreinoMapper;
     }
 
-    // Cria uma ficha de treino a partir do DTO
-    @Transactional // Garantir integridade no banco (use em todos os métodos de escrita garoto)
+
+    @Transactional 
     public FichaTreinoResponse criar(FichaTreinoRequest dto) {
         Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
         Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
 
         List<ItemTreino> itens = listarItensDoRequest(dto);
-        FichaTreino ficha = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+        FichaTreino ficha = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens, LocalDate.now());
 
         fichaTreinoRepository.save(ficha);
         return fichaTreinoMapper.toResponse(ficha);
@@ -69,7 +71,6 @@ public class FichaTreinoService {
 
 
 
-    // Atualiza uma ficha existente com base no DTO
     @Transactional
     public FichaTreinoResponse atualizar(Long id, FichaTreinoRequest dto) {
         FichaTreino existente = fichaTreinoRepository.findById(id)
@@ -79,7 +80,7 @@ public class FichaTreinoService {
         Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
 
         List<ItemTreino> itens = listarItensDoRequest(dto);
-        FichaTreino atualizada = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+        FichaTreino atualizada = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens, LocalDate.now());
 
         atualizada.setId(existente.getId());
 
@@ -96,7 +97,6 @@ public class FichaTreinoService {
         fichaTreinoRepository.delete(ficha);
     }
 
-    // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
     private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
         return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
