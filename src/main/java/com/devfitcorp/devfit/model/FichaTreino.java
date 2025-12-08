@@ -14,30 +14,30 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity // entidade JPA para persistência no banco de dados
-@Table(name = "ficha_treino") // nome da tabela no banco de dados
+@Entity
+@Table(name = "ficha_treino")
 public class FichaTreino {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Chave primária
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "aluno_id", nullable = false)
-    private Usuario aluno; // Relacionamento com o Aluno
+    private Usuario aluno;
 
     @ManyToOne
     @JoinColumn(name = "instrutor_id", nullable = false)
-    private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de treino
+    private Usuario instrutor;
 
     private LocalDate dataCriacao;
     private LocalDate dataVencimento;
-    private boolean isAtiva = true; // Indica se a ficha de treino está ativa ou não
+    private boolean isAtiva = true;
 
     @OneToMany(mappedBy = "fichaTreino", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemTreino> listaDeItens = new ArrayList<>(); // Lista de itens de treino associados à ficha
+    private List<ItemTreino> listaDeItens = new ArrayList<>();
 
-    @PrePersist // vai servir para preencher a data de criação automaticamente
+    @PrePersist
     public void prePersist() {
         if (this.dataCriacao == null) {
             this.dataCriacao = LocalDate.now();

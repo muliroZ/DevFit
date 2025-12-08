@@ -7,19 +7,20 @@ import com.devfitcorp.devfit.model.ItemTreino;
 import com.devfitcorp.devfit.model.Usuario;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component // O Spring gerencia esta classe e a injeta no Service.
+@Component
 public class FichaTreinoMapper {
 
-    // Converte o DTO de Ficha para a Entidade FichaTreino
-    public FichaTreino toEntity(FichaTreinoRequest dto, Usuario aluno, Usuario instrutor, List<ItemTreino> itensTreino) {
+    public FichaTreino toEntity(FichaTreinoRequest dto, Usuario aluno, Usuario instrutor, List<ItemTreino> itensTreino, LocalDate dataCriacao) {
         FichaTreino ficha = new FichaTreino();
 
         ficha.setAluno(aluno);
         ficha.setInstrutor(instrutor);
         ficha.setDataVencimento(dto.dataVencimento());
+        ficha.setDataCriacao(dataCriacao);
         ficha.setAtiva(true);
         ficha.setListaDeItens(itensTreino);
 
@@ -27,10 +28,10 @@ public class FichaTreinoMapper {
     }
 
     // Converte o DTO de ItemTreinoRequest para a Entidade ItemTreino
-    public ItemTreino toEntity(ItemTreinoRequest dto, Exercicio execicioBase) {
+    public ItemTreino toEntity(ItemTreinoRequest dto, Exercicio exercicioBase) {
         ItemTreino item = new ItemTreino();
 
-        item.setExercicioBase(execicioBase);
+        item.setExercicioBase(exercicioBase);
         item.setSeries(dto.series());
         item.setRepeticoes(dto.repeticoes());
         item.setCargaEstimadaKg(dto.cargaEstimadaKg());

@@ -17,32 +17,31 @@ public class FichaAvaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ID da Ficha de Avaliação (Chave Primária)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "aluno_id", nullable = false)
-    private Usuario aluno; // Relacionamento com o Aluno
+    private Usuario aluno;
 
     @ManyToOne
     @JoinColumn(name = "instrutor_id", nullable = false)
-    private Usuario instrutor; // Relacionamento com o Instrutor que criou a ficha de avaliação
+    private Usuario instrutor;
 
     @Column(nullable = false)
-    private LocalDate dataAvaliacao; // Data da Avaliação
+    private LocalDate dataAvaliacao;
 
-    // Dados Antropométricos
+
     @Column(nullable = false) private double pesoKg;
-    @Column(nullable = false) private double alturaCm; // Em centímetros
-    @Column(nullable = false) private double imc; // Índice de Massa Corporal (calculado)
+    @Column(nullable = false) private double alturaCm;
+    @Column(nullable = false) private double imc;
 
-    // Circunferências
+
     @Column private double circunferenciaCinturaCm;
     @Column private double circunferenciaAbdomenCm;
     @Column private double circunferenciaQuadrilCm;
 
-    // Histórico e Observações
     @Column(length = 1000, columnDefinition = "TEXT")
-    private String historicoSaude; // Informações prévias relevantes
+    private String historicoSaude;
 
     @Column(length = 500, columnDefinition = "TEXT")
     private String observacoesGerais;
