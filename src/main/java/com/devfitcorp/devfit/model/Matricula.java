@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter // tirei o @Data pois podia dar loop infinito nos logs, por conta do @ToString embutido
+@Setter
 public class Matricula {
 
     @Id

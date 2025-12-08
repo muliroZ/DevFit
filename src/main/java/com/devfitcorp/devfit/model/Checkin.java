@@ -23,7 +23,7 @@ public class Checkin {
 
     private LocalDateTime dataHora;
 
-    @Enumerated(EnumType.STRING) //marca a entrada e saida dos marombas
+    @Enumerated(EnumType.STRING) //marca a entrada e saida dos alunos
     private CheckinType tipo;
 
     @PrePersist

@@ -18,7 +18,7 @@ public class Plano {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome; // Ex: 'Plano Mensal', 'Trimestral VIP'
+    private String nome; // Ex: 'Plano Mensal'
 
     private BigDecimal valor; // O valor da mensalidade
 
