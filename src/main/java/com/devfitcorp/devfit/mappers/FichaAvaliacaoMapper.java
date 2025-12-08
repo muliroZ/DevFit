@@ -44,7 +44,7 @@ public class FichaAvaliacaoMapper {
                 entity.getDataAvaliacao(),
                 entity.getPesoKg(),
                 entity.getAlturaCm(),
-                entity.getImc(), // O IMC calculado na camada Service
+                entity.getImc(),
                 entity.getCircunferenciaCinturaCm(),
                 entity.getCircunferenciaAbdomenCm(),
                 entity.getCircunferenciaQuadrilCm(),

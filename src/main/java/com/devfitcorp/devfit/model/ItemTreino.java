@@ -18,7 +18,6 @@ public class ItemTreino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ATRIBUTOS VARIÁVEIS REMOVIDOS DA CLASSE EXERCICIO
     @Column(nullable = false)
     private int series;
 
@@ -28,7 +27,7 @@ public class ItemTreino {
     @Column
     private double cargaEstimadaKg;
 
-    @Column(length = 500, columnDefinition = "TEXT") // para indicar que é um texto grande
+    @Column(length = 500, columnDefinition = "TEXT")
     private String observacoes;
 
     @ManyToOne(fetch = FetchType.LAZY)

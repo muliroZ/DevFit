@@ -25,7 +25,7 @@ public class FichaAvaliacaoController {
     }
 
     @PostMapping("/criar")
-    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')") // Apenas instrutores e admins podem criar fichas de avaliação
+    @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
     public ResponseEntity<FichaAvaliacaoResponse> criarFichaAvaliacao(@Valid @RequestBody FichaAvaliacaoRequest dto) {
         FichaAvaliacaoResponse response = fichaAvaliacaoService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -52,7 +52,7 @@ public class FichaAvaliacaoController {
     public ResponseEntity<List<FichaAvaliacaoResponse>> buscarTodasAsFichas() {
         return  ResponseEntity.ok(fichaAvaliacaoService.listar());
     }
-    // Novo metodo para o aluno ver suas proprias avaliacoes
+
     @GetMapping("/minhas-avaliacoes")
     @PreAuthorize("hasAnyRole('ALUNO', 'INSTRUTOR', 'GESTOR')")
     public ResponseEntity<List<FichaAvaliacaoResponse>> listarMinhasAvaliacoes() {

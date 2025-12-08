@@ -35,7 +35,6 @@ public class FichaTreinoService {
         this.fichaTreinoMapper = fichaTreinoMapper;
     }
 
-
     @Transactional 
     public FichaTreinoResponse criar(FichaTreinoRequest dto) {
         Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
@@ -48,7 +47,6 @@ public class FichaTreinoService {
         return fichaTreinoMapper.toResponse(ficha);
     }
 
-    // Retorna todas as fichas de treino existentes
     public List<FichaTreinoResponse> listar() {
         return fichaTreinoRepository.findAll()
                 .stream()
@@ -61,15 +59,12 @@ public class FichaTreinoService {
                 .collect(Collectors.toList());
     }
 
-    // Busca uma ficha específica pelo ID
     public FichaTreinoResponse buscarPorId(Long id) {
         FichaTreino ficha = fichaTreinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ficha de treino não encontrada: " + id));
 
         return fichaTreinoMapper.toResponse(ficha);
     }
-
-
 
     @Transactional
     public FichaTreinoResponse atualizar(Long id, FichaTreinoRequest dto) {
@@ -88,7 +83,6 @@ public class FichaTreinoService {
         return fichaTreinoMapper.toResponse(atualizada);
     }
 
-    // Remove uma ficha pelo ID
     @Transactional
     public void deletar(Long id) {
         FichaTreino ficha = fichaTreinoRepository.findById(id)
@@ -101,12 +95,16 @@ public class FichaTreinoService {
         return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
+    // novo metodo para buscar exercício por ID
+    private Exercicio buscarExercicioPorId(Long id) {
+        return exercicioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercício não encontrado: " + id));
+    }
 
-    // método auxiliar para listar ItemTreino dos DTOs de FichaTreino usando o Mapper (estava se repetindo)
     private List<ItemTreino> listarItensDoRequest(FichaTreinoRequest request) {
         return request.listaDeItens().stream()
                 .map(item -> fichaTreinoMapper
-                        .toEntity(item, exercicioRepository.findExercicioById(item.exercicioId())))
+                        .toEntity(item, buscarExercicioPorId(item.exercicioId())))
                 .toList();
     }
 }

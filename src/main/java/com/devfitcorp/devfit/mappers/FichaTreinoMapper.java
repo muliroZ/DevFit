@@ -11,10 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component // O Spring gerencia esta classe e a injeta no Service.
+@Component
 public class FichaTreinoMapper {
 
-    // Converte o DTO de Ficha para a Entidade FichaTreino
     public FichaTreino toEntity(FichaTreinoRequest dto, Usuario aluno, Usuario instrutor, List<ItemTreino> itensTreino, LocalDate dataCriacao) {
         FichaTreino ficha = new FichaTreino();
 

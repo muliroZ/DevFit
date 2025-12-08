@@ -23,7 +23,6 @@ public class FichaAvaliacaoService {
     private final UsuarioRepository usuarioRepository; // Para findByEmail()
     private final FichaAvaliacaoMapper fichaAvaliacaoMapper;
 
-    // Injeção de dependências via construtor
     public FichaAvaliacaoService(
             FichaAvaliacaoRepository fichaAvaliacaoRepository,
             UsuarioRepository usuarioRepository,
@@ -34,10 +33,8 @@ public class FichaAvaliacaoService {
         this.fichaAvaliacaoMapper = fichaAvaliacaoMapper;
     }
 
-    // CRUD: CREATE, FichaAvaliacao, recebe DTO
     @Transactional
     public FichaAvaliacaoResponse criar(FichaAvaliacaoRequest dto) {
-        // Busca os usuarios pelo id e role
         Usuario aluno = usuarioRepository.findByIdAndRoles_Nome(dto.idAluno(), UsuarioRole.ALUNO)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
 
@@ -53,7 +50,6 @@ public class FichaAvaliacaoService {
         return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
-    // CRUD: READ, buscar fichas por id específico
     public List<FichaAvaliacaoResponse> buscarFichasPorId(Long alunoId) {
         return fichaAvaliacaoRepository.findByAlunoId(alunoId).stream()
                 .map(fichaAvaliacaoMapper::toResponse)
@@ -67,7 +63,6 @@ public class FichaAvaliacaoService {
                 .collect(Collectors.toList());
     }
 
-    //CRUD: UPDATE, FichaAvaliacao
     @Transactional
     public FichaAvaliacaoResponse atualizar(Long id, FichaAvaliacaoRequest dto) {
         FichaAvaliacao fichaAntiga = fichaAvaliacaoRepository.findById(id)
@@ -87,7 +82,6 @@ public class FichaAvaliacaoService {
         return fichaAvaliacaoMapper.toResponse(savedFicha);
     }
 
-    // CRUD: DELETE, exclui uma ficha conforme o id
     @Transactional
     public void deletar(Long id) {
         if (!fichaAvaliacaoRepository.existsById(id)) {
@@ -104,7 +98,6 @@ public class FichaAvaliacaoService {
         return pesoKg / ((alturaCm / 100) * (alturaCm / 100));
     }
 
-    // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
     private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
         return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
