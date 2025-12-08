@@ -10,6 +10,8 @@ import com.devfitcorp.devfit.repository.FichaTreinoRepository;
 import com.devfitcorp.devfit.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,20 +35,18 @@ public class FichaTreinoService {
         this.fichaTreinoMapper = fichaTreinoMapper;
     }
 
-    // Cria uma ficha de treino a partir do DTO
-    @Transactional // Garantir integridade no banco (use em todos os métodos de escrita garoto)
+    @Transactional 
     public FichaTreinoResponse criar(FichaTreinoRequest dto) {
         Usuario aluno = buscarUsuarioPorIdERole(dto.idAluno(), UsuarioRole.ALUNO);
         Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
 
         List<ItemTreino> itens = listarItensDoRequest(dto);
-        FichaTreino ficha = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+        FichaTreino ficha = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens, LocalDate.now());
 
         fichaTreinoRepository.save(ficha);
         return fichaTreinoMapper.toResponse(ficha);
     }
 
-    // Retorna todas as fichas de treino existentes
     public List<FichaTreinoResponse> listar() {
         return fichaTreinoRepository.findAll()
                 .stream()
@@ -59,7 +59,6 @@ public class FichaTreinoService {
                 .collect(Collectors.toList());
     }
 
-    // Busca uma ficha específica pelo ID
     public FichaTreinoResponse buscarPorId(Long id) {
         FichaTreino ficha = fichaTreinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ficha de treino não encontrada: " + id));
@@ -67,9 +66,6 @@ public class FichaTreinoService {
         return fichaTreinoMapper.toResponse(ficha);
     }
 
-
-
-    // Atualiza uma ficha existente com base no DTO
     @Transactional
     public FichaTreinoResponse atualizar(Long id, FichaTreinoRequest dto) {
         FichaTreino existente = fichaTreinoRepository.findById(id)
@@ -79,7 +75,7 @@ public class FichaTreinoService {
         Usuario instrutor = buscarUsuarioPorIdERole(dto.idInstrutor(), UsuarioRole.INSTRUTOR);
 
         List<ItemTreino> itens = listarItensDoRequest(dto);
-        FichaTreino atualizada = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens);
+        FichaTreino atualizada = fichaTreinoMapper.toEntity(dto, aluno, instrutor, itens, LocalDate.now());
 
         atualizada.setId(existente.getId());
 
@@ -87,7 +83,6 @@ public class FichaTreinoService {
         return fichaTreinoMapper.toResponse(atualizada);
     }
 
-    // Remove uma ficha pelo ID
     @Transactional
     public void deletar(Long id) {
         FichaTreino ficha = fichaTreinoRepository.findById(id)
@@ -96,17 +91,20 @@ public class FichaTreinoService {
         fichaTreinoRepository.delete(ficha);
     }
 
-    // método auxiliar para buscar os alunos e instrutores por id e role (estava se repetindo)
     private Usuario buscarUsuarioPorIdERole(Long id, UsuarioRole role) {
         return usuarioRepository.findByIdAndRoles_Nome(id, role)
                 .orElseThrow(() -> new ResourceNotFoundException(role.name().concat(" não encontrado")));
     }
+    // novo metodo para buscar exercício por ID
+    private Exercicio buscarExercicioPorId(Long id) {
+        return exercicioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercício não encontrado: " + id));
+    }
 
-    // método auxiliar para listar ItemTreino dos DTOs de FichaTreino usando o Mapper (estava se repetindo)
     private List<ItemTreino> listarItensDoRequest(FichaTreinoRequest request) {
         return request.listaDeItens().stream()
                 .map(item -> fichaTreinoMapper
-                        .toEntity(item, exercicioRepository.findExercicioById(item.exercicioId())))
+                        .toEntity(item, buscarExercicioPorId(item.exercicioId())))
                 .toList();
     }
 }

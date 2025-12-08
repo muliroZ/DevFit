@@ -6,24 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// @Getter e @Setter geram os métodos getters e setters automaticamente.
+
 @Getter
 @Setter
-@AllArgsConstructor // gera um construtor com todos os campos.
+@AllArgsConstructor
 @NoArgsConstructor
-@Entity    // entidade JPA para persistência no banco de dados
+@Entity
 public class Exercicio {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id; // ID do exercício
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String nome;
 
     @Column(nullable = false)
-    private String musculoPrincipal; // Ex: Peito, Costas, Quadríceps
+    private String musculoPrincipal;
 
-    @Column(length = 1000, columnDefinition = "TEXT") // será o tamanho da descrição
-    private String descricao; // descrição do exercício
+    @Column(length = 1000, columnDefinition = "TEXT")
+    private String descricao;
 }

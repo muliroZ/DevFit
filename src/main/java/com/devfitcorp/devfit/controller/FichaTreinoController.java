@@ -18,12 +18,11 @@ import java.util.List;
 public class FichaTreinoController {
 
     private final FichaTreinoService service;
-//injeção de dependência via construtor
+
     public FichaTreinoController(FichaTreinoService service) {
         this.service = service;
     }
 
-    // CRIAR FICHA DE TREINO
     @PostMapping
     @PreAuthorize("hasAnyRole('GESTOR', 'INSTRUTOR')")
     public ResponseEntity<FichaTreinoResponse> criar(@RequestBody @Valid FichaTreinoRequest request) {
@@ -31,22 +30,19 @@ public class FichaTreinoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // LISTAR TODAS AS FICHAS
     @GetMapping
     @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
     public ResponseEntity<List<FichaTreinoResponse>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
-    // BUSCAR POR ID
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('INSTRUTOR','GESTOR')")
     public ResponseEntity<FichaTreinoResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
-    // falta por o metodo para o aluno ver suas proprias fichas de treino
-    // tentei colocar e constou um erro, vou deixar comentado por enquanto
     @GetMapping("/minhas-fichas")
     @PreAuthorize("hasAnyRole('ALUNO', 'INSTRUTOR', 'GESTOR')")
     public ResponseEntity<List<FichaTreinoResponse>> listarMinhasFichas() {
@@ -56,7 +52,6 @@ public class FichaTreinoController {
         return ResponseEntity.ok(fichas);
     }
 
-    // ATUALIZAR FICHA
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('GESTOR', 'INSTRUTOR')")
     public ResponseEntity<FichaTreinoResponse> atualizar(
@@ -67,8 +62,6 @@ public class FichaTreinoController {
         return ResponseEntity.ok(response);
     }
 
-
-    // DELETAR FICHA
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('GESTOR')")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
